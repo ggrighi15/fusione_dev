@@ -1,0 +1,123 @@
+{
+  "server": {
+    "port": 3000,
+    "host": "localhost",
+    "cors": {
+      "enabled": true,
+      "origins": ["http://localhost:3000", "http://localhost:3001"]
+    },
+    "helmet": {
+      "enabled": true,
+      "contentSecurityPolicy": false
+    }
+  },
+  "logging": {
+    "level": "info",
+    "console": {
+      "enabled": true,
+      "colorize": true,
+      "timestamp": true
+    },
+    "file": {
+      "enabled": false,
+      "filename": "logs/fusione-core.log",
+      "maxsize": 5242880,
+      "maxFiles": 5
+    },
+    "http": {
+      "enabled": true,
+      "format": "combined"
+    }
+  },
+  "modules": {
+    "autoLoad": true,
+    "path": "./src/modules",
+    "autoStart": true,
+    "loadTimeout": 30000,
+    "example-module": {
+      "enabled": true,
+      "autoStart": true,
+      "priority": 1,
+      "settings": {
+        "interval": 5000,
+        "maxRetries": 3,
+        "debugMode": false
+      }
+    }
+  },
+  "events": {
+    "maxListeners": 100,
+    "historySize": 1000,
+    "enableHistory": true,
+    "debugEvents": false,
+    "errorHandling": {
+      "continueOnError": true,
+      "logErrors": true
+    }
+  },
+  "healthCheck": {
+    "enabled": true,
+    "interval": 30000,
+    "timeout": 5000,
+    "checks": {
+      "memory": {
+        "enabled": true,
+        "threshold": 0.9
+      },
+      "uptime": {
+        "enabled": true,
+        "minUptime": 1000
+      },
+      "systemLoad": {
+        "enabled": true,
+        "threshold": 0.8
+      }
+    }
+  },
+  "api": {
+    "prefix": "/api",
+    "rateLimit": {
+      "enabled": false,
+      "windowMs": 900000,
+      "max": 100
+    },
+    "authentication": {
+      "enabled": false,
+      "type": "bearer"
+    },
+    "validation": {
+      "enabled": true,
+      "strictMode": false
+    }
+  },
+  "system": {
+    "name": "Fusione Core System",
+    "version": "1.0.0",
+    "description": "Sistema central modular para integração e gerenciamento de componentes",
+    "environment": "development",
+    "timezone": "America/Sao_Paulo",
+    "gracefulShutdown": {
+      "enabled": true,
+      "timeout": 10000
+    }
+  },
+  "security": {
+    "trustProxy": false,
+    "hidePoweredBy": true,
+    "noSniff": true,
+    "xssFilter": true,
+    "frameguard": {
+      "action": "deny"
+    }
+  },
+  "performance": {
+    "compression": {
+      "enabled": true,
+      "level": 6
+    },
+    "cache": {
+      "enabled": false,
+      "ttl": 300
+    }
+  }
+}
