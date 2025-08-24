@@ -1,0 +1,38 @@
+{
+  "name": "api-module",
+  "version": "1.0.0",
+  "description": "Módulo de API REST para exposição de endpoints HTTP",
+  "author": "Fusione Core System",
+  "main": "index.js",
+  "enabled": true,
+  "autoStart": true,
+  "priority": 1,
+  "dependencies": [],
+  "permissions": [
+    "events:listen",
+    "events:emit",
+    "config:read",
+    "http:server",
+    "auth:validate"
+  ],
+  "settings": {
+    "port": 3000,
+    "enableCors": true,
+    "enableHelmet": true,
+    "enableCompression": true,
+    "enableRateLimit": false,
+    "maxRequestSize": "10mb"
+  },
+  "events": {
+    "listen": [
+      "system:*",
+      "auth:*",
+      "user:*"
+    ],
+    "emit": [
+      "api:request",
+      "api:response",
+      "api:error"
+    ]
+  }
+}

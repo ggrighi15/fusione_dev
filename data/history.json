@@ -1,0 +1,127 @@
+{
+  "history": [
+    {
+      "id": "eca85bea-8d9a-42c1-91cb-7f1b213a9570",
+      "timestamp": "2025-08-21T07:03:16.698Z",
+      "sessionId": "b2800bb7-04f8-47d1-a9d5-0626e5d2c4b3",
+      "type": "session",
+      "action": "session_started",
+      "data": {
+        "name": "Sistema de Análise de Dados"
+      },
+      "status": "completed",
+      "duration": null,
+      "error": null,
+      "metadata": {
+        "source": "system",
+        "level": "info",
+        "tags": []
+      }
+    },
+    {
+      "id": "05fb1c14-c338-435d-9ee9-c638d5a8c41d",
+      "timestamp": "2025-08-21T07:04:22.080Z",
+      "sessionId": "b561d538-881c-4573-981d-6ccb65eec075",
+      "type": "session",
+      "action": "session_started",
+      "data": {
+        "name": "Sistema de Análise de Dados"
+      },
+      "status": "completed",
+      "duration": null,
+      "error": null,
+      "metadata": {
+        "source": "system",
+        "level": "info",
+        "tags": []
+      }
+    },
+    {
+      "id": "98e0ff25-961c-4ea6-865b-6f16131eb1ae",
+      "timestamp": "2025-08-21T07:05:59.276Z",
+      "sessionId": "68033caa-3212-4a00-869b-69c1cde6b5f9",
+      "type": "session",
+      "action": "session_started",
+      "data": {
+        "name": "Sistema de Análise de Dados"
+      },
+      "status": "completed",
+      "duration": null,
+      "error": null,
+      "metadata": {
+        "source": "system",
+        "level": "info",
+        "tags": []
+      }
+    }
+  ],
+  "sessions": [
+    [
+      "b2800bb7-04f8-47d1-a9d5-0626e5d2c4b3",
+      {
+        "id": "b2800bb7-04f8-47d1-a9d5-0626e5d2c4b3",
+        "name": "Sistema de Análise de Dados",
+        "startTime": "2025-08-21T07:03:16.698Z",
+        "endTime": null,
+        "status": "active",
+        "actions": [
+          "eca85bea-8d9a-42c1-91cb-7f1b213a9570"
+        ],
+        "progress": {
+          "totalSteps": 0,
+          "completedSteps": 0,
+          "currentStep": null
+        },
+        "metadata": {
+          "userAgent": "system",
+          "version": "1.0.0"
+        }
+      }
+    ],
+    [
+      "b561d538-881c-4573-981d-6ccb65eec075",
+      {
+        "id": "b561d538-881c-4573-981d-6ccb65eec075",
+        "name": "Sistema de Análise de Dados",
+        "startTime": "2025-08-21T07:04:22.079Z",
+        "endTime": null,
+        "status": "active",
+        "actions": [
+          "05fb1c14-c338-435d-9ee9-c638d5a8c41d"
+        ],
+        "progress": {
+          "totalSteps": 0,
+          "completedSteps": 0,
+          "currentStep": null
+        },
+        "metadata": {
+          "userAgent": "system",
+          "version": "1.0.0"
+        }
+      }
+    ],
+    [
+      "68033caa-3212-4a00-869b-69c1cde6b5f9",
+      {
+        "id": "68033caa-3212-4a00-869b-69c1cde6b5f9",
+        "name": "Sistema de Análise de Dados",
+        "startTime": "2025-08-21T07:05:59.275Z",
+        "endTime": null,
+        "status": "active",
+        "actions": [
+          "98e0ff25-961c-4ea6-865b-6f16131eb1ae"
+        ],
+        "progress": {
+          "totalSteps": 0,
+          "completedSteps": 0,
+          "currentStep": null
+        },
+        "metadata": {
+          "userAgent": "system",
+          "version": "1.0.0"
+        }
+      }
+    ]
+  ],
+  "lastSaved": "2025-08-21T07:05:59.276Z"
+}

@@ -1,0 +1,478 @@
+{
+  "name": "compliance-module",
+  "version": "1.0.0",
+  "description": "Módulo de monitoramento de compliance e conformidade regulatória",
+  "author": "Fusione Core System",
+  "main": "index.js",
+  "enabled": true,
+  "autoStart": true,
+  "priority": 2,
+  "dependencies": [
+    "auth-module",
+    "pessoas-module",
+    "contratos-module",
+    "notification-module"
+  ],
+  "permissions": [
+    "events:listen",
+    "events:emit",
+    "config:read",
+    "config:write",
+    "database:read",
+    "database:write",
+    "cache:read",
+    "cache:write",
+    "files:read",
+    "files:write",
+    "compliance:admin",
+    "compliance:create",
+    "compliance:read",
+    "compliance:update",
+    "compliance:delete",
+    "compliance:audit",
+    "compliance:investigate"
+  ],
+  "settings": {
+    "policies": {
+      "defaultReviewPeriod": 365,
+      "approvalRequired": true,
+      "versionControl": true,
+      "digitalSignature": true,
+      "automaticReminders": true,
+      "reminderDays": [30, 15, 7, 1]
+    },
+    "risks": {
+      "assessmentFrequency": 180,
+      "criticalRiskAlert": true,
+      "riskMatrix": {
+        "probabilityLevels": ["muito_baixa", "baixa", "media", "alta", "muito_alta"],
+        "impactLevels": ["muito_baixo", "baixo", "medio", "alto", "muito_alto"]
+      },
+      "escalationRules": {
+        "critico": "immediate",
+        "alto": "24h",
+        "medio": "72h",
+        "baixo": "weekly"
+      }
+    },
+    "audits": {
+      "retentionPeriod": 2555,
+      "evidenceStorage": "./storage/compliance/audits",
+      "reportTemplates": true,
+      "automaticScheduling": true,
+      "externalAuditorAccess": false
+    },
+    "training": {
+      "mandatoryCompletion": true,
+      "certificationRequired": true,
+      "refreshPeriod": 365,
+      "minimumScore": 7.0,
+      "maxAttempts": 3,
+      "trackingEnabled": true
+    },
+    "whistleblowing": {
+      "anonymousAllowed": true,
+      "encryptionEnabled": true,
+      "investigationSLA": {
+        "critica": 24,
+        "alta": 72,
+        "media": 168,
+        "baixa": 336
+      },
+      "confidentialityLevel": "high",
+      "externalHotline": false
+    },
+    "dueDiligence": {
+      "automaticScreening": true,
+      "sanctionListSources": [
+        "OFAC",
+        "UN",
+        "EU",
+        "COAF",
+        "PEP"
+      ],
+      "updateFrequency": "daily",
+      "riskScoring": true,
+      "validityPeriods": {
+        "simplificada": 365,
+        "aprofundada": 730,
+        "continua": 365
+      }
+    },
+    "reporting": {
+      "automaticGeneration": true,
+      "regulatoryBodies": [
+        "COAF",
+        "BACEN",
+        "CVM",
+        "SUSEP",
+        "ANTT",
+        "ANAC",
+        "ANVISA"
+      ],
+      "submissionTracking": true,
+      "deadlineAlerts": true,
+      "dataValidation": true
+    },
+    "integration": {
+      "sanctionLists": {
+        "enabled": true,
+        "apiKeys": {
+          "ofac": "",
+          "worldCheck": "",
+          "dowJones": ""
+        },
+        "updateSchedule": "0 2 * * *"
+      },
+      "regulatoryAPIs": {
+        "coaf": {
+          "enabled": false,
+          "endpoint": "",
+          "credentials": ""
+        },
+        "bacen": {
+          "enabled": false,
+          "endpoint": "",
+          "credentials": ""
+        }
+      }
+    },
+    "notifications": {
+      "emailAlerts": true,
+      "systemNotifications": true,
+      "smsAlerts": false,
+      "escalationMatrix": {
+        "level1": ["compliance_officer"],
+        "level2": ["compliance_manager", "legal_counsel"],
+        "level3": ["ceo", "board"]
+      }
+    }
+  },
+  "events": {
+    "listen": [
+      "pessoa:created",
+      "pessoa:updated",
+      "contrato:signed",
+      "contrato:expired",
+      "user:login",
+      "transaction:high_value",
+      "audit:completed",
+      "training:completed"
+    ],
+    "emit": [
+      "compliance:policy_created",
+      "compliance:policy_updated",
+      "compliance:policy_expiring",
+      "compliance:risk_identified",
+      "compliance:critical_risk",
+      "compliance:risk_assessment_due",
+      "compliance:audit_scheduled",
+      "compliance:audit_completed",
+      "compliance:denuncia_received",
+      "compliance:investigation_started",
+      "compliance:investigation_completed",
+      "compliance:training_due",
+      "compliance:training_overdue",
+      "compliance:dd_completed",
+      "compliance:sanction_match",
+      "compliance:report_due",
+      "compliance:violation_detected"
+    ]
+  },
+  "api": {
+    "routes": [
+      {
+        "method": "POST",
+        "path": "/compliance/politicas",
+        "handler": "createPolitica",
+        "auth": true,
+        "permissions": ["compliance:create"]
+      },
+      {
+        "method": "GET",
+        "path": "/compliance/politicas",
+        "handler": "listPoliticas",
+        "auth": true,
+        "permissions": ["compliance:read"]
+      },
+      {
+        "method": "GET",
+        "path": "/compliance/politicas/:id",
+        "handler": "getPolitica",
+        "auth": true,
+        "permissions": ["compliance:read"]
+      },
+      {
+        "method": "PUT",
+        "path": "/compliance/politicas/:id",
+        "handler": "updatePolitica",
+        "auth": true,
+        "permissions": ["compliance:update"]
+      },
+      {
+        "method": "POST",
+        "path": "/compliance/politicas/:id/aprovar",
+        "handler": "approvePolitica",
+        "auth": true,
+        "permissions": ["compliance:admin"]
+      },
+      {
+        "method": "POST",
+        "path": "/compliance/riscos",
+        "handler": "assessRisk",
+        "auth": true,
+        "permissions": ["compliance:create"]
+      },
+      {
+        "method": "GET",
+        "path": "/compliance/riscos",
+        "handler": "listRisks",
+        "auth": true,
+        "permissions": ["compliance:read"]
+      },
+      {
+        "method": "PUT",
+        "path": "/compliance/riscos/:id",
+        "handler": "updateRisk",
+        "auth": true,
+        "permissions": ["compliance:update"]
+      },
+      {
+        "method": "POST",
+        "path": "/compliance/riscos/:id/mitigar",
+        "handler": "mitigateRisk",
+        "auth": true,
+        "permissions": ["compliance:update"]
+      },
+      {
+        "method": "POST",
+        "path": "/compliance/auditorias",
+        "handler": "scheduleAudit",
+        "auth": true,
+        "permissions": ["compliance:audit"]
+      },
+      {
+        "method": "GET",
+        "path": "/compliance/auditorias",
+        "handler": "listAudits",
+        "auth": true,
+        "permissions": ["compliance:read"]
+      },
+      {
+        "method": "PUT",
+        "path": "/compliance/auditorias/:id",
+        "handler": "updateAudit",
+        "auth": true,
+        "permissions": ["compliance:audit"]
+      },
+      {
+        "method": "POST",
+        "path": "/compliance/treinamentos",
+        "handler": "createTraining",
+        "auth": true,
+        "permissions": ["compliance:create"]
+      },
+      {
+        "method": "GET",
+        "path": "/compliance/treinamentos",
+        "handler": "listTrainings",
+        "auth": true,
+        "permissions": ["compliance:read"]
+      },
+      {
+        "method": "POST",
+        "path": "/compliance/treinamentos/:id/participar",
+        "handler": "enrollTraining",
+        "auth": true,
+        "permissions": []
+      },
+      {
+        "method": "POST",
+        "path": "/compliance/treinamentos/:id/concluir",
+        "handler": "completeTraining",
+        "auth": true,
+        "permissions": []
+      },
+      {
+        "method": "POST",
+        "path": "/compliance/denuncias",
+        "handler": "registerDenuncia",
+        "auth": false,
+        "permissions": []
+      },
+      {
+        "method": "GET",
+        "path": "/compliance/denuncias",
+        "handler": "listDenuncias",
+        "auth": true,
+        "permissions": ["compliance:investigate"]
+      },
+      {
+        "method": "GET",
+        "path": "/compliance/denuncias/:protocolo",
+        "handler": "getDenuncia",
+        "auth": false,
+        "permissions": []
+      },
+      {
+        "method": "PUT",
+        "path": "/compliance/denuncias/:id",
+        "handler": "updateDenuncia",
+        "auth": true,
+        "permissions": ["compliance:investigate"]
+      },
+      {
+        "method": "POST",
+        "path": "/compliance/due-diligence",
+        "handler": "executeDueDiligence",
+        "auth": true,
+        "permissions": ["compliance:create"]
+      },
+      {
+        "method": "GET",
+        "path": "/compliance/due-diligence",
+        "handler": "listDueDiligence",
+        "auth": true,
+        "permissions": ["compliance:read"]
+      },
+      {
+        "method": "GET",
+        "path": "/compliance/due-diligence/:id",
+        "handler": "getDueDiligence",
+        "auth": true,
+        "permissions": ["compliance:read"]
+      },
+      {
+        "method": "POST",
+        "path": "/compliance/sancoes/verificar",
+        "handler": "checkSanctionLists",
+        "auth": true,
+        "permissions": ["compliance:read"]
+      },
+      {
+        "method": "GET",
+        "path": "/compliance/sancoes",
+        "handler": "listSanctions",
+        "auth": true,
+        "permissions": ["compliance:read"]
+      },
+      {
+        "method": "POST",
+        "path": "/compliance/relatorios",
+        "handler": "createReport",
+        "auth": true,
+        "permissions": ["compliance:create"]
+      },
+      {
+        "method": "GET",
+        "path": "/compliance/relatorios",
+        "handler": "listReports",
+        "auth": true,
+        "permissions": ["compliance:read"]
+      },
+      {
+        "method": "POST",
+        "path": "/compliance/relatorios/:id/enviar",
+        "handler": "submitReport",
+        "auth": true,
+        "permissions": ["compliance:admin"]
+      },
+      {
+        "method": "GET",
+        "path": "/compliance/dashboard",
+        "handler": "getDashboard",
+        "auth": true,
+        "permissions": ["compliance:read"]
+      },
+      {
+        "method": "GET",
+        "path": "/compliance/stats",
+        "handler": "getStats",
+        "auth": true,
+        "permissions": ["compliance:read"]
+      },
+      {
+        "method": "POST",
+        "path": "/compliance/upload",
+        "handler": "uploadDocument",
+        "auth": true,
+        "permissions": ["compliance:update"]
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      "compliance_politicas",
+      "compliance_riscos",
+      "compliance_auditorias",
+      "compliance_treinamentos",
+      "compliance_treinamento_participacoes",
+      "compliance_denuncias",
+      "compliance_due_diligence",
+      "compliance_sancoes",
+      "compliance_relatorios"
+    ]
+  },
+  "requirements": {
+    "node": ">=16.0.0",
+    "packages": [
+      "multer",
+      "crypto",
+      "node-cron",
+      "axios",
+      "xml2js",
+      "pdf-parse",
+      "moment",
+      "validator",
+      "bcrypt",
+      "jsonwebtoken"
+    ]
+  },
+  "monitoring": {
+    "policyExpirationCheck": 86400000,
+    "riskAssessmentCheck": 43200000,
+    "sanctionListUpdate": 604800000,
+    "trainingReminderCheck": 86400000,
+    "reportDeadlineCheck": 3600000
+  },
+  "security": {
+    "dataEncryption": true,
+    "accessLogging": true,
+    "anonymousReporting": true,
+    "confidentialityLevel": "high",
+    "auditTrail": true,
+    "dataRetention": {
+      "policies": 2555,
+      "risks": 2555,
+      "audits": 3650,
+      "trainings": 1825,
+      "denuncias": 2555,
+      "dueDiligence": 2555
+    }
+  },
+  "compliance": {
+    "frameworks": [
+      "ISO 37001",
+      "COSO",
+      "LGPD",
+      "Lei Anticorrupção",
+      "Lei de Lavagem de Dinheiro",
+      "SOX",
+      "GDPR"
+    ],
+    "certifications": [
+      "ISO 37001:2016",
+      "ISO 19600:2014",
+      "ISO 31000:2018"
+    ],
+    "regulatoryBodies": [
+      "CGU",
+      "COAF",
+      "BACEN",
+      "CVM",
+      "ANPD",
+      "MPF",
+      "TCU"
+    ]
+  }
+}

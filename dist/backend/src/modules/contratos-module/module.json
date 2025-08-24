@@ -1,0 +1,329 @@
+{
+  "name": "contratos-module",
+  "version": "1.0.0",
+  "description": "Módulo de gestão completa do ciclo de vida contratual",
+  "author": "Fusione Core System",
+  "main": "index.js",
+  "enabled": true,
+  "autoStart": true,
+  "priority": 2,
+  "dependencies": [
+    "auth-module",
+    "pessoas-module",
+    "notification-module"
+  ],
+  "permissions": [
+    "events:listen",
+    "events:emit",
+    "config:read",
+    "config:write",
+    "database:read",
+    "database:write",
+    "cache:read",
+    "cache:write",
+    "files:read",
+    "files:write",
+    "contracts:admin",
+    "contracts:create",
+    "contracts:read",
+    "contracts:update",
+    "contracts:delete",
+    "contracts:sign",
+    "contracts:approve"
+  ],
+  "settings": {
+    "contract": {
+      "numberPrefix": "CT",
+      "defaultCurrency": "BRL",
+      "signatureExpiryDays": 7,
+      "approvalLevels": 3,
+      "autoRenewal": false,
+      "documentStorage": "./storage/contracts",
+      "maxFileSize": 52428800,
+      "allowedFileTypes": ["pdf", "doc", "docx", "txt"]
+    },
+    "signature": {
+      "methods": ["eletronica", "digital", "docusign", "adobe_sign"],
+      "defaultMethod": "eletronica",
+      "certificateValidation": true,
+      "timestampRequired": true,
+      "geoLocationTracking": true
+    },
+    "workflow": {
+      "maxApprovalLevels": 5,
+      "parallelApproval": false,
+      "delegationAllowed": true,
+      "approvalTimeout": 604800000,
+      "escalationEnabled": true
+    },
+    "alerts": {
+      "defaultDaysBeforeExpiry": 30,
+      "reminderIntervals": [30, 15, 7, 1],
+      "emailNotifications": true,
+      "systemNotifications": true,
+      "smsNotifications": false
+    },
+    "integration": {
+      "docusign": {
+        "enabled": false,
+        "apiUrl": "https://demo.docusign.net/restapi",
+        "integrationKey": "",
+        "secretKey": "",
+        "redirectUri": ""
+      },
+      "adobeSign": {
+        "enabled": false,
+        "apiUrl": "https://api.na1.adobesign.com/api/rest/v6",
+        "clientId": "",
+        "clientSecret": "",
+        "redirectUri": ""
+      },
+      "receitaFederal": {
+        "enabled": true,
+        "apiUrl": "https://www.receitafederal.fazenda.gov.br/pessoajuridica/cnpj/cnpjreva/cnpjreva_solicitacao.asp"
+      }
+    },
+    "compliance": {
+      "lgpdCompliance": true,
+      "dataRetentionDays": 2555,
+      "auditTrail": true,
+      "encryptSensitiveData": true,
+      "accessLogging": true
+    }
+  },
+  "events": {
+    "listen": [
+      "user:login",
+      "user:logout",
+      "pessoa:created",
+      "pessoa:updated",
+      "notification:sent",
+      "file:uploaded",
+      "approval:granted",
+      "approval:denied"
+    ],
+    "emit": [
+      "contrato:created",
+      "contrato:updated",
+      "contrato:signed",
+      "contrato:expired",
+      "contrato:renewed",
+      "contrato:cancelled",
+      "signature:requested",
+      "signature:completed",
+      "signature:expired",
+      "approval:requested",
+      "approval:completed",
+      "alert:contract_expiring",
+      "workflow:started",
+      "workflow:completed"
+    ]
+  },
+  "api": {
+    "routes": [
+      {
+        "method": "POST",
+        "path": "/contratos",
+        "handler": "createContrato",
+        "auth": true,
+        "permissions": ["contracts:create"]
+      },
+      {
+        "method": "GET",
+        "path": "/contratos",
+        "handler": "listContratos",
+        "auth": true,
+        "permissions": ["contracts:read"]
+      },
+      {
+        "method": "GET",
+        "path": "/contratos/:id",
+        "handler": "getContratoById",
+        "auth": true,
+        "permissions": ["contracts:read"]
+      },
+      {
+        "method": "PUT",
+        "path": "/contratos/:id",
+        "handler": "updateContrato",
+        "auth": true,
+        "permissions": ["contracts:update"]
+      },
+      {
+        "method": "DELETE",
+        "path": "/contratos/:id",
+        "handler": "deleteContrato",
+        "auth": true,
+        "permissions": ["contracts:delete"]
+      },
+      {
+        "method": "POST",
+        "path": "/contratos/:id/clausulas",
+        "handler": "addClausulas",
+        "auth": true,
+        "permissions": ["contracts:update"]
+      },
+      {
+        "method": "GET",
+        "path": "/contratos/:id/clausulas",
+        "handler": "getClausulas",
+        "auth": true,
+        "permissions": ["contracts:read"]
+      },
+      {
+        "method": "POST",
+        "path": "/contratos/:id/assinaturas",
+        "handler": "initiateSignature",
+        "auth": true,
+        "permissions": ["contracts:sign"]
+      },
+      {
+        "method": "POST",
+        "path": "/contratos/assinar/:token",
+        "handler": "processSignature",
+        "auth": false,
+        "permissions": []
+      },
+      {
+        "method": "GET",
+        "path": "/contratos/:id/assinaturas",
+        "handler": "getAssinaturas",
+        "auth": true,
+        "permissions": ["contracts:read"]
+      },
+      {
+        "method": "POST",
+        "path": "/contratos/:id/aprovacoes",
+        "handler": "setupApprovalWorkflow",
+        "auth": true,
+        "permissions": ["contracts:approve"]
+      },
+      {
+        "method": "POST",
+        "path": "/contratos/:id/aprovar",
+        "handler": "approveContract",
+        "auth": true,
+        "permissions": ["contracts:approve"]
+      },
+      {
+        "method": "POST",
+        "path": "/contratos/:id/rejeitar",
+        "handler": "rejectContract",
+        "auth": true,
+        "permissions": ["contracts:approve"]
+      },
+      {
+        "method": "GET",
+        "path": "/contratos/:id/versoes",
+        "handler": "getVersions",
+        "auth": true,
+        "permissions": ["contracts:read"]
+      },
+      {
+        "method": "POST",
+        "path": "/contratos/:id/versoes",
+        "handler": "createVersion",
+        "auth": true,
+        "permissions": ["contracts:update"]
+      },
+      {
+        "method": "GET",
+        "path": "/contratos/:id/alertas",
+        "handler": "getAlertas",
+        "auth": true,
+        "permissions": ["contracts:read"]
+      },
+      {
+        "method": "POST",
+        "path": "/contratos/:id/alertas",
+        "handler": "setupAlertas",
+        "auth": true,
+        "permissions": ["contracts:update"]
+      },
+      {
+        "method": "GET",
+        "path": "/contratos/templates",
+        "handler": "getTemplates",
+        "auth": true,
+        "permissions": ["contracts:read"]
+      },
+      {
+        "method": "POST",
+        "path": "/contratos/templates",
+        "handler": "createTemplate",
+        "auth": true,
+        "permissions": ["contracts:admin"]
+      },
+      {
+        "method": "GET",
+        "path": "/contratos/relatorios/:tipo",
+        "handler": "generateReport",
+        "auth": true,
+        "permissions": ["contracts:read"]
+      },
+      {
+        "method": "GET",
+        "path": "/contratos/stats",
+        "handler": "getStats",
+        "auth": true,
+        "permissions": ["contracts:read"]
+      },
+      {
+        "method": "POST",
+        "path": "/contratos/:id/upload",
+        "handler": "uploadDocument",
+        "auth": true,
+        "permissions": ["contracts:update"]
+      },
+      {
+        "method": "GET",
+        "path": "/contratos/:id/download",
+        "handler": "downloadDocument",
+        "auth": true,
+        "permissions": ["contracts:read"]
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      "contratos",
+      "contrato_clausulas",
+      "contrato_assinaturas",
+      "contrato_aprovacoes",
+      "contrato_versoes",
+      "contrato_alertas",
+      "contrato_templates"
+    ]
+  },
+  "requirements": {
+    "node": ">=16.0.0",
+    "packages": [
+      "multer",
+      "pdf-lib",
+      "docusign-esign",
+      "node-cron",
+      "moment",
+      "validator",
+      "mime-types"
+    ]
+  },
+  "monitoring": {
+    "contractExpiryCheckInterval": 86400000,
+    "signatureCheckInterval": 3600000,
+    "approvalTimeoutCheckInterval": 3600000,
+    "alertProcessingInterval": 300000
+  },
+  "security": {
+    "documentEncryption": true,
+    "signatureValidation": true,
+    "accessAuditLog": true,
+    "ipWhitelist": [],
+    "maxDocumentSize": 52428800,
+    "allowedMimeTypes": [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "text/plain"
+    ]
+  }
+}

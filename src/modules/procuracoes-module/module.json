@@ -1,0 +1,504 @@
+{
+  "name": "procuracoes-module",
+  "version": "1.0.0",
+  "description": "Módulo de Controle de Poderes e Representações Legais",
+  "author": "Fusione Core System",
+  "license": "MIT",
+  "main": "index.js",
+  "type": "core-module",
+  "category": "legal",
+  "priority": 8,
+  "dependencies": {
+    "required": [
+      "auth-module",
+      "pessoas-module",
+      "notification-module"
+    ],
+    "optional": [
+      "compliance-module",
+      "contencioso-module",
+      "contratos-module"
+    ]
+  },
+  "permissions": {
+    "admin": [
+      "procuracoes:create",
+      "procuracoes:read",
+      "procuracoes:update",
+      "procuracoes:delete",
+      "procuracoes:revoke",
+      "procuracoes:substabelecer",
+      "procuracoes:manage_all",
+      "procuracoes:reports",
+      "procuracoes:config"
+    ],
+    "advogado": [
+      "procuracoes:create",
+      "procuracoes:read",
+      "procuracoes:update",
+      "procuracoes:revoke_own",
+      "procuracoes:substabelecer_own",
+      "procuracoes:manage_clients",
+      "procuracoes:reports_own"
+    ],
+    "assistente": [
+      "procuracoes:read",
+      "procuracoes:create_limited",
+      "procuracoes:register_uso"
+    ],
+    "cliente": [
+      "procuracoes:read_own",
+      "procuracoes:create_own",
+      "procuracoes:revoke_own"
+    ],
+    "outorgado": [
+      "procuracoes:read_received",
+      "procuracoes:register_uso",
+      "procuracoes:substabelecer_received"
+    ]
+  },
+  "settings": {
+    "numeracao": {
+      "formato": "PROC-AAAA-NNNNNN",
+      "sequencial": true,
+      "reiniciar_anualmente": true,
+      "prefixo_customizavel": true,
+      "digito_verificador": false
+    },
+    "tipos_procuracao": {
+      "publica": {
+        "nome": "Procuração Pública",
+        "descricao": "Lavrada em cartório de notas",
+        "requer_reconhecimento": false,
+        "validade_padrao": null,
+        "irrevogavel_permitida": true
+      },
+      "particular": {
+        "nome": "Procuração Particular",
+        "descricao": "Documento particular com firma reconhecida",
+        "requer_reconhecimento": true,
+        "validade_padrao": 365,
+        "irrevogavel_permitida": false
+      },
+      "ad_judicia": {
+        "nome": "Procuração Ad Judicia",
+        "descricao": "Para representação em juízo",
+        "requer_reconhecimento": true,
+        "validade_padrao": null,
+        "irrevogavel_permitida": false
+      }
+    },
+    "categorias_poder": {
+      "geral": {
+        "nome": "Poderes Gerais",
+        "descricao": "Representação ampla em atos civis e comerciais",
+        "requer_valor_limite": false,
+        "requer_territorio": false
+      },
+      "especifico": {
+        "nome": "Poderes Específicos",
+        "descricao": "Poderes limitados a atos específicos",
+        "requer_valor_limite": true,
+        "requer_territorio": true
+      },
+      "judicial": {
+        "nome": "Poderes Judiciais",
+        "descricao": "Representação em processos judiciais",
+        "requer_valor_limite": false,
+        "requer_territorio": true
+      },
+      "administrativo": {
+        "nome": "Poderes Administrativos",
+        "descricao": "Representação perante órgãos públicos",
+        "requer_valor_limite": false,
+        "requer_territorio": true
+      },
+      "comercial": {
+        "nome": "Poderes Comerciais",
+        "descricao": "Operações comerciais e bancárias",
+        "requer_valor_limite": true,
+        "requer_territorio": false
+      }
+    },
+    "validade": {
+      "alertas_vencimento": [1, 7, 15, 30, 60],
+      "verificacao_automatica": true,
+      "intervalo_verificacao": "0 9 * * *",
+      "renovacao_automatica": false,
+      "prazo_maximo_anos": 5
+    },
+    "substabelecimento": {
+      "permitido_por_padrao": true,
+      "tipos_permitidos": ["com_reserva", "sem_reserva"],
+      "limite_substabelecimentos": 3,
+      "requer_aprovacao": false,
+      "herdar_limitacoes": true
+    },
+    "revogacao": {
+      "tipos_permitidos": ["total", "parcial"],
+      "requer_justificativa": true,
+      "publicacao_automatica": false,
+      "notificacao_terceiros": true
+    },
+    "assinatura_digital": {
+      "obrigatoria": false,
+      "certificado_icp_brasil": true,
+      "timestamping": true,
+      "validacao_automatica": true,
+      "algoritmos_aceitos": ["RSA-2048", "RSA-4096", "ECDSA-256"]
+    },
+    "documentos": {
+      "armazenamento": {
+        "local": "./storage/procuracoes",
+        "estrutura": "ano/mes/outorgante_id",
+        "backup_automatico": true,
+        "criptografia": true
+      },
+      "tipos_permitidos": [
+        ".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png", ".tiff",
+        ".txt", ".rtf", ".odt"
+      ],
+      "tamanho_maximo": 52428800,
+      "versionamento": true,
+      "watermark": true,
+      "ocr_automatico": false
+    },
+    "notificacoes": {
+      "criacao": true,
+      "vencimento": true,
+      "revogacao": true,
+      "substabelecimento": true,
+      "uso": false,
+      "alteracao": true,
+      "canais": ["email", "sms", "push", "sistema"]
+    },
+    "auditoria": {
+      "log_todas_acoes": true,
+      "retencao_logs": "7_anos",
+      "backup_logs": true,
+      "alertas_uso_suspeito": true
+    },
+    "integracao": {
+      "cartorio_digital": {
+        "ativo": false,
+        "provedor": "e-notariado",
+        "validacao_automatica": false
+      },
+      "receita_federal": {
+        "validacao_cpf_cnpj": true,
+        "consulta_situacao": true
+      },
+      "tribunais": {
+        "cadastro_automatico": false,
+        "sincronizacao": false
+      }
+    }
+  },
+  "events": {
+    "emitted": [
+      "procuracao:criada",
+      "procuracao:atualizada",
+      "procuracao:revogada",
+      "procuracao:vencendo",
+      "procuracao:vencida",
+      "procuracao:usada",
+      "procuracao:substabelecida",
+      "poder:adicionado",
+      "poder:removido",
+      "alerta:vencimento",
+      "relatorio:gerado"
+    ],
+    "listened": [
+      "pessoa:criada",
+      "pessoa:atualizada",
+      "pessoa:inativada",
+      "documento:assinado",
+      "documento:uploaded",
+      "notification:send",
+      "user:login",
+      "sistema:backup",
+      "compliance:auditoria"
+    ]
+  },
+  "api": {
+    "routes": {
+      "procuracoes": {
+        "GET /api/procuracoes": "listarProcuracoes",
+        "GET /api/procuracoes/:id": "obterProcuracao",
+        "POST /api/procuracoes": "criarProcuracao",
+        "PUT /api/procuracoes/:id": "atualizarProcuracao",
+        "DELETE /api/procuracoes/:id": "excluirProcuracao"
+      },
+      "poderes": {
+        "GET /api/procuracoes/:id/poderes": "listarPoderes",
+        "POST /api/procuracoes/:id/poderes": "adicionarPoder",
+        "PUT /api/procuracoes/poderes/:id": "atualizarPoder",
+        "DELETE /api/procuracoes/poderes/:id": "removerPoder",
+        "GET /api/procuracoes/poderes/templates": "listarTemplatesPoderes"
+      },
+      "revogacao": {
+        "POST /api/procuracoes/:id/revogar": "revogarProcuracao",
+        "GET /api/procuracoes/:id/revogacoes": "listarRevogacoes",
+        "POST /api/procuracoes/:id/reativar": "reativarProcuracao"
+      },
+      "substabelecimento": {
+        "POST /api/procuracoes/:id/substabelecer": "substabelecer",
+        "GET /api/procuracoes/:id/substabelecimentos": "listarSubstabelecimentos",
+        "PUT /api/procuracoes/substabelecimentos/:id": "atualizarSubstabelecimento",
+        "DELETE /api/procuracoes/substabelecimentos/:id": "cancelarSubstabelecimento"
+      },
+      "uso": {
+        "POST /api/procuracoes/:id/registrar-uso": "registrarUso",
+        "GET /api/procuracoes/:id/usos": "listarUsos",
+        "PUT /api/procuracoes/usos/:id": "atualizarUso",
+        "DELETE /api/procuracoes/usos/:id": "excluirUso"
+      },
+      "documentos": {
+        "POST /api/procuracoes/:id/documentos": "adicionarDocumento",
+        "GET /api/procuracoes/:id/documentos": "listarDocumentos",
+        "GET /api/procuracoes/documentos/:id/download": "baixarDocumento",
+        "DELETE /api/procuracoes/documentos/:id": "excluirDocumento"
+      },
+      "validacao": {
+        "POST /api/procuracoes/:id/validar": "validarProcuracao",
+        "GET /api/procuracoes/:id/status-validacao": "obterStatusValidacao",
+        "POST /api/procuracoes/validar-assinatura": "validarAssinatura"
+      },
+      "relatorios": {
+        "GET /api/procuracoes/relatorios": "listarRelatorios",
+        "POST /api/procuracoes/relatorios/gerar": "gerarRelatorio",
+        "GET /api/procuracoes/relatorios/:id": "obterRelatorio",
+        "GET /api/procuracoes/relatorios/:id/download": "baixarRelatorio"
+      },
+      "dashboard": {
+        "GET /api/procuracoes/dashboard": "obterDashboard",
+        "GET /api/procuracoes/estatisticas": "obterEstatisticas",
+        "GET /api/procuracoes/alertas": "obterAlertas"
+      },
+      "busca": {
+        "GET /api/procuracoes/buscar": "buscarProcuracoes",
+        "POST /api/procuracoes/busca-avancada": "buscaAvancada"
+      }
+    }
+  },
+  "database": {
+    "tables": [
+      "procuracoes",
+      "procuracao_poderes",
+      "procuracao_usos",
+      "procuracao_substabelecimentos",
+      "procuracao_revogacoes",
+      "poderes_templates",
+      "procuracao_alertas",
+      "procuracao_historico"
+    ],
+    "indexes": [
+      "idx_procuracoes_numero",
+      "idx_procuracoes_status",
+      "idx_procuracoes_outorgante",
+      "idx_procuracoes_outorgado",
+      "idx_procuracoes_vencimento",
+      "idx_procuracoes_categoria",
+      "idx_poderes_procuracao",
+      "idx_usos_procuracao",
+      "idx_usos_data",
+      "idx_alertas_data",
+      "idx_historico_procuracao"
+    ],
+    "views": [
+      "view_procuracoes_ativas",
+      "view_procuracoes_vencendo",
+      "view_outorgados_ativos",
+      "view_uso_mensal"
+    ]
+  },
+  "requirements": {
+    "node_version": ">=16.0.0",
+    "dependencies": {
+      "express": "^4.18.0",
+      "multer": "^1.4.5",
+      "moment": "^2.29.4",
+      "node-cron": "^3.0.2",
+      "pdf-lib": "^1.17.1",
+      "xlsx": "^0.18.5",
+      "crypto": "^1.0.1",
+      "fs-extra": "^11.1.1",
+      "qrcode": "^1.5.3",
+      "uuid": "^9.0.0"
+    },
+    "optional_dependencies": {
+      "node-forge": "^1.3.1",
+      "jsrsasign": "^10.8.6",
+      "pdf2pic": "^2.1.4",
+      "tesseract.js": "^4.0.0",
+      "sharp": "^0.32.0"
+    }
+  },
+  "scripts": {
+    "test": "jest tests/procuracoes",
+    "lint": "eslint src/modules/procuracoes-module",
+    "docs": "jsdoc src/modules/procuracoes-module -d docs/procuracoes",
+    "validate-certificates": "node scripts/validate-certificates.js",
+    "backup-procuracoes": "node scripts/backup-procuracoes.js"
+  },
+  "monitoring": {
+    "metrics": [
+      "procuracoes_criadas",
+      "procuracoes_revogadas",
+      "procuracoes_vencidas",
+      "usos_registrados",
+      "substabelecimentos_criados",
+      "alertas_enviados",
+      "validacoes_assinatura",
+      "tempo_resposta_api"
+    ],
+    "alerts": [
+      "procuracao_vencendo",
+      "procuracao_vencida",
+      "uso_suspeito",
+      "erro_validacao_assinatura",
+      "limite_substabelecimentos",
+      "documento_corrompido"
+    ],
+    "dashboards": [
+      "procuracoes_overview",
+      "vencimentos_timeline",
+      "uso_por_categoria",
+      "outorgados_ranking"
+    ]
+  },
+  "security": {
+    "encryption": {
+      "documentos_sensiveis": true,
+      "dados_pessoais": true,
+      "assinaturas_digitais": true,
+      "algorithm": "AES-256-GCM",
+      "key_rotation": "quarterly"
+    },
+    "audit": {
+      "log_all_actions": true,
+      "retention_period": "10_years",
+      "compliance": ["LGPD", "Marco_Civil", "Codigo_Civil"],
+      "tamper_detection": true
+    },
+    "access_control": {
+      "role_based": true,
+      "document_based": true,
+      "time_based": true,
+      "ip_restriction": false,
+      "two_factor_required": false
+    },
+    "digital_signature": {
+      "certificate_validation": true,
+      "revocation_check": true,
+      "timestamp_validation": true,
+      "chain_validation": true
+    }
+  },
+  "integrations": {
+    "cartorio_digital": {
+      "e_notariado": {
+        "version": "1.0",
+        "authentication": "certificate",
+        "endpoints": {
+          "validar_procuracao": "/api/v1/validar",
+          "registrar_procuracao": "/api/v1/registrar"
+        }
+      }
+    },
+    "assinatura_digital": {
+      "iti": {
+        "validation_service": true,
+        "certificate_chain": true
+      },
+      "serpro": {
+        "cpf_validation": true,
+        "cnpj_validation": true
+      }
+    },
+    "external_apis": {
+      "receita_federal": {
+        "cpf_validation": true,
+        "cnpj_validation": true,
+        "situacao_cadastral": true
+      },
+      "detran": {
+        "validacao_cnh": false
+      },
+      "tse": {
+        "validacao_titulo": false
+      }
+    }
+  },
+  "templates": {
+    "procuracao_geral": {
+      "nome": "Procuração Geral",
+      "arquivo": "templates/procuracao_geral.docx",
+      "variaveis": [
+        "outorgante_nome", "outorgante_cpf", "outorgante_endereco",
+        "outorgado_nome", "outorgado_cpf", "outorgado_oab",
+        "data_outorga", "data_vencimento", "poderes"
+      ]
+    },
+    "procuracao_judicial": {
+      "nome": "Procuração Ad Judicia",
+      "arquivo": "templates/procuracao_judicial.docx",
+      "variaveis": [
+        "outorgante_nome", "outorgante_cpf", "outorgante_endereco",
+        "outorgado_nome", "outorgado_cpf", "outorgado_oab",
+        "tribunal", "processo_numero", "poderes_judiciais"
+      ]
+    },
+    "substabelecimento": {
+      "nome": "Substabelecimento",
+      "arquivo": "templates/substabelecimento.docx",
+      "variaveis": [
+        "procuracao_original", "substabelecente", "substabelecido",
+        "tipo_substabelecimento", "poderes_substabelecidos", "limitacoes"
+      ]
+    }
+  },
+  "compliance": {
+    "frameworks": [
+      "LGPD",
+      "Marco Civil da Internet",
+      "Código Civil Brasileiro",
+      "Estatuto da Advocacia",
+      "Provimento CNJ 100/2020"
+    ],
+    "certifications": [
+      "ICP-Brasil",
+      "ITI",
+      "e-Notariado"
+    ],
+    "standards": [
+      "ISO 27001",
+      "ISO 14533",
+      "ETSI EN 319 102-1"
+    ]
+  },
+  "backup": {
+    "automatic": true,
+    "frequency": "daily",
+    "retention": "7_years",
+    "encryption": true,
+    "offsite": true,
+    "verification": true
+  },
+  "performance": {
+    "cache": {
+      "procuracoes_ativas": "1_hour",
+      "templates_poderes": "24_hours",
+      "estatisticas": "30_minutes"
+    },
+    "indexing": {
+      "full_text_search": true,
+      "faceted_search": true
+    },
+    "optimization": {
+      "lazy_loading": true,
+      "pagination": true,
+      "compression": true
+    }
+  }
+}

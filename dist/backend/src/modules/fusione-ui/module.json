@@ -1,0 +1,302 @@
+{
+  "name": "fusione-ui",
+  "version": "1.0.0",
+  "description": "Interface unificada ReactJS com Tailwind CSS para o Fusione Core System",
+  "author": "Fusione Development Team",
+  "license": "MIT",
+  "type": "ui-module",
+  "main": "index.js",
+  "dependencies": [
+    "auth-module",
+    "pessoas-module",
+    "contratos-module",
+    "compliance-module"
+  ],
+  "permissions": {
+    "ui": {
+      "read": true,
+      "write": true,
+      "admin": true
+    },
+    "api": {
+      "serve_static": true,
+      "proxy_requests": true
+    },
+    "files": {
+      "read_static": true,
+      "write_uploads": true
+    }
+  },
+  "settings": {
+    "theme": {
+      "default": "light",
+      "allowDarkMode": true,
+      "primaryColor": "#3b82f6",
+      "fontFamily": "Inter"
+    },
+    "layout": {
+      "sidebarCollapsible": true,
+      "headerFixed": true,
+      "footerEnabled": true,
+      "breadcrumbsEnabled": true
+    },
+    "features": {
+      "dashboard": true,
+      "dataTable": true,
+      "forms": true,
+      "charts": true,
+      "modals": true,
+      "tabs": true,
+      "accordion": true,
+      "calendar": true,
+      "fileUpload": true,
+      "richTextEditor": true,
+      "notifications": true,
+      "search": true,
+      "filters": true,
+      "export": true,
+      "print": true
+    },
+    "development": {
+      "hotReload": true,
+      "sourceMap": true,
+      "devServer": {
+        "port": 3000,
+        "host": "localhost",
+        "open": true
+      }
+    },
+    "build": {
+      "minify": true,
+      "optimization": true,
+      "bundleAnalyzer": false,
+      "outputPath": "./dist",
+      "publicPath": "/ui"
+    },
+    "api": {
+      "baseUrl": "/api",
+      "timeout": 30000,
+      "retries": 3
+    },
+    "security": {
+      "csrfProtection": true,
+      "contentSecurityPolicy": true,
+      "xssProtection": true
+    }
+  },
+  "events": {
+    "emits": [
+      "ui:theme_changed",
+      "ui:layout_changed",
+      "ui:user_action",
+      "ui:navigation",
+      "ui:error",
+      "ui:notification"
+    ],
+    "listens": [
+      "auth:login",
+      "auth:logout",
+      "auth:session_expired",
+      "pessoa:created",
+      "pessoa:updated",
+      "contrato:created",
+      "contrato:signed",
+      "compliance:alert",
+      "system:notification"
+    ]
+  },
+  "routes": {
+    "static": {
+      "/ui": {
+        "path": "./dist",
+        "description": "Serve static UI files"
+      },
+      "/assets": {
+        "path": "./src/assets",
+        "description": "Serve UI assets"
+      }
+    },
+    "api": {
+      "/api/ui/config": {
+        "method": "GET",
+        "handler": "getUIConfig",
+        "description": "Get UI configuration"
+      },
+      "/api/ui/config": {
+        "method": "PUT",
+        "handler": "updateUIConfig",
+        "description": "Update UI configuration",
+        "permissions": ["ui:admin"]
+      },
+      "/api/ui/theme": {
+        "method": "POST",
+        "handler": "changeTheme",
+        "description": "Change user theme preference"
+      },
+      "/api/ui/layout": {
+        "method": "POST",
+        "handler": "updateLayout",
+        "description": "Update layout preferences"
+      },
+      "/api/ui/upload": {
+        "method": "POST",
+        "handler": "handleFileUpload",
+        "description": "Handle file uploads",
+        "middleware": ["auth", "upload"]
+      }
+    }
+  },
+  "components": {
+    "layouts": [
+      "Layout",
+      "Sidebar",
+      "Header",
+      "Footer"
+    ],
+    "common": [
+      "DataTable",
+      "ProtectedRoute",
+      "Modal",
+      "Button",
+      "Form",
+      "Input",
+      "Select",
+      "DatePicker",
+      "FileUpload",
+      "Chart",
+      "Card",
+      "Tabs",
+      "Accordion",
+      "Notification",
+      "Loading",
+      "Pagination"
+    ],
+    "pages": [
+      "Dashboard",
+      "Login",
+      "Pessoas",
+      "Contratos",
+      "Compliance",
+      "Profile",
+      "Settings"
+    ],
+    "contexts": [
+      "AuthContext",
+      "ThemeContext",
+      "NotificationContext"
+    ],
+    "hooks": [
+      "useAuth",
+      "useTheme",
+      "useApi",
+      "useNotification",
+      "useLocalStorage",
+      "useDebounce"
+    ],
+    "utils": [
+      "api",
+      "format",
+      "validation",
+      "constants",
+      "helpers"
+    ]
+  },
+  "assets": {
+    "styles": [
+      "globals.css",
+      "components.css",
+      "utilities.css"
+    ],
+    "images": [
+      "logo.svg",
+      "favicon.ico",
+      "placeholder.png"
+    ],
+    "fonts": [
+      "Inter"
+    ]
+  },
+  "build_requirements": {
+    "node_version": ">=16.0.0",
+    "npm_version": ">=8.0.0",
+    "dependencies": {
+      "react": "^18.2.0",
+      "react-dom": "^18.2.0",
+      "react-router-dom": "^6.8.0",
+      "@heroicons/react": "^2.0.16",
+      "tailwindcss": "^3.2.7",
+      "webpack": "^5.75.0",
+      "babel-loader": "^9.1.2"
+    },
+    "dev_dependencies": {
+      "@babel/core": "^7.21.0",
+      "@babel/preset-react": "^7.18.6",
+      "webpack-dev-server": "^4.8.0",
+      "css-loader": "^6.7.3",
+      "postcss-loader": "^7.0.2"
+    }
+  },
+  "scripts": {
+    "dev": "webpack serve --mode development",
+    "build": "webpack --mode production",
+    "test": "jest",
+    "lint": "eslint src/",
+    "format": "prettier --write src/",
+    "analyze": "webpack-bundle-analyzer dist/static/js/*.js"
+  },
+  "monitoring": {
+    "performance": {
+      "bundleSize": {
+        "maxSize": "2MB",
+        "warning": "1.5MB"
+      },
+      "loadTime": {
+        "target": "<3s",
+        "warning": "5s"
+      }
+    },
+    "errors": {
+      "tracking": true,
+      "reporting": true
+    },
+    "analytics": {
+      "userInteractions": true,
+      "pageViews": true,
+      "performance": true
+    }
+  },
+  "security": {
+    "csp": {
+      "defaultSrc": "'self'",
+      "scriptSrc": "'self' 'unsafe-inline'",
+      "styleSrc": "'self' 'unsafe-inline' fonts.googleapis.com",
+      "fontSrc": "'self' fonts.gstatic.com",
+      "imgSrc": "'self' data: https:"
+    },
+    "headers": {
+      "X-Frame-Options": "DENY",
+      "X-Content-Type-Options": "nosniff",
+      "Referrer-Policy": "strict-origin-when-cross-origin"
+    }
+  },
+  "accessibility": {
+    "wcag": "AA",
+    "features": {
+      "keyboardNavigation": true,
+      "screenReader": true,
+      "highContrast": true,
+      "focusIndicators": true
+    }
+  },
+  "internationalization": {
+    "defaultLanguage": "pt-BR",
+    "supportedLanguages": [
+      "pt-BR",
+      "en-US",
+      "es-ES"
+    ],
+    "dateFormat": "DD/MM/YYYY",
+    "currency": "BRL",
+    "timezone": "America/Sao_Paulo"
+  }
+}

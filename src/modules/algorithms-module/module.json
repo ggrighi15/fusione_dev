@@ -1,0 +1,129 @@
+{
+  "name": "algorithms-module",
+  "version": "1.0.0",
+  "description": "Módulo para algoritmos e estruturas de dados avançadas",
+  "author": "Fusione Core System",
+  "main": "index.js",
+  "enabled": true,
+  "autoStart": true,
+  "priority": 5,
+  "dependencies": [],
+  "permissions": [
+    "events:listen",
+    "events:emit",
+    "config:read",
+    "cache:read",
+    "cache:write",
+    "api:register"
+  ],
+  "settings": {
+    "enableSorting": true,
+    "enableSearch": true,
+    "enableDataStructures": true,
+    "cacheResults": true,
+    "maxCacheSize": 1000
+  },
+  "events": {
+    "listen": [
+      "data:sort",
+      "data:search",
+      "graph:analyze",
+      "algorithm:optimize",
+      "system:startup"
+    ],
+    "emit": [
+      "data:sort:success",
+      "data:sort:error",
+      "data:search:success",
+      "data:search:error",
+      "graph:analyze:success",
+      "graph:analyze:error",
+      "algorithm:result"
+    ]
+  },
+  "api": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/algorithms/sort",
+        "description": "Ordenar dados usando algoritmos otimizados"
+      },
+      {
+        "method": "POST",
+        "path": "/algorithms/search",
+        "description": "Buscar dados usando algoritmos eficientes"
+      },
+      {
+        "method": "POST",
+        "path": "/algorithms/graph",
+        "description": "Analisar grafos e redes"
+      },
+      {
+        "method": "GET",
+        "path": "/algorithms/stats",
+        "description": "Obter estatísticas do módulo"
+      }
+    ]
+  },
+  "algorithms": {
+    "sorting": {
+      "quicksort": {
+        "complexity": "O(n log n)",
+        "bestCase": "O(n log n)",
+        "worstCase": "O(n²)",
+        "stable": false,
+        "inPlace": true
+      },
+      "mergesort": {
+        "complexity": "O(n log n)",
+        "bestCase": "O(n log n)",
+        "worstCase": "O(n log n)",
+        "stable": true,
+        "inPlace": false
+      },
+      "heapsort": {
+        "complexity": "O(n log n)",
+        "bestCase": "O(n log n)",
+        "worstCase": "O(n log n)",
+        "stable": false,
+        "inPlace": true
+      },
+      "bubblesort": {
+        "complexity": "O(n²)",
+        "bestCase": "O(n)",
+        "worstCase": "O(n²)",
+        "stable": true,
+        "inPlace": true
+      }
+    },
+    "searching": {
+      "binary": {
+        "complexity": "O(log n)",
+        "requirement": "Array ordenado",
+        "type": "Divide and conquer"
+      },
+      "linear": {
+        "complexity": "O(n)",
+        "requirement": "Nenhum",
+        "type": "Sequencial"
+      }
+    },
+    "graph": {
+      "shortest-path": {
+        "algorithm": "Dijkstra",
+        "complexity": "O(V² + E)",
+        "type": "Caminho mínimo"
+      },
+      "connected-components": {
+        "algorithm": "DFS",
+        "complexity": "O(V + E)",
+        "type": "Conectividade"
+      },
+      "topological-sort": {
+        "algorithm": "Kahn",
+        "complexity": "O(V + E)",
+        "type": "Ordenação"
+      }
+    }
+  }
+}

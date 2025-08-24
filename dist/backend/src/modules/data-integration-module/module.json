@@ -1,0 +1,84 @@
+{
+  "name": "data-integration-module",
+  "version": "1.0.0",
+  "description": "Módulo para integração e gerenciamento de dados específicos do usuário",
+  "author": "Fusione Core System",
+  "main": "index.js",
+  "enabled": true,
+  "autoStart": true,
+  "priority": 4,
+  "dependencies": [],
+  "permissions": [
+    "events:listen",
+    "events:emit",
+    "config:read",
+    "config:write",
+    "cache:read",
+    "cache:write",
+    "database:read",
+    "database:write",
+    "file:read",
+    "file:write"
+  ],
+  "settings": {
+    "enableCSVImport": true,
+    "enableDataExport": true,
+    "maxFileSize": 10485760,
+    "supportedFormats": ["csv", "json", "xlsx"],
+    "autoBackup": true,
+    "backupInterval": 86400000
+  },
+  "events": {
+    "listen": [
+      "data:import:csv",
+      "data:export:request",
+      "data:backup:create",
+      "data:model:create",
+      "data:config:update",
+      "system:startup"
+    ],
+    "emit": [
+      "data:import:success",
+      "data:import:error",
+      "data:export:success",
+      "data:export:error",
+      "data:backup:created",
+      "data:model:created",
+      "data:config:updated"
+    ]
+  },
+  "api": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/data/import",
+        "description": "Importar dados CSV"
+      },
+      {
+        "method": "GET",
+        "path": "/data/export/:id?",
+        "description": "Exportar dados"
+      },
+      {
+        "method": "GET",
+        "path": "/data/list",
+        "description": "Listar dados importados"
+      },
+      {
+        "method": "GET",
+        "path": "/data/:id",
+        "description": "Obter dados específicos"
+      },
+      {
+        "method": "POST",
+        "path": "/data/backup",
+        "description": "Criar backup manual"
+      },
+      {
+        "method": "POST",
+        "path": "/data/model",
+        "description": "Criar modelo personalizado"
+      }
+    ]
+  }
+}

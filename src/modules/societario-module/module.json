@@ -1,0 +1,648 @@
+{
+  "name": "societario-module",
+  "version": "1.0.0",
+  "description": "Módulo de Gestão da Estrutura Societária do Grupo",
+  "author": "Fusione Core System",
+  "license": "MIT",
+  "main": "index.js",
+  "type": "core-module",
+  "category": "corporate",
+  "priority": 9,
+  "dependencies": {
+    "required": [
+      "auth-module",
+      "pessoas-module",
+      "notification-module"
+    ],
+    "optional": [
+      "compliance-module",
+      "contratos-module",
+      "procuracoes-module",
+      "contencioso-module"
+    ]
+  },
+  "permissions": {
+    "admin": [
+      "empresas:create",
+      "empresas:read",
+      "empresas:update",
+      "empresas:delete",
+      "socios:manage_all",
+      "alteracoes:approve",
+      "assembleias:manage_all",
+      "distribuicoes:approve",
+      "societario:reports",
+      "societario:config"
+    ],
+    "diretor": [
+      "empresas:read",
+      "empresas:update_limited",
+      "socios:read",
+      "socios:create",
+      "alteracoes:create",
+      "alteracoes:approve_limited",
+      "assembleias:convoke",
+      "assembleias:participate",
+      "distribuicoes:view",
+      "societario:reports_limited"
+    ],
+    "gerente": [
+      "empresas:read",
+      "socios:read",
+      "alteracoes:create",
+      "assembleias:participate",
+      "distribuicoes:view_own",
+      "societario:reports_basic"
+    ],
+    "socio": [
+      "empresas:read_own",
+      "socios:read_own",
+      "assembleias:participate_own",
+      "distribuicoes:view_own",
+      "societario:reports_own"
+    ],
+    "contador": [
+      "empresas:read",
+      "socios:read",
+      "alteracoes:read",
+      "assembleias:read",
+      "distribuicoes:read",
+      "societario:reports_financial"
+    ]
+  },
+  "settings": {
+    "numeracao": {
+      "empresa": {
+        "formato": "EMP-AAAA-NNNNNN",
+        "sequencial": true,
+        "reiniciar_anualmente": true,
+        "prefixo_customizavel": true
+      },
+      "alteracao": {
+        "formato": "ALT-AAAA-NNNNNN",
+        "sequencial": true,
+        "reiniciar_anualmente": true
+      },
+      "assembleia": {
+        "formato": "ASS-AAAA-NNNNNN",
+        "sequencial": true,
+        "reiniciar_anualmente": true
+      },
+      "distribuicao": {
+        "formato": "DIST-AAAA-NNNNNN",
+        "sequencial": true,
+        "reiniciar_anualmente": true
+      }
+    },
+    "tipos_empresa": {
+      "matriz": {
+        "nome": "Matriz",
+        "descricao": "Empresa principal do grupo",
+        "permite_filiais": true,
+        "permite_subsidiarias": true
+      },
+      "filial": {
+        "nome": "Filial",
+        "descricao": "Unidade operacional da matriz",
+        "requer_empresa_mae": true,
+        "permite_filiais": false
+      },
+      "subsidiaria": {
+        "nome": "Subsidiária",
+        "descricao": "Empresa controlada",
+        "requer_empresa_mae": true,
+        "permite_subsidiarias": true
+      },
+      "controlada": {
+        "nome": "Controlada",
+        "descricao": "Empresa com controle acionário",
+        "percentual_minimo": 50.01,
+        "permite_subsidiarias": true
+      },
+      "coligada": {
+        "nome": "Coligada",
+        "descricao": "Empresa com participação minoritária",
+        "percentual_maximo": 49.99,
+        "permite_subsidiarias": false
+      }
+    },
+    "tipos_socio": {
+      "quotista": {
+        "nome": "Quotista",
+        "descricao": "Sócio com quotas na empresa",
+        "direito_voto": true,
+        "direito_dividendos": true,
+        "responsabilidade": "limitada"
+      },
+      "acionista": {
+        "nome": "Acionista",
+        "descricao": "Detentor de ações",
+        "direito_voto": true,
+        "direito_dividendos": true,
+        "responsabilidade": "limitada"
+      },
+      "administrador": {
+        "nome": "Administrador",
+        "descricao": "Responsável pela gestão",
+        "direito_voto": false,
+        "direito_dividendos": false,
+        "responsabilidade": "ilimitada"
+      },
+      "procurador": {
+        "nome": "Procurador",
+        "descricao": "Representante legal",
+        "direito_voto": false,
+        "direito_dividendos": false,
+        "responsabilidade": "limitada"
+      }
+    },
+    "capital_social": {
+      "moeda_padrao": "BRL",
+      "valor_minimo_quota": 0.01,
+      "permite_fracionamento": true,
+      "integralizacao": {
+        "prazo_maximo_anos": 5,
+        "formas_permitidas": ["dinheiro", "bens", "creditos", "servicos"],
+        "percentual_minimo_entrada": 10
+      }
+    },
+    "assembleias": {
+      "convocacao": {
+        "prazo_minimo_dias": 8,
+        "prazo_segunda_convocacao": 3,
+        "meios_convocacao": ["email", "correio", "edital", "sistema"]
+      },
+      "quorum": {
+        "primeira_convocacao": 75,
+        "segunda_convocacao": 50,
+        "terceira_convocacao": 25
+      },
+      "tipos_obrigatorias": {
+        "ordinaria": {
+          "periodicidade": "anual",
+          "prazo_maximo": "31/03",
+          "pauta_obrigatoria": [
+            "aprovacao_contas",
+            "destinacao_resultado",
+            "eleicao_administradores"
+          ]
+        },
+        "extraordinaria": {
+          "quando_necessaria": [
+            "alteracao_contrato",
+            "aumento_capital",
+            "reducao_capital",
+            "dissolucao"
+          ]
+        }
+      }
+    },
+    "distribuicao_resultados": {
+      "tipos_permitidos": {
+        "lucros": {
+          "nome": "Distribuição de Lucros",
+          "base_calculo": "lucro_liquido",
+          "tributacao": "isenta",
+          "limite_percentual": 100
+        },
+        "dividendos": {
+          "nome": "Dividendos",
+          "base_calculo": "lucro_liquido",
+          "tributacao": "isenta",
+          "obrigatorio_minimo": 25
+        },
+        "jcp": {
+          "nome": "Juros sobre Capital Próprio",
+          "base_calculo": "patrimonio_liquido",
+          "tributacao": "15_porcento",
+          "limite_tjlp": true
+        },
+        "reservas": {
+          "nome": "Distribuição de Reservas",
+          "base_calculo": "reservas_lucros",
+          "tributacao": "isenta",
+          "requer_aprovacao": true
+        }
+      },
+      "calendario": {
+        "exercicio_social": "01/01-31/12",
+        "prazo_aprovacao": "31/03",
+        "prazo_pagamento": "60_dias"
+      }
+    },
+    "alteracoes_contratuais": {
+      "tipos": {
+        "capital": {
+          "nome": "Alteração de Capital",
+          "requer_assembleia": true,
+          "requer_registro": true,
+          "documentos_obrigatorios": ["ata_assembleia", "alteracao_contratual"]
+        },
+        "socios": {
+          "nome": "Alteração de Sócios",
+          "requer_assembleia": true,
+          "requer_registro": true,
+          "documentos_obrigatorios": ["ata_assembleia", "alteracao_contratual"]
+        },
+        "administracao": {
+          "nome": "Alteração de Administração",
+          "requer_assembleia": true,
+          "requer_registro": true,
+          "documentos_obrigatorios": ["ata_assembleia"]
+        },
+        "endereco": {
+          "nome": "Alteração de Endereço",
+          "requer_assembleia": false,
+          "requer_registro": true,
+          "documentos_obrigatorios": ["alteracao_contratual"]
+        },
+        "atividade": {
+          "nome": "Alteração de Atividade",
+          "requer_assembleia": true,
+          "requer_registro": true,
+          "documentos_obrigatorios": ["ata_assembleia", "alteracao_contratual"]
+        }
+      },
+      "workflow": {
+        "aprovacao_automatica": false,
+        "niveis_aprovacao": ["gerente", "diretor", "admin"],
+        "prazo_aprovacao_dias": 15
+      }
+    },
+    "compliance": {
+      "verificacoes_automaticas": {
+        "assembleia_ordinaria": true,
+        "integralizacao_capital": true,
+        "renovacao_mandatos": true,
+        "publicacao_balancos": true
+      },
+      "alertas": {
+        "prazo_assembleia": [30, 15, 7, 1],
+        "vencimento_mandatos": [60, 30, 15],
+        "integralizacao_pendente": [90, 60, 30, 15]
+      }
+    },
+    "documentos": {
+      "armazenamento": {
+        "local": "./storage/societario",
+        "estrutura": "empresa_id/ano/tipo",
+        "backup_automatico": true,
+        "criptografia": true
+      },
+      "tipos_permitidos": [
+        ".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png", ".tiff",
+        ".txt", ".rtf", ".odt", ".xls", ".xlsx"
+      ],
+      "tamanho_maximo": 52428800,
+      "versionamento": true,
+      "assinatura_digital": true,
+      "watermark": true
+    },
+    "integracao": {
+      "receita_federal": {
+        "consulta_cnpj": true,
+        "validacao_situacao": true,
+        "atualizacao_automatica": false
+      },
+      "junta_comercial": {
+        "consulta_situacao": false,
+        "envio_alteracoes": false
+      },
+      "cartorio": {
+        "registro_alteracoes": false,
+        "validacao_documentos": false
+      }
+    }
+  },
+  "events": {
+    "emitted": [
+      "empresa:criada",
+      "empresa:atualizada",
+      "empresa:inativada",
+      "socio:adicionado",
+      "socio:removido",
+      "socio:atualizado",
+      "alteracao:criada",
+      "alteracao:aprovada",
+      "alteracao:registrada",
+      "assembleia:convocada",
+      "assembleia:realizada",
+      "assembleia:cancelada",
+      "distribuicao:aprovada",
+      "distribuicao:paga",
+      "integralizacao:vencendo",
+      "mandato:vencendo",
+      "relatorio:gerado"
+    ],
+    "listened": [
+      "pessoa:criada",
+      "pessoa:atualizada",
+      "pessoa:inativada",
+      "documento:assinado",
+      "documento:uploaded",
+      "notification:send",
+      "compliance:auditoria",
+      "sistema:backup"
+    ]
+  },
+  "api": {
+    "routes": {
+      "empresas": {
+        "GET /api/empresas": "listarEmpresas",
+        "GET /api/empresas/:id": "obterEmpresa",
+        "POST /api/empresas": "criarEmpresa",
+        "PUT /api/empresas/:id": "atualizarEmpresa",
+        "DELETE /api/empresas/:id": "inativarEmpresa"
+      },
+      "socios": {
+        "GET /api/empresas/:id/socios": "listarSocios",
+        "GET /api/socios/:id": "obterSocio",
+        "POST /api/empresas/:id/socios": "adicionarSocio",
+        "PUT /api/socios/:id": "atualizarSocio",
+        "DELETE /api/socios/:id": "removerSocio"
+      },
+      "alteracoes": {
+        "GET /api/empresas/:id/alteracoes": "listarAlteracoes",
+        "GET /api/alteracoes/:id": "obterAlteracao",
+        "POST /api/empresas/:id/alteracoes": "criarAlteracao",
+        "PUT /api/alteracoes/:id": "atualizarAlteracao",
+        "POST /api/alteracoes/:id/aprovar": "aprovarAlteracao",
+        "DELETE /api/alteracoes/:id": "cancelarAlteracao"
+      },
+      "assembleias": {
+        "GET /api/empresas/:id/assembleias": "listarAssembleias",
+        "GET /api/assembleias/:id": "obterAssembleia",
+        "POST /api/empresas/:id/assembleias": "convocarAssembleia",
+        "PUT /api/assembleias/:id": "atualizarAssembleia",
+        "POST /api/assembleias/:id/realizar": "realizarAssembleia",
+        "DELETE /api/assembleias/:id": "cancelarAssembleia"
+      },
+      "participantes": {
+        "GET /api/assembleias/:id/participantes": "listarParticipantes",
+        "POST /api/assembleias/:id/participantes": "adicionarParticipante",
+        "PUT /api/assembleias/:id/participantes/:socioId": "atualizarParticipacao",
+        "DELETE /api/assembleias/:id/participantes/:socioId": "removerParticipante"
+      },
+      "distribuicoes": {
+        "GET /api/empresas/:id/distribuicoes": "listarDistribuicoes",
+        "GET /api/distribuicoes/:id": "obterDistribuicao",
+        "POST /api/empresas/:id/distribuicoes": "aprovarDistribuicao",
+        "PUT /api/distribuicoes/:id": "atualizarDistribuicao",
+        "POST /api/distribuicoes/:id/pagar": "pagarDistribuicao",
+        "DELETE /api/distribuicoes/:id": "cancelarDistribuicao"
+      },
+      "distribuicao_socios": {
+        "GET /api/distribuicoes/:id/socios": "listarDistribuicaoSocios",
+        "PUT /api/distribuicoes/socios/:id": "atualizarDistribuicaoSocio",
+        "POST /api/distribuicoes/socios/:id/pagar": "pagarDistribuicaoSocio"
+      },
+      "relatorios": {
+        "GET /api/societario/relatorios": "listarRelatorios",
+        "POST /api/societario/relatorios/gerar": "gerarRelatorio",
+        "GET /api/societario/relatorios/:id": "obterRelatorio",
+        "GET /api/societario/relatorios/:id/download": "baixarRelatorio"
+      },
+      "dashboard": {
+        "GET /api/societario/dashboard": "obterDashboard",
+        "GET /api/societario/estatisticas": "obterEstatisticas",
+        "GET /api/societario/alertas": "obterAlertas"
+      },
+      "estrutura": {
+        "GET /api/societario/estrutura": "obterEstruturaSocietaria",
+        "GET /api/empresas/:id/organograma": "obterOrganograma",
+        "GET /api/empresas/:id/participacoes": "obterParticipacoes"
+      },
+      "compliance": {
+        "GET /api/societario/compliance": "obterStatusCompliance",
+        "POST /api/societario/compliance/verificar": "verificarCompliance",
+        "GET /api/societario/compliance/alertas": "obterAlertasCompliance"
+      }
+    }
+  },
+  "database": {
+    "tables": [
+      "empresas",
+      "socios",
+      "alteracoes_contratuais",
+      "assembleias",
+      "assembleia_participantes",
+      "distribuicao_resultados",
+      "distribuicao_socios",
+      "societario_historico"
+    ],
+    "indexes": [
+      "idx_empresas_cnpj",
+      "idx_empresas_tipo",
+      "idx_empresas_situacao",
+      "idx_socios_empresa",
+      "idx_socios_pessoa",
+      "idx_socios_tipo",
+      "idx_socios_ativo",
+      "idx_alteracoes_empresa",
+      "idx_alteracoes_tipo",
+      "idx_alteracoes_status",
+      "idx_alteracoes_data",
+      "idx_assembleias_empresa",
+      "idx_assembleias_tipo",
+      "idx_assembleias_data",
+      "idx_assembleias_status",
+      "idx_participantes_assembleia",
+      "idx_participantes_socio",
+      "idx_distribuicao_empresa",
+      "idx_distribuicao_exercicio",
+      "idx_distribuicao_tipo",
+      "idx_distribuicao_status",
+      "idx_dist_socios_distribuicao",
+      "idx_dist_socios_socio",
+      "idx_dist_socios_status",
+      "idx_historico_entidade",
+      "idx_historico_data",
+      "idx_historico_usuario"
+    ],
+    "views": [
+      "view_empresas_ativas",
+      "view_estrutura_societaria",
+      "view_socios_ativos",
+      "view_distribuicoes_pendentes",
+      "view_assembleias_proximas",
+      "view_integralizacao_pendente"
+    ]
+  },
+  "requirements": {
+    "node_version": ">=16.0.0",
+    "dependencies": {
+      "express": "^4.18.0",
+      "moment": "^2.29.4",
+      "node-cron": "^3.0.2",
+      "uuid": "^9.0.0",
+      "multer": "^1.4.5",
+      "xlsx": "^0.18.5",
+      "pdf-lib": "^1.17.1",
+      "fs-extra": "^11.1.1",
+      "crypto": "^1.0.1"
+    },
+    "optional_dependencies": {
+      "d3": "^7.8.0",
+      "chart.js": "^4.2.0",
+      "jspdf": "^2.5.1",
+      "html2canvas": "^1.4.1"
+    }
+  },
+  "scripts": {
+    "test": "jest tests/societario",
+    "lint": "eslint src/modules/societario-module",
+    "docs": "jsdoc src/modules/societario-module -d docs/societario",
+    "backup-societario": "node scripts/backup-societario.js",
+    "gerar-relatorio-mensal": "node scripts/relatorio-mensal.js"
+  },
+  "monitoring": {
+    "metrics": [
+      "empresas_ativas",
+      "socios_cadastrados",
+      "alteracoes_pendentes",
+      "assembleias_realizadas",
+      "distribuicoes_pagas",
+      "integralizacoes_pendentes",
+      "tempo_resposta_api",
+      "uso_memoria"
+    ],
+    "alerts": [
+      "assembleia_obrigatoria_pendente",
+      "integralizacao_vencendo",
+      "mandato_vencendo",
+      "alteracao_pendente_aprovacao",
+      "distribuicao_pendente_pagamento",
+      "erro_integracao_receita"
+    ],
+    "dashboards": [
+      "societario_overview",
+      "estrutura_societaria",
+      "compliance_status",
+      "distribuicoes_timeline",
+      "assembleias_calendar"
+    ]
+  },
+  "security": {
+    "encryption": {
+      "documentos_societarios": true,
+      "dados_financeiros": true,
+      "informacoes_socios": true,
+      "algorithm": "AES-256-GCM",
+      "key_rotation": "quarterly"
+    },
+    "audit": {
+      "log_all_actions": true,
+      "retention_period": "10_years",
+      "compliance": ["LGPD", "Lei_6404", "Codigo_Civil"],
+      "tamper_detection": true
+    },
+    "access_control": {
+      "role_based": true,
+      "company_based": true,
+      "time_based": false,
+      "ip_restriction": false,
+      "two_factor_required": true
+    }
+  },
+  "integrations": {
+    "receita_federal": {
+      "cnpj_validation": true,
+      "situacao_cadastral": true,
+      "dados_empresa": true
+    },
+    "junta_comercial": {
+      "consulta_situacao": false,
+      "registro_alteracoes": false
+    },
+    "cartorio": {
+      "registro_atas": false,
+      "autenticacao_documentos": false
+    },
+    "banco_central": {
+      "consulta_scr": false,
+      "informacoes_financeiras": false
+    }
+  },
+  "templates": {
+    "ata_assembleia_ordinaria": {
+      "nome": "Ata de Assembleia Ordinária",
+      "arquivo": "templates/ata_assembleia_ordinaria.docx",
+      "variaveis": [
+        "empresa_nome", "empresa_cnpj", "data_assembleia",
+        "local_assembleia", "presidente_mesa", "secretario_mesa",
+        "socios_presentes", "quorum_presente", "pauta", "deliberacoes"
+      ]
+    },
+    "ata_assembleia_extraordinaria": {
+      "nome": "Ata de Assembleia Extraordinária",
+      "arquivo": "templates/ata_assembleia_extraordinaria.docx",
+      "variaveis": [
+        "empresa_nome", "empresa_cnpj", "data_assembleia",
+        "motivo_convocacao", "alteracoes_propostas", "deliberacoes"
+      ]
+    },
+    "alteracao_contratual": {
+      "nome": "Alteração Contratual",
+      "arquivo": "templates/alteracao_contratual.docx",
+      "variaveis": [
+        "empresa_nome", "empresa_cnpj", "tipo_alteracao",
+        "clausulas_alteradas", "texto_anterior", "texto_novo"
+      ]
+    },
+    "termo_posse": {
+      "nome": "Termo de Posse",
+      "arquivo": "templates/termo_posse.docx",
+      "variaveis": [
+        "empresa_nome", "cargo", "nome_empossado",
+        "cpf_empossado", "data_posse", "prazo_mandato"
+      ]
+    }
+  },
+  "compliance": {
+    "frameworks": [
+      "Lei 6.404/76 (Lei das S.A.)",
+      "Código Civil Brasileiro",
+      "LGPD",
+      "Instrução CVM 480/09",
+      "Lei 13.303/16 (Lei das Estatais)"
+    ],
+    "obrigacoes": [
+      "Assembleia Ordinária Anual",
+      "Publicação de Balanços",
+      "Registro de Alterações",
+      "Manutenção de Livros Societários",
+      "Cumprimento de Quóruns"
+    ],
+    "verificacoes": [
+      "Regularidade Assembleias",
+      "Integralização Capital",
+      "Renovação Mandatos",
+      "Distribuição Resultados",
+      "Compliance Tributário"
+    ]
+  },
+  "backup": {
+    "automatic": true,
+    "frequency": "daily",
+    "retention": "10_years",
+    "encryption": true,
+    "offsite": true,
+    "verification": true
+  },
+  "performance": {
+    "cache": {
+      "empresas_ativas": "2_hours",
+      "estrutura_societaria": "4_hours",
+      "estatisticas": "1_hour"
+    },
+    "indexing": {
+      "full_text_search": true,
+      "faceted_search": true
+    },
+    "optimization": {
+      "lazy_loading": true,
+      "pagination": true,
+      "compression": true
+    }
+  }
+}

@@ -1,0 +1,866 @@
+{
+  "name": "bolts-module",
+  "version": "1.0.0",
+  "description": "Módulo de Micro-funcionalidades Plugáveis para Automação",
+  "author": "Fusione Core System",
+  "license": "MIT",
+  "main": "index.js",
+  "type": "core-module",
+  "category": "automation",
+  "priority": 9,
+  "dependencies": {
+    "required": [
+      "auth-module",
+      "notification-module"
+    ],
+    "optional": [
+      "pessoas-module",
+      "contratos-module",
+      "compliance-module",
+      "contencioso-module",
+      "procuracoes-module",
+      "societario-module",
+      "barcas-module"
+    ]
+  },
+  "permissions": {
+    "admin": [
+      "bolts:create",
+      "bolts:read",
+      "bolts:update",
+      "bolts:delete",
+      "bolts:install",
+      "bolts:uninstall",
+      "workflows:create",
+      "workflows:read",
+      "workflows:update",
+      "workflows:delete",
+      "workflows:execute",
+      "triggers:manage_all",
+      "marketplace:access",
+      "marketplace:publish",
+      "bolts:logs",
+      "bolts:reports",
+      "bolts:config",
+      "bolts:debug"
+    ],
+    "desenvolvedor": [
+      "bolts:create",
+      "bolts:read",
+      "bolts:update",
+      "bolts:install",
+      "workflows:create",
+      "workflows:read",
+      "workflows:update",
+      "workflows:execute",
+      "triggers:create",
+      "triggers:update",
+      "marketplace:access",
+      "marketplace:publish_own",
+      "bolts:logs_own",
+      "bolts:debug_own"
+    ],
+    "analista": [
+      "bolts:read",
+      "workflows:create",
+      "workflows:read",
+      "workflows:update_own",
+      "workflows:execute_own",
+      "triggers:create_own",
+      "triggers:update_own",
+      "marketplace:access",
+      "bolts:install_approved",
+      "bolts:logs_own"
+    ],
+    "usuario": [
+      "bolts:read_public",
+      "workflows:read_own",
+      "workflows:execute_own",
+      "marketplace:browse",
+      "bolts:install_public"
+    ],
+    "guest": [
+      "marketplace:browse_public"
+    ]
+  },
+  "settings": {
+    "numeracao": {
+      "bolt": {
+        "formato": "BLT-AAAA-NNNNNN",
+        "sequencial": true,
+        "reiniciar_anualmente": true
+      },
+      "workflow": {
+        "formato": "WFL-AAAA-NNNNNN",
+        "sequencial": true,
+        "reiniciar_anualmente": true
+      },
+      "execucao": {
+        "formato": "EXE-AAAA-NNNNNN",
+        "sequencial": true,
+        "reiniciar_anualmente": true
+      },
+      "trigger": {
+        "formato": "TRG-AAAA-NNNNNN",
+        "sequencial": true,
+        "reiniciar_anualmente": true
+      }
+    },
+    "tipos_bolt": {
+      "trigger": {
+        "nome": "Gatilho",
+        "descricao": "Inicia execução baseado em eventos",
+        "icone": "play-circle",
+        "cor": "#10B981",
+        "exemplos": [
+          "Novo email recebido",
+          "Arquivo modificado",
+          "Agendamento de tempo",
+          "Webhook recebido"
+        ]
+      },
+      "action": {
+        "nome": "Ação",
+        "descricao": "Executa uma operação específica",
+        "icone": "cog",
+        "cor": "#3B82F6",
+        "exemplos": [
+          "Enviar email",
+          "Criar documento",
+          "Atualizar banco de dados",
+          "Chamar API externa"
+        ]
+      },
+      "condition": {
+        "nome": "Condição",
+        "descricao": "Avalia condições para controle de fluxo",
+        "icone": "question-mark-circle",
+        "cor": "#F59E0B",
+        "exemplos": [
+          "Verificar se valor é maior que X",
+          "Validar formato de email",
+          "Checar se arquivo existe",
+          "Comparar datas"
+        ]
+      },
+      "transformer": {
+        "nome": "Transformador",
+        "descricao": "Modifica ou processa dados",
+        "icone": "switch-horizontal",
+        "cor": "#8B5CF6",
+        "exemplos": [
+          "Converter formato de data",
+          "Extrair texto de PDF",
+          "Calcular valores",
+          "Formatar dados JSON"
+        ]
+      }
+    },
+    "categorias_bolt": {
+      "comunicacao": {
+        "nome": "Comunicação",
+        "descricao": "Bolts para envio de mensagens e notificações",
+        "icone": "mail",
+        "subcategorias": ["email", "sms", "whatsapp", "slack", "teams"]
+      },
+      "documentos": {
+        "nome": "Documentos",
+        "descricao": "Processamento e manipulação de documentos",
+        "icone": "document",
+        "subcategorias": ["pdf", "word", "excel", "ocr", "assinatura"]
+      },
+      "integracao": {
+        "nome": "Integração",
+        "descricao": "Conexão com sistemas externos",
+        "icone": "link",
+        "subcategorias": ["api", "webhook", "ftp", "database", "cloud"]
+      },
+      "juridico": {
+        "nome": "Jurídico",
+        "descricao": "Automações específicas para área jurídica",
+        "icone": "scale",
+        "subcategorias": ["processos", "prazos", "tribunais", "contratos", "compliance"]
+      },
+      "financeiro": {
+        "nome": "Financeiro",
+        "descricao": "Automações financeiras e contábeis",
+        "icone": "currency-dollar",
+        "subcategorias": ["cobranca", "pagamentos", "conciliacao", "impostos", "relatorios"]
+      },
+      "rh": {
+        "nome": "Recursos Humanos",
+        "descricao": "Automações de gestão de pessoas",
+        "icone": "users",
+        "subcategorias": ["admissao", "demissao", "ferias", "ponto", "beneficios"]
+      },
+      "utilidades": {
+        "nome": "Utilidades",
+        "descricao": "Ferramentas gerais e utilitários",
+        "icone": "wrench",
+        "subcategorias": ["data", "texto", "arquivo", "calculo", "validacao"]
+      },
+      "monitoramento": {
+        "nome": "Monitoramento",
+        "descricao": "Supervisão e alertas do sistema",
+        "icone": "eye",
+        "subcategorias": ["logs", "metricas", "alertas", "saude", "performance"]
+      }
+    },
+    "execucao": {
+      "timeout_padrao_segundos": 300,
+      "timeout_maximo_segundos": 3600,
+      "retry_tentativas_padrao": 3,
+      "retry_tentativas_maximo": 10,
+      "retry_intervalo_padrao": 60,
+      "retry_intervalo_maximo": 3600,
+      "execucoes_paralelas_maximo": 10,
+      "memoria_maxima_mb": 512,
+      "cpu_limite_porcentagem": 80,
+      "log_nivel_padrao": "info",
+      "log_retencao_dias": 90
+    },
+    "agendamento": {
+      "formatos_suportados": [
+        "cron",
+        "interval",
+        "once",
+        "daily",
+        "weekly",
+        "monthly"
+      ],
+      "timezone_padrao": "America/Sao_Paulo",
+      "execucao_perdida_acao": "skip",
+      "sobreposicao_execucao": "wait",
+      "agendamentos_maximo_por_workflow": 5
+    },
+    "triggers": {
+      "tipos_suportados": {
+        "evento": {
+          "nome": "Evento do Sistema",
+          "descricao": "Responde a eventos internos",
+          "configuracao_obrigatoria": ["evento_tipo", "filtros"],
+          "configuracao_opcional": ["condicoes", "debounce"]
+        },
+        "agendamento": {
+          "nome": "Agendamento",
+          "descricao": "Execução baseada em tempo",
+          "configuracao_obrigatoria": ["cron_expression"],
+          "configuracao_opcional": ["timezone", "data_inicio", "data_fim"]
+        },
+        "webhook": {
+          "nome": "Webhook",
+          "descricao": "Chamada HTTP externa",
+          "configuracao_obrigatoria": ["url_endpoint", "metodo"],
+          "configuracao_opcional": ["headers", "autenticacao", "validacao"]
+        },
+        "arquivo": {
+          "nome": "Arquivo",
+          "descricao": "Modificação de arquivos",
+          "configuracao_obrigatoria": ["caminho", "tipo_evento"],
+          "configuracao_opcional": ["filtro_extensao", "filtro_tamanho"]
+        },
+        "email": {
+          "nome": "Email",
+          "descricao": "Recebimento de emails",
+          "configuracao_obrigatoria": ["conta_email", "filtros"],
+          "configuracao_opcional": ["pasta", "anexos", "remetente"]
+        },
+        "api": {
+          "nome": "API",
+          "descricao": "Chamada de API",
+          "configuracao_obrigatoria": ["endpoint", "metodo"],
+          "configuracao_opcional": ["headers", "parametros", "autenticacao"]
+        }
+      },
+      "debounce_padrao_ms": 1000,
+      "debounce_maximo_ms": 60000,
+      "rate_limit_por_minuto": 60,
+      "buffer_eventos_maximo": 1000
+    },
+    "marketplace": {
+      "url_api": "https://marketplace.fusione.com.br/api",
+      "cache_duracao_horas": 6,
+      "auto_update_check": true,
+      "auto_update_install": false,
+      "categorias_permitidas": [
+        "comunicacao",
+        "documentos",
+        "integracao",
+        "juridico",
+        "financeiro",
+        "rh",
+        "utilidades",
+        "monitoramento"
+      ],
+      "avaliacao_minima": 3.0,
+      "downloads_minimos": 10,
+      "verificacao_seguranca": true,
+      "sandbox_execucao": true
+    },
+    "seguranca": {
+      "sandbox": {
+        "habilitado": true,
+        "memoria_limite_mb": 256,
+        "cpu_limite_porcentagem": 50,
+        "rede_bloqueada": false,
+        "arquivos_permitidos": ["/tmp", "/var/tmp"],
+        "comandos_bloqueados": ["rm", "del", "format", "shutdown"]
+      },
+      "validacao_codigo": {
+        "habilitada": true,
+        "verificar_sintaxe": true,
+        "verificar_vulnerabilidades": true,
+        "verificar_malware": true,
+        "whitelist_bibliotecas": true
+      },
+      "assinatura_digital": {
+        "obrigatoria": false,
+        "verificar_autor": true,
+        "verificar_integridade": true,
+        "algoritmo": "RSA-SHA256"
+      },
+      "permissoes": {
+        "sistema_arquivos": "restrito",
+        "rede": "restrito",
+        "banco_dados": "restrito",
+        "apis_externas": "permitido",
+        "variaveis_ambiente": "negado"
+      }
+    },
+    "monitoramento": {
+      "metricas_coleta": {
+        "execucoes_por_minuto": true,
+        "tempo_resposta": true,
+        "uso_memoria": true,
+        "uso_cpu": true,
+        "taxa_erro": true,
+        "taxa_sucesso": true
+      },
+      "alertas": {
+        "execucao_falhando": {
+          "threshold": 5,
+          "janela_tempo_minutos": 10,
+          "acao": "notificar_admin"
+        },
+        "tempo_resposta_alto": {
+          "threshold_segundos": 30,
+          "janela_tempo_minutos": 5,
+          "acao": "log_warning"
+        },
+        "uso_memoria_alto": {
+          "threshold_porcentagem": 90,
+          "acao": "pausar_execucoes"
+        },
+        "bolt_nao_responsivo": {
+          "timeout_segundos": 60,
+          "acao": "reiniciar_bolt"
+        }
+      },
+      "logs": {
+        "nivel_minimo": "info",
+        "incluir_stack_trace": true,
+        "incluir_contexto": true,
+        "rotacao_tamanho_mb": 100,
+        "retencao_dias": 90,
+        "compressao": true
+      }
+    },
+    "cache": {
+      "habilitado": true,
+      "ttl_padrao_segundos": 3600,
+      "tamanho_maximo_mb": 512,
+      "estrategia_limpeza": "lru",
+      "cache_resultados_execucao": false,
+      "cache_metadados_bolt": true,
+      "cache_configuracoes": true
+    },
+    "backup": {
+      "automatico": true,
+      "frequencia": "daily",
+      "retencao_dias": 30,
+      "incluir_logs": false,
+      "incluir_execucoes": true,
+      "compressao": true,
+      "criptografia": true,
+      "destino_remoto": false
+    },
+    "desenvolvimento": {
+      "modo_debug": false,
+      "hot_reload": true,
+      "editor_integrado": true,
+      "versionamento_automatico": true,
+      "testes_automaticos": true,
+      "documentacao_automatica": true,
+      "templates_disponiveis": [
+        "trigger_basico",
+        "action_api",
+        "condition_simples",
+        "transformer_dados",
+        "workflow_completo"
+      ]
+    }
+  },
+  "events": {
+    "emitted": [
+      "bolt:instalado",
+      "bolt:removido",
+      "bolt:atualizado",
+      "bolt:ativado",
+      "bolt:desativado",
+      "bolt:executado",
+      "bolt:erro",
+      "workflow:criado",
+      "workflow:atualizado",
+      "workflow:removido",
+      "workflow:executado",
+      "workflow:pausado",
+      "workflow:retomado",
+      "workflow:erro",
+      "trigger:criado",
+      "trigger:ativado",
+      "trigger:desativado",
+      "trigger:disparado",
+      "execucao:iniciada",
+      "execucao:finalizada",
+      "execucao:pausada",
+      "execucao:cancelada",
+      "execucao:erro",
+      "execucao:timeout",
+      "marketplace:sincronizado",
+      "marketplace:bolt_disponivel",
+      "sistema:sobrecarga",
+      "sistema:recuperado",
+      "alerta:gerado",
+      "backup:realizado"
+    ],
+    "listened": [
+      "sistema:inicializado",
+      "sistema:parando",
+      "usuario:logado",
+      "usuario:deslogado",
+      "documento:criado",
+      "documento:atualizado",
+      "documento:removido",
+      "processo:criado",
+      "processo:atualizado",
+      "processo:finalizado",
+      "contrato:assinado",
+      "contrato:vencendo",
+      "prazo:vencendo",
+      "prazo:vencido",
+      "email:recebido",
+      "email:enviado",
+      "arquivo:criado",
+      "arquivo:modificado",
+      "arquivo:removido",
+      "api:chamada",
+      "webhook:recebido",
+      "agendamento:disparado",
+      "notificacao:enviada",
+      "backup:iniciado",
+      "backup:finalizado",
+      "manutencao:iniciada",
+      "manutencao:finalizada"
+    ]
+  },
+  "api": {
+    "routes": {
+      "bolts": {
+        "GET /api/bolts": "listarBolts",
+        "GET /api/bolts/:id": "obterBolt",
+        "POST /api/bolts": "criarBolt",
+        "PUT /api/bolts/:id": "atualizarBolt",
+        "DELETE /api/bolts/:id": "removerBolt",
+        "POST /api/bolts/install": "instalarBolt",
+        "POST /api/bolts/:id/uninstall": "desinstalarBolt",
+        "POST /api/bolts/:id/activate": "ativarBolt",
+        "POST /api/bolts/:id/deactivate": "desativarBolt",
+        "POST /api/bolts/:id/execute": "executarBolt",
+        "GET /api/bolts/:id/logs": "obterLogsBolt",
+        "GET /api/bolts/:id/stats": "obterEstatisticasBolt"
+      },
+      "workflows": {
+        "GET /api/workflows": "listarWorkflows",
+        "GET /api/workflows/:id": "obterWorkflow",
+        "POST /api/workflows": "criarWorkflow",
+        "PUT /api/workflows/:id": "atualizarWorkflow",
+        "DELETE /api/workflows/:id": "removerWorkflow",
+        "POST /api/workflows/:id/execute": "executarWorkflow",
+        "POST /api/workflows/:id/pause": "pausarWorkflow",
+        "POST /api/workflows/:id/resume": "retomarWorkflow",
+        "GET /api/workflows/:id/executions": "listarExecucoesWorkflow",
+        "GET /api/workflows/:id/logs": "obterLogsWorkflow",
+        "GET /api/workflows/:id/stats": "obterEstatisticasWorkflow"
+      },
+      "execucoes": {
+        "GET /api/executions": "listarExecucoes",
+        "GET /api/executions/:id": "obterExecucao",
+        "POST /api/executions/:id/cancel": "cancelarExecucao",
+        "POST /api/executions/:id/retry": "repetirExecucao",
+        "GET /api/executions/:id/logs": "obterLogsExecucao",
+        "GET /api/executions/:id/steps": "obterPassosExecucao"
+      },
+      "triggers": {
+        "GET /api/triggers": "listarTriggers",
+        "GET /api/triggers/:id": "obterTrigger",
+        "POST /api/triggers": "criarTrigger",
+        "PUT /api/triggers/:id": "atualizarTrigger",
+        "DELETE /api/triggers/:id": "removerTrigger",
+        "POST /api/triggers/:id/activate": "ativarTrigger",
+        "POST /api/triggers/:id/deactivate": "desativarTrigger",
+        "POST /api/triggers/:id/test": "testarTrigger"
+      },
+      "marketplace": {
+        "GET /api/marketplace/bolts": "listarBoltsMarketplace",
+        "GET /api/marketplace/bolts/:id": "obterBoltMarketplace",
+        "POST /api/marketplace/bolts/:id/install": "instalarBoltMarketplace",
+        "GET /api/marketplace/categories": "listarCategoriasMarketplace",
+        "GET /api/marketplace/featured": "obterBoltsDestaque",
+        "GET /api/marketplace/popular": "obterBoltsPopulares",
+        "POST /api/marketplace/search": "pesquisarBoltsMarketplace",
+        "POST /api/marketplace/bolts/:id/rate": "avaliarBoltMarketplace"
+      },
+      "templates": {
+        "GET /api/templates": "listarTemplates",
+        "GET /api/templates/:id": "obterTemplate",
+        "POST /api/templates": "criarTemplate",
+        "PUT /api/templates/:id": "atualizarTemplate",
+        "DELETE /api/templates/:id": "removerTemplate",
+        "POST /api/templates/:id/use": "usarTemplate"
+      },
+      "webhooks": {
+        "POST /api/webhooks/:trigger_id": "receberWebhook",
+        "GET /api/webhooks/:trigger_id/info": "obterInfoWebhook"
+      },
+      "logs": {
+        "GET /api/logs": "listarLogs",
+        "GET /api/logs/:id": "obterLog",
+        "DELETE /api/logs": "limparLogs",
+        "GET /api/logs/export": "exportarLogs"
+      },
+      "dashboard": {
+        "GET /api/bolts/dashboard": "obterDashboard",
+        "GET /api/bolts/stats": "obterEstatisticasGerais",
+        "GET /api/bolts/health": "obterSaudeSistema",
+        "GET /api/bolts/alerts": "obterAlertas"
+      },
+      "admin": {
+        "GET /api/admin/system/status": "obterStatusSistema",
+        "POST /api/admin/system/maintenance": "ativarModoManutencao",
+        "POST /api/admin/system/backup": "executarBackup",
+        "POST /api/admin/system/cleanup": "executarLimpeza",
+        "GET /api/admin/users/activity": "obterAtividadeUsuarios",
+        "POST /api/admin/bolts/approve": "aprovarBolt",
+        "POST /api/admin/bolts/reject": "rejeitarBolt"
+      }
+    }
+  },
+  "database": {
+    "tables": [
+      "bolts",
+      "workflows",
+      "execucoes_workflow",
+      "triggers",
+      "marketplace_bolts",
+      "bolts_logs",
+      "bolts_historico"
+    ],
+    "indexes": [
+      "idx_bolts_categoria",
+      "idx_bolts_tipo",
+      "idx_bolts_status",
+      "idx_bolts_tags",
+      "idx_bolts_instalado",
+      "idx_workflows_categoria",
+      "idx_workflows_status",
+      "idx_workflows_agendamento",
+      "idx_workflows_proxima_execucao",
+      "idx_execucoes_workflow",
+      "idx_execucoes_status",
+      "idx_execucoes_iniciado",
+      "idx_execucoes_duracao",
+      "idx_triggers_tipo",
+      "idx_triggers_status",
+      "idx_triggers_workflow",
+      "idx_triggers_bolt",
+      "idx_marketplace_categoria",
+      "idx_marketplace_tipo",
+      "idx_marketplace_autor",
+      "idx_marketplace_preco",
+      "idx_marketplace_avaliacao",
+      "idx_marketplace_downloads",
+      "idx_logs_bolt",
+      "idx_logs_workflow",
+      "idx_logs_execucao",
+      "idx_logs_nivel",
+      "idx_logs_timestamp",
+      "idx_historico_entidade",
+      "idx_historico_acao",
+      "idx_historico_usuario",
+      "idx_historico_timestamp"
+    ],
+    "views": [
+      "view_bolts_ativos",
+      "view_workflows_ativos",
+      "view_execucoes_recentes",
+      "view_triggers_ativos",
+      "view_estatisticas_execucao",
+      "view_logs_erros",
+      "view_marketplace_populares",
+      "view_performance_bolts"
+    ]
+  },
+  "requirements": {
+    "node_version": ">=16.0.0",
+    "dependencies": {
+      "express": "^4.18.0",
+      "moment": "^2.29.4",
+      "node-cron": "^3.0.2",
+      "uuid": "^9.0.0",
+      "lodash": "^4.17.21",
+      "joi": "^17.9.0",
+      "axios": "^1.4.0",
+      "fs-extra": "^11.1.1",
+      "crypto": "^1.0.1",
+      "vm2": "^3.9.19",
+      "chokidar": "^3.5.3",
+      "nodemailer": "^6.9.0",
+      "multer": "^1.4.5",
+      "compression": "^1.7.4"
+    },
+    "optional_dependencies": {
+      "puppeteer": "^20.0.0",
+      "sharp": "^0.32.0",
+      "pdf-lib": "^1.17.1",
+      "xlsx": "^0.18.5",
+      "cheerio": "^1.0.0-rc.12",
+      "socket.io": "^4.7.0",
+      "redis": "^4.6.0",
+      "mongodb": "^5.6.0",
+      "mysql2": "^3.3.0",
+      "pg": "^8.11.0"
+    }
+  },
+  "scripts": {
+    "test": "jest tests/bolts",
+    "lint": "eslint src/modules/bolts-module",
+    "docs": "jsdoc src/modules/bolts-module -d docs/bolts",
+    "backup-bolts": "node scripts/backup-bolts.js",
+    "sync-marketplace": "node scripts/sync-marketplace.js",
+    "cleanup-logs": "node scripts/cleanup-logs.js",
+    "health-check": "node scripts/health-check.js",
+    "migrate-bolts": "node scripts/migrate-bolts.js",
+    "validate-bolts": "node scripts/validate-bolts.js",
+    "generate-docs": "node scripts/generate-docs.js"
+  },
+  "monitoring": {
+    "metrics": [
+      "bolts_instalados",
+      "bolts_ativos",
+      "workflows_ativos",
+      "execucoes_por_minuto",
+      "execucoes_sucesso_taxa",
+      "execucoes_erro_taxa",
+      "tempo_medio_execucao",
+      "triggers_ativos",
+      "triggers_disparados",
+      "uso_memoria_bolts",
+      "uso_cpu_bolts",
+      "cache_hit_rate",
+      "marketplace_sincronizacoes",
+      "logs_gerados_por_minuto",
+      "alertas_ativos"
+    ],
+    "alerts": [
+      "bolt_execucao_falhando",
+      "workflow_nao_executando",
+      "trigger_nao_disparando",
+      "execucao_tempo_alto",
+      "memoria_limite_atingido",
+      "cpu_limite_atingido",
+      "logs_crescimento_rapido",
+      "marketplace_indisponivel",
+      "backup_falhando",
+      "sistema_sobrecarregado",
+      "bolt_malicioso_detectado",
+      "execucao_timeout_frequente"
+    ],
+    "dashboards": [
+      "bolts_overview",
+      "workflows_execucoes",
+      "performance_sistema",
+      "marketplace_atividade",
+      "logs_analise",
+      "triggers_monitoramento",
+      "usuarios_atividade",
+      "seguranca_eventos"
+    ]
+  },
+  "security": {
+    "encryption": {
+      "dados_bolts": true,
+      "codigo_fonte": true,
+      "configuracoes": true,
+      "logs_execucao": true,
+      "algorithm": "AES-256-GCM",
+      "key_rotation": "monthly"
+    },
+    "audit": {
+      "log_all_actions": true,
+      "retention_period": "2_years",
+      "compliance": ["LGPD", "SOX", "ISO27001"],
+      "tamper_detection": true,
+      "real_time_monitoring": true
+    },
+    "access_control": {
+      "role_based": true,
+      "bolt_based": true,
+      "workflow_based": true,
+      "time_based": true,
+      "ip_whitelist": true,
+      "two_factor_required": true
+    },
+    "code_validation": {
+      "syntax_check": true,
+      "vulnerability_scan": true,
+      "malware_detection": true,
+      "dependency_check": true,
+      "signature_verification": true
+    },
+    "sandbox": {
+      "enabled": true,
+      "isolated_execution": true,
+      "resource_limits": true,
+      "network_restrictions": true,
+      "file_system_restrictions": true
+    }
+  },
+  "integrations": {
+    "marketplace": {
+      "fusione_marketplace": true,
+      "github_marketplace": false,
+      "npm_registry": false,
+      "custom_repositories": true
+    },
+    "development": {
+      "vscode_extension": true,
+      "github_integration": true,
+      "gitlab_integration": false,
+      "docker_support": true
+    },
+    "monitoring": {
+      "prometheus": false,
+      "grafana": false,
+      "elasticsearch": false,
+      "datadog": false
+    },
+    "notification": {
+      "slack": true,
+      "teams": true,
+      "discord": false,
+      "telegram": false
+    },
+    "storage": {
+      "aws_s3": false,
+      "google_cloud": false,
+      "azure_blob": false,
+      "local_storage": true
+    }
+  },
+  "templates": {
+    "trigger_basico": {
+      "nome": "Trigger Básico",
+      "arquivo": "templates/trigger_basico.js",
+      "descricao": "Template para criar um trigger simples",
+      "variaveis": ["nome", "descricao", "evento_tipo", "filtros"]
+    },
+    "action_api": {
+      "nome": "Ação API",
+      "arquivo": "templates/action_api.js",
+      "descricao": "Template para chamar APIs externas",
+      "variaveis": ["nome", "url", "metodo", "headers", "parametros"]
+    },
+    "condition_simples": {
+      "nome": "Condição Simples",
+      "arquivo": "templates/condition_simples.js",
+      "descricao": "Template para avaliação de condições",
+      "variaveis": ["nome", "campo", "operador", "valor"]
+    },
+    "transformer_dados": {
+      "nome": "Transformador de Dados",
+      "arquivo": "templates/transformer_dados.js",
+      "descricao": "Template para transformação de dados",
+      "variaveis": ["nome", "entrada", "saida", "transformacao"]
+    },
+    "workflow_completo": {
+      "nome": "Workflow Completo",
+      "arquivo": "templates/workflow_completo.json",
+      "descricao": "Template para workflow com múltiplos passos",
+      "variaveis": ["nome", "trigger", "passos", "condicoes"]
+    }
+  },
+  "compliance": {
+    "frameworks": [
+      "LGPD (Lei Geral de Proteção de Dados)",
+      "SOX (Sarbanes-Oxley Act)",
+      "ISO 27001 (Segurança da Informação)",
+      "COBIT (Control Objectives for IT)",
+      "ITIL (Information Technology Infrastructure Library)"
+    ],
+    "controles": [
+      "Auditoria de Execuções",
+      "Controle de Acesso",
+      "Validação de Código",
+      "Monitoramento Contínuo",
+      "Backup e Recuperação",
+      "Segregação de Ambientes",
+      "Criptografia de Dados",
+      "Gestão de Vulnerabilidades"
+    ],
+    "relatorios": [
+      "Relatório de Execuções",
+      "Relatório de Acessos",
+      "Relatório de Segurança",
+      "Relatório de Performance",
+      "Relatório de Compliance",
+      "Relatório de Auditoria"
+    ]
+  },
+  "backup": {
+    "automatic": true,
+    "frequency": "daily",
+    "retention": "90_days",
+    "encryption": true,
+    "compression": true,
+    "offsite": false,
+    "verification": true,
+    "incremental": true,
+    "include_logs": false,
+    "include_executions": true
+  },
+  "performance": {
+    "cache": {
+      "bolts_metadata": "6_hours",
+      "workflows_config": "2_hours",
+      "marketplace_data": "12_hours",
+      "execution_results": "disabled",
+      "user_permissions": "1_hour"
+    },
+    "optimization": {
+      "lazy_loading": true,
+      "code_minification": true,
+      "gzip_compression": true,
+      "cdn_assets": false,
+      "database_pooling": true,
+      "connection_reuse": true
+    },
+    "limits": {
+      "max_concurrent_executions": 50,
+      "max_workflow_steps": 100,
+      "max_execution_time": 3600,
+      "max_memory_per_bolt": 512,
+      "max_file_size_mb": 100,
+      "max_api_calls_per_minute": 1000
+    }
+  }
+}

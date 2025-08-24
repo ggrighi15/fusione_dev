@@ -1,0 +1,196 @@
+{
+  "name": "seguranca-module",
+  "version": "1.0.0",
+  "description": "Módulo de segurança avançada com OAuth2 + 2FA",
+  "author": "Fusione Core System",
+  "main": "index.js",
+  "enabled": true,
+  "autoStart": true,
+  "priority": 1,
+  "dependencies": [
+    "auth-module"
+  ],
+  "permissions": [
+    "events:listen",
+    "events:emit",
+    "config:read",
+    "config:write",
+    "database:read",
+    "database:write",
+    "cache:read",
+    "cache:write",
+    "security:admin"
+  ],
+  "settings": {
+    "oauth2": {
+      "authorizationCodeExpiry": 600000,
+      "accessTokenExpiry": 3600000,
+      "refreshTokenExpiry": 2592000000,
+      "clientSecretLength": 64,
+      "jwtSecret": "your-super-secret-jwt-key-for-oauth2"
+    },
+    "twoFactor": {
+      "issuer": "Fusione Core System",
+      "window": 2,
+      "backupCodesCount": 10
+    },
+    "security": {
+      "maxLoginAttempts": 5,
+      "lockoutDuration": 1800000,
+      "sessionTimeout": 7200000,
+      "passwordMinLength": 12,
+      "passwordComplexity": true,
+      "forcePasswordChange": 7776000000,
+      "suspiciousActivityThreshold": 3
+    },
+    "audit": {
+      "retentionDays": 365,
+      "logSensitiveData": false,
+      "realTimeAlerts": true
+    }
+  },
+  "events": {
+    "listen": [
+      "user:login",
+      "user:logout",
+      "user:failed_login",
+      "security:suspicious_activity",
+      "permission:granted",
+      "permission:revoked"
+    ],
+    "emit": [
+      "security:critical_event",
+      "security:suspicious_activity",
+      "oauth2:client_registered",
+      "oauth2:token_generated",
+      "2fa:enabled",
+      "2fa:disabled",
+      "access:granted",
+      "access:revoked",
+      "session:created",
+      "session:expired"
+    ]
+  },
+  "api": {
+    "routes": [
+      {
+        "method": "POST",
+        "path": "/security/oauth2/clients",
+        "handler": "registerOAuth2Client",
+        "auth": true,
+        "permissions": ["security:admin"]
+      },
+      {
+        "method": "POST",
+        "path": "/security/oauth2/authorize",
+        "handler": "generateAuthorizationCode",
+        "auth": true,
+        "permissions": []
+      },
+      {
+        "method": "POST",
+        "path": "/security/oauth2/token",
+        "handler": "exchangeCodeForToken",
+        "auth": false,
+        "permissions": []
+      },
+      {
+        "method": "POST",
+        "path": "/security/2fa/setup",
+        "handler": "setup2FA",
+        "auth": true,
+        "permissions": []
+      },
+      {
+        "method": "POST",
+        "path": "/security/2fa/verify",
+        "handler": "verify2FA",
+        "auth": true,
+        "permissions": []
+      },
+      {
+        "method": "POST",
+        "path": "/security/2fa/validate",
+        "handler": "validate2FAToken",
+        "auth": true,
+        "permissions": []
+      },
+      {
+        "method": "POST",
+        "path": "/security/access-levels",
+        "handler": "createAccessLevel",
+        "auth": true,
+        "permissions": ["security:admin"]
+      },
+      {
+        "method": "POST",
+        "path": "/security/users/:userId/access",
+        "handler": "grantUserAccess",
+        "auth": true,
+        "permissions": ["security:admin"]
+      },
+      {
+        "method": "GET",
+        "path": "/security/users/:userId/permissions/:permission",
+        "handler": "checkUserPermission",
+        "auth": true,
+        "permissions": []
+      },
+      {
+        "method": "GET",
+        "path": "/security/logs",
+        "handler": "getSecurityLogs",
+        "auth": true,
+        "permissions": ["audit:read"]
+      },
+      {
+        "method": "POST",
+        "path": "/security/sessions",
+        "handler": "createSecuritySession",
+        "auth": true,
+        "permissions": []
+      },
+      {
+        "method": "GET",
+        "path": "/security/sessions/validate",
+        "handler": "validateSession",
+        "auth": false,
+        "permissions": []
+      },
+      {
+        "method": "GET",
+        "path": "/security/stats",
+        "handler": "getStats",
+        "auth": true,
+        "permissions": ["security:admin"]
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      "oauth2_clients",
+      "access_levels",
+      "user_access",
+      "user_two_factor",
+      "security_logs",
+      "security_sessions",
+      "permissions"
+    ]
+  },
+  "requirements": {
+    "node": ">=16.0.0",
+    "packages": [
+      "speakeasy",
+      "qrcode",
+      "geoip-lite",
+      "useragent",
+      "jsonwebtoken",
+      "bcrypt"
+    ]
+  },
+  "monitoring": {
+    "sessionCleanupInterval": 300000,
+    "authCodeCleanupInterval": 60000,
+    "suspiciousActivityCheckInterval": 600000
+  }
+}

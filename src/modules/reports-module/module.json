@@ -1,0 +1,274 @@
+{
+  "name": "reports-module",
+  "version": "1.0.0",
+  "description": "Módulo para geração de relatórios personalizados baseados nos dados do usuário",
+  "author": "Fusione Core System",
+  "type": "core",
+  "category": "analytics",
+  "enabled": true,
+  "autoload": true,
+  "dependencies": [
+    "data-integration-module",
+    "business-logic-module"
+  ],
+  "optionalDependencies": [
+    "analytics-module",
+    "notification-module"
+  ],
+  "permissions": [
+    "read:data",
+    "write:reports",
+    "read:templates",
+    "write:files",
+    "read:config",
+    "write:config"
+  ],
+  "config": {
+    "outputFormats": {
+      "type": "array",
+      "default": ["json", "csv", "html", "pdf"],
+      "description": "Formatos de saída suportados para relatórios"
+    },
+    "defaultFormat": {
+      "type": "string",
+      "default": "json",
+      "description": "Formato padrão para exportação de relatórios"
+    },
+    "maxReportSize": {
+      "type": "number",
+      "default": 10485760,
+      "description": "Tamanho máximo do relatório em bytes (10MB)"
+    },
+    "cacheReports": {
+      "type": "boolean",
+      "default": true,
+      "description": "Habilitar cache de relatórios para melhor performance"
+    },
+    "cacheDuration": {
+      "type": "number",
+      "default": 3600000,
+      "description": "Duração do cache em milissegundos (1 hora)"
+    },
+    "templatesPath": {
+      "type": "string",
+      "default": "./templates/reports",
+      "description": "Caminho para templates de relatórios personalizados"
+    },
+    "outputPath": {
+      "type": "string",
+      "default": "./output/reports",
+      "description": "Caminho para salvar relatórios exportados"
+    }
+  },
+  "reportTypes": {
+    "financial": {
+      "name": "Relatório Financeiro",
+      "description": "Análise de transações, receitas, despesas e tendências financeiras",
+      "requiredData": ["transactions"],
+      "optionalData": ["budgets", "forecasts"],
+      "outputSections": [
+        "summary",
+        "transactions",
+        "categories",
+        "trends"
+      ]
+    },
+    "inventory": {
+      "name": "Relatório de Inventário",
+      "description": "Análise de estoque, movimentação e alertas de produtos",
+      "requiredData": ["products"],
+      "optionalData": ["movements", "suppliers"],
+      "outputSections": [
+        "summary",
+        "products",
+        "movements",
+        "categories",
+        "alerts"
+      ]
+    },
+    "customers": {
+      "name": "Relatório de Clientes",
+      "description": "Análise de comportamento, segmentação e churn de clientes",
+      "requiredData": ["customers"],
+      "optionalData": ["orders", "interactions"],
+      "outputSections": [
+        "summary",
+        "customers",
+        "segments",
+        "topCustomers",
+        "churnAnalysis"
+      ]
+    },
+    "sales": {
+      "name": "Relatório de Vendas",
+      "description": "Análise de performance, tendências e previsões de vendas",
+      "requiredData": ["sales"],
+      "optionalData": ["leads", "targets"],
+      "outputSections": [
+        "summary",
+        "sales",
+        "performance",
+        "trends",
+        "forecasting"
+      ]
+    },
+    "custom": {
+      "name": "Relatório Personalizado",
+      "description": "Relatórios baseados em templates personalizados",
+      "requiredData": [],
+      "optionalData": [],
+      "outputSections": [
+        "dynamic"
+      ]
+    }
+  },
+  "events": {
+    "emits": [
+      "report:generated",
+      "report:exported",
+      "report:error",
+      "report:cached",
+      "template:loaded",
+      "template:error"
+    ],
+    "listens": [
+      "data:updated",
+      "config:changed",
+      "system:shutdown"
+    ]
+  },
+  "api": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/reports/generate",
+        "description": "Gerar um novo relatório",
+        "parameters": {
+          "type": "string (required)",
+          "data": "object (required)",
+          "options": "object (optional)"
+        }
+      },
+      {
+        "method": "POST",
+        "path": "/reports/export",
+        "description": "Exportar relatório em formato específico",
+        "parameters": {
+          "reportId": "string (required)",
+          "format": "string (optional)"
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/reports/types",
+        "description": "Listar tipos de relatórios disponíveis"
+      },
+      {
+        "method": "GET",
+        "path": "/reports/history",
+        "description": "Obter histórico de relatórios gerados",
+        "parameters": {
+          "limit": "number (optional)"
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/reports/stats",
+        "description": "Obter estatísticas do módulo de relatórios"
+      },
+      {
+        "method": "GET",
+        "path": "/reports/templates",
+        "description": "Listar templates de relatórios disponíveis"
+      },
+      {
+        "method": "POST",
+        "path": "/reports/templates/upload",
+        "description": "Fazer upload de novo template de relatório",
+        "parameters": {
+          "name": "string (required)",
+          "template": "object (required)"
+        }
+      },
+      {
+        "method": "DELETE",
+        "path": "/reports/cache/clear",
+        "description": "Limpar cache de relatórios"
+      }
+    ]
+  },
+  "features": [
+    "Geração de relatórios financeiros com análise de tendências",
+    "Relatórios de inventário com alertas de estoque",
+    "Análise de clientes com segmentação e churn",
+    "Relatórios de vendas com previsões",
+    "Templates personalizados para relatórios específicos",
+    "Cache inteligente para melhor performance",
+    "Exportação em múltiplos formatos (JSON, CSV, HTML, PDF)",
+    "Histórico completo de relatórios gerados",
+    "Estatísticas detalhadas de uso do módulo",
+    "Integração com outros módulos do sistema"
+  ],
+  "validation": {
+    "dataTypes": {
+      "transactions": {
+        "required": ["id", "date", "amount", "type"],
+        "optional": ["category", "description", "account"]
+      },
+      "products": {
+        "required": ["id", "name", "quantity", "price"],
+        "optional": ["category", "supplier", "sku", "description"]
+      },
+      "customers": {
+        "required": ["id", "name", "createdAt"],
+        "optional": ["email", "phone", "lastActivity", "totalOrders", "totalSpent"]
+      },
+      "sales": {
+        "required": ["id", "date", "total"],
+        "optional": ["customerId", "products", "salesperson", "commission"]
+      }
+    }
+  },
+  "performance": {
+    "caching": {
+      "enabled": true,
+      "strategy": "lru",
+      "maxSize": 100,
+      "ttl": 3600
+    },
+    "optimization": {
+      "batchProcessing": true,
+      "lazyLoading": true,
+      "compression": true
+    }
+  },
+  "security": {
+    "dataAccess": {
+      "encryption": false,
+      "anonymization": true,
+      "auditLog": true
+    },
+    "fileAccess": {
+      "sandboxed": true,
+      "allowedPaths": [
+        "./templates/reports",
+        "./output/reports"
+      ]
+    }
+  },
+  "monitoring": {
+    "metrics": [
+      "reports_generated_total",
+      "reports_generation_time",
+      "reports_cache_hits",
+      "reports_cache_misses",
+      "reports_export_count",
+      "reports_error_count"
+    ],
+    "healthChecks": [
+      "template_directory_accessible",
+      "output_directory_writable",
+      "cache_functional"
+    ]
+  }
+}

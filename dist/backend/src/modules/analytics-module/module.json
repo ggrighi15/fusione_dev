@@ -1,0 +1,38 @@
+{
+  "name": "analytics-module",
+  "version": "1.0.0",
+  "description": "Módulo de analytics e métricas do sistema",
+  "author": "Fusione Core System",
+  "main": "index.js",
+  "enabled": true,
+  "autoStart": true,
+  "priority": 3,
+  "dependencies": [],
+  "permissions": [
+    "events:listen",
+    "events:emit",
+    "config:read",
+    "cache:read",
+    "cache:write"
+  ],
+  "settings": {
+    "metricsInterval": 30000,
+    "retentionDays": 30,
+    "enableRealTimeMetrics": true,
+    "trackUserEvents": true,
+    "trackSystemEvents": true
+  },
+  "events": {
+    "listen": [
+      "user:*",
+      "system:*",
+      "api:*",
+      "module:*"
+    ],
+    "emit": [
+      "analytics:metric",
+      "analytics:report",
+      "analytics:alert"
+    ]
+  }
+}

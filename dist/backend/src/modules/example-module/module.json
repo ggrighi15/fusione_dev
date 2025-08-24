@@ -1,0 +1,24 @@
+{
+  "name": "example-module",
+  "version": "1.0.0",
+  "description": "Módulo de exemplo para demonstrar a funcionalidade do Fusione Core System",
+  "author": "Fusione Core Team",
+  "dependencies": [],
+  "config": {
+    "enabled": true,
+    "autoStart": true,
+    "priority": 1,
+    "settings": {
+      "interval": 5000,
+      "maxRetries": 3
+    }
+  },
+  "exports": {
+    "main": "./index.js"
+  },
+  "permissions": [
+    "events:emit",
+    "events:listen",
+    "config:read"
+  ]
+}

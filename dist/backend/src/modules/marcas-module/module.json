@@ -1,0 +1,980 @@
+{
+  "name": "marcas-module",
+  "version": "1.0.0",
+  "description": "Módulo de Gestão de Marcas e Propriedade Intelectual",
+  "author": "Fusione Core System",
+  "license": "MIT",
+  "main": "index.js",
+  "type": "core-module",
+  "category": "intellectual-property",
+  "priority": 6,
+  "dependencies": {
+    "required": [
+      "auth-module",
+      "notification-module",
+      "pessoas-module"
+    ],
+    "optional": [
+      "contratos-module",
+      "compliance-module",
+      "contencioso-module"
+    ]
+  },
+  "permissions": {
+    "admin": [
+      "marcas:create",
+      "marcas:read",
+      "marcas:update",
+      "marcas:delete",
+      "patentes:create",
+      "patentes:read",
+      "patentes:update",
+      "patentes:delete",
+      "licencas:create",
+      "licencas:read",
+      "licencas:update",
+      "licencas:delete",
+      "prazos:manage_all",
+      "monitoramento:manage_all",
+      "custos:manage_all",
+      "marcas:reports",
+      "marcas:config",
+      "marcas:audit"
+    ],
+    "advogado_pi": [
+      "marcas:create",
+      "marcas:read",
+      "marcas:update",
+      "patentes:create",
+      "patentes:read",
+      "patentes:update",
+      "licencas:create",
+      "licencas:read",
+      "licencas:update",
+      "prazos:create",
+      "prazos:update",
+      "monitoramento:create",
+      "monitoramento:update",
+      "custos:create",
+      "custos:update",
+      "marcas:reports_own"
+    ],
+    "agente_pi": [
+      "marcas:create",
+      "marcas:read",
+      "marcas:update",
+      "patentes:create",
+      "patentes:read",
+      "patentes:update",
+      "prazos:create",
+      "prazos:update",
+      "custos:read",
+      "custos:update"
+    ],
+    "assistente_pi": [
+      "marcas:read",
+      "marcas:update_basic",
+      "patentes:read",
+      "patentes:update_basic",
+      "prazos:read",
+      "prazos:update_status",
+      "custos:read",
+      "monitoramento:read"
+    ],
+    "cliente": [
+      "marcas:read_own",
+      "patentes:read_own",
+      "licencas:read_own",
+      "prazos:read_own",
+      "custos:read_own",
+      "monitoramento:read_own"
+    ],
+    "consultor": [
+      "marcas:read",
+      "patentes:read",
+      "licencas:read",
+      "prazos:read",
+      "marcas:reports_limited"
+    ]
+  },
+  "settings": {
+    "numeracao": {
+      "marca": {
+        "formato": "MRC-AAAA-NNNNNN",
+        "sequencial": true,
+        "reiniciar_anualmente": true
+      },
+      "patente": {
+        "formato": "PAT-AAAA-NNNNNN",
+        "sequencial": true,
+        "reiniciar_anualmente": true
+      },
+      "desenho_industrial": {
+        "formato": "DES-AAAA-NNNNNN",
+        "sequencial": true,
+        "reiniciar_anualmente": true
+      },
+      "licenca": {
+        "formato": "LIC-AAAA-NNNNNN",
+        "sequencial": true,
+        "reiniciar_anualmente": true
+      },
+      "monitoramento": {
+        "formato": "MON-AAAA-NNNNNN",
+        "sequencial": true,
+        "reiniciar_anualmente": true
+      }
+    },
+    "tipos_marca": {
+      "nominativa": {
+        "nome": "Nominativa",
+        "descricao": "Constituída apenas por palavras",
+        "icone": "text",
+        "cor": "#3B82F6",
+        "requer_imagem": false
+      },
+      "figurativa": {
+        "nome": "Figurativa",
+        "descricao": "Constituída apenas por figura, desenho ou símbolo",
+        "icone": "photograph",
+        "cor": "#10B981",
+        "requer_imagem": true
+      },
+      "mista": {
+        "nome": "Mista",
+        "descricao": "Constituída por palavra e figura",
+        "icone": "collection",
+        "cor": "#F59E0B",
+        "requer_imagem": true
+      },
+      "tridimensional": {
+        "nome": "Tridimensional",
+        "descricao": "Constituída pela forma plástica do produto",
+        "icone": "cube",
+        "cor": "#8B5CF6",
+        "requer_imagem": true
+      }
+    },
+    "tipos_patente": {
+      "invencao": {
+        "nome": "Patente de Invenção",
+        "descricao": "Proteção para invenções com atividade inventiva",
+        "vigencia_anos": 20,
+        "icone": "light-bulb",
+        "cor": "#EF4444"
+      },
+      "modelo_utilidade": {
+        "nome": "Modelo de Utilidade",
+        "descricao": "Proteção para melhoramentos em objetos de uso prático",
+        "vigencia_anos": 15,
+        "icone": "cog",
+        "cor": "#06B6D4"
+      },
+      "desenho_industrial": {
+        "nome": "Desenho Industrial",
+        "descricao": "Proteção para aspectos ornamentais de objetos",
+        "vigencia_anos": 10,
+        "icone": "color-swatch",
+        "cor": "#84CC16"
+      }
+    },
+    "classes_nice": {
+      "produtos": {
+        "1-34": "Classes de Produtos",
+        "descricao": "Produtos químicos, tintas, cosméticos, máquinas, etc."
+      },
+      "servicos": {
+        "35-45": "Classes de Serviços",
+        "descricao": "Publicidade, transporte, educação, serviços jurídicos, etc."
+      }
+    },
+    "status_marca": {
+      "depositada": {
+        "nome": "Depositada",
+        "descricao": "Pedido protocolado no INPI",
+        "cor": "#6B7280",
+        "proximos_status": ["em_exame", "indeferida"]
+      },
+      "em_exame": {
+        "nome": "Em Exame",
+        "descricao": "Pedido em análise pelo INPI",
+        "cor": "#F59E0B",
+        "proximos_status": ["deferida", "indeferida", "exigencia"]
+      },
+      "exigencia": {
+        "nome": "Exigência",
+        "descricao": "INPI solicitou complementação",
+        "cor": "#EF4444",
+        "proximos_status": ["em_exame", "indeferida"]
+      },
+      "deferida": {
+        "nome": "Deferida",
+        "descricao": "Pedido aprovado, aguardando registro",
+        "cor": "#10B981",
+        "proximos_status": ["registrada"]
+      },
+      "registrada": {
+        "nome": "Registrada",
+        "descricao": "Marca registrada e protegida",
+        "cor": "#059669",
+        "proximos_status": ["renovada", "extinta"]
+      },
+      "indeferida": {
+        "nome": "Indeferida",
+        "descricao": "Pedido negado pelo INPI",
+        "cor": "#DC2626",
+        "proximos_status": ["recurso"]
+      },
+      "extinta": {
+        "nome": "Extinta",
+        "descricao": "Registro extinto por não renovação",
+        "cor": "#374151",
+        "proximos_status": []
+      }
+    },
+    "status_patente": {
+      "depositada": {
+        "nome": "Depositada",
+        "descricao": "Pedido protocolado no INPI",
+        "cor": "#6B7280"
+      },
+      "publicada": {
+        "nome": "Publicada",
+        "descricao": "Pedido publicado na RPI",
+        "cor": "#3B82F6"
+      },
+      "em_exame": {
+        "nome": "Em Exame",
+        "descricao": "Pedido em análise técnica",
+        "cor": "#F59E0B"
+      },
+      "deferida": {
+        "nome": "Deferida",
+        "descricao": "Pedido aprovado",
+        "cor": "#10B981"
+      },
+      "concedida": {
+        "nome": "Concedida",
+        "descricao": "Patente concedida e protegida",
+        "cor": "#059669"
+      },
+      "indeferida": {
+        "nome": "Indeferida",
+        "descricao": "Pedido negado",
+        "cor": "#DC2626"
+      },
+      "extinta": {
+        "nome": "Extinta",
+        "descricao": "Patente extinta",
+        "cor": "#374151"
+      }
+    },
+    "tipos_licenciamento": {
+      "licenca_uso": {
+        "nome": "Licença de Uso",
+        "descricao": "Autorização para uso da marca/patente",
+        "icone": "hand",
+        "requer_royalty": true
+      },
+      "cessao": {
+        "nome": "Cessão",
+        "descricao": "Transferência definitiva de titularidade",
+        "icone": "switch-horizontal",
+        "requer_royalty": false
+      },
+      "franquia": {
+        "nome": "Franquia",
+        "descricao": "Sistema de franquias com uso de marca",
+        "icone": "office-building",
+        "requer_royalty": true
+      },
+      "comodato": {
+        "nome": "Comodato",
+        "descricao": "Empréstimo gratuito de uso",
+        "icone": "gift",
+        "requer_royalty": false
+      }
+    },
+    "prazos": {
+      "alerta_renovacao_dias": 90,
+      "alerta_oposicao_dias": 15,
+      "alerta_manifestacao_dias": 7,
+      "alerta_exigencia_dias": 30,
+      "alerta_recurso_dias": 15,
+      "alerta_pagamento_dias": 10
+    },
+    "monitoramento": {
+      "tipos_monitoramento": {
+        "oposicao": {
+          "nome": "Oposição",
+          "descricao": "Contestação de pedido de marca",
+          "prazo_dias": 60
+        },
+        "nulidade": {
+          "nome": "Nulidade",
+          "descricao": "Pedido de nulidade de registro",
+          "prazo_dias": 180
+        },
+        "contrafacao": {
+          "nome": "Contrafação",
+          "descricao": "Uso indevido de marca/patente",
+          "prazo_dias": 30
+        },
+        "concorrencia_desleal": {
+          "nome": "Concorrência Desleal",
+          "descricao": "Práticas comerciais desleais",
+          "prazo_dias": 60
+        }
+      },
+      "niveis_risco": {
+        "baixo": {
+          "nome": "Baixo",
+          "cor": "#10B981",
+          "acao_requerida": false
+        },
+        "medio": {
+          "nome": "Médio",
+          "cor": "#F59E0B",
+          "acao_requerida": true
+        },
+        "alto": {
+          "nome": "Alto",
+          "cor": "#EF4444",
+          "acao_requerida": true
+        },
+        "critico": {
+          "nome": "Crítico",
+          "cor": "#DC2626",
+          "acao_requerida": true
+        }
+      },
+      "verificacao_automatica": true,
+      "frequencia_verificacao": "semanal",
+      "fontes_monitoramento": [
+        "INPI",
+        "WIPO",
+        "Tribunais",
+        "Internet",
+        "Redes Sociais"
+      ]
+    },
+    "custos": {
+      "tipos_custo": {
+        "deposito": {
+          "nome": "Depósito",
+          "descricao": "Taxa de depósito do pedido"
+        },
+        "exame": {
+          "nome": "Exame",
+          "descricao": "Taxa de exame técnico"
+        },
+        "concessao": {
+          "nome": "Concessão",
+          "descricao": "Taxa de concessão/registro"
+        },
+        "renovacao": {
+          "nome": "Renovação",
+          "descricao": "Taxa de renovação"
+        },
+        "oposicao": {
+          "nome": "Oposição",
+          "descricao": "Taxa de oposição"
+        },
+        "recurso": {
+          "nome": "Recurso",
+          "descricao": "Taxa de recurso"
+        },
+        "honorarios": {
+          "nome": "Honorários",
+          "descricao": "Honorários profissionais"
+        },
+        "traducao": {
+          "nome": "Tradução",
+          "descricao": "Custos de tradução"
+        }
+      },
+      "moedas_aceitas": ["BRL", "USD", "EUR"],
+      "moeda_padrao": "BRL",
+      "alerta_vencimento_dias": 10,
+      "aprovacao_limite_valor": 5000.00
+    },
+    "compliance": {
+      "orgaos_reguladores": {
+        "inpi": {
+          "nome": "INPI - Instituto Nacional da Propriedade Industrial",
+          "url": "https://www.gov.br/inpi",
+          "verificacao_automatica": true
+        },
+        "wipo": {
+          "nome": "WIPO - World Intellectual Property Organization",
+          "url": "https://www.wipo.int",
+          "verificacao_automatica": false
+        },
+        "anvisa": {
+          "nome": "ANVISA - Agência Nacional de Vigilância Sanitária",
+          "url": "https://www.gov.br/anvisa",
+          "verificacao_automatica": false
+        }
+      },
+      "verificacoes_obrigatorias": [
+        "Validade de registros",
+        "Cumprimento de prazos",
+        "Pagamento de taxas",
+        "Renovações em dia",
+        "Documentação completa"
+      ],
+      "alertas_compliance": {
+        "registro_vencido": {
+          "nivel": "critico",
+          "acao": "renovar_imediatamente"
+        },
+        "prazo_perdido": {
+          "nivel": "alto",
+          "acao": "avaliar_recurso"
+        },
+        "taxa_pendente": {
+          "nivel": "medio",
+          "acao": "efetuar_pagamento"
+        }
+      }
+    },
+    "documentos": {
+      "armazenamento": {
+        "local": "/uploads/marcas",
+        "tipos_permitidos": [
+          "pdf", "doc", "docx", "jpg", "jpeg", "png", "gif", "tiff",
+          "zip", "rar", "xml", "txt", "rtf"
+        ],
+        "tamanho_maximo_mb": 50,
+        "versionamento": true,
+        "backup_automatico": true
+      },
+      "assinatura_digital": {
+        "obrigatoria": false,
+        "tipos_aceitos": ["ICP-Brasil", "Adobe Sign", "DocuSign"],
+        "validacao_automatica": true
+      },
+      "marca_dagua": {
+        "aplicar": true,
+        "texto": "CONFIDENCIAL - {EMPRESA}",
+        "posicao": "diagonal",
+        "opacidade": 0.3
+      },
+      "ocr": {
+        "habilitado": true,
+        "idiomas": ["por", "eng", "spa"],
+        "indexacao_automatica": true
+      }
+    },
+    "integracao": {
+      "inpi_api": {
+        "habilitada": true,
+        "url_base": "https://gru.inpi.gov.br/pePI/api",
+        "timeout_segundos": 30,
+        "retry_tentativas": 3,
+        "cache_duracao_horas": 6
+      },
+      "wipo_api": {
+        "habilitada": false,
+        "url_base": "https://www.wipo.int/branddb/api",
+        "timeout_segundos": 45,
+        "retry_tentativas": 2
+      },
+      "receita_federal": {
+        "habilitada": true,
+        "validacao_cnpj": true,
+        "consulta_situacao": true
+      },
+      "cartorio_digital": {
+        "habilitada": false,
+        "reconhecimento_firma": false,
+        "autenticacao_documentos": false
+      }
+    },
+    "relatorios": {
+      "tipos_relatorio": {
+        "portfolio_marcas": {
+          "nome": "Portfólio de Marcas",
+          "descricao": "Relatório completo do portfólio de marcas",
+          "formato": ["pdf", "excel"],
+          "agendamento": true
+        },
+        "portfolio_patentes": {
+          "nome": "Portfólio de Patentes",
+          "descricao": "Relatório completo do portfólio de patentes",
+          "formato": ["pdf", "excel"],
+          "agendamento": true
+        },
+        "prazos_vencimento": {
+          "nome": "Prazos de Vencimento",
+          "descricao": "Relatório de prazos próximos ao vencimento",
+          "formato": ["pdf", "excel"],
+          "agendamento": true
+        },
+        "custos_pi": {
+          "nome": "Custos de PI",
+          "descricao": "Relatório de custos de propriedade intelectual",
+          "formato": ["pdf", "excel"],
+          "agendamento": true
+        },
+        "monitoramento_terceiros": {
+          "nome": "Monitoramento de Terceiros",
+          "descricao": "Relatório de monitoramento de atividades de terceiros",
+          "formato": ["pdf", "excel"],
+          "agendamento": false
+        },
+        "licenciamentos": {
+          "nome": "Licenciamentos",
+          "descricao": "Relatório de licenças e cessões",
+          "formato": ["pdf", "excel"],
+          "agendamento": true
+        }
+      },
+      "agendamento_automatico": {
+        "mensal": ["prazos_vencimento", "custos_pi"],
+        "trimestral": ["portfolio_marcas", "portfolio_patentes"],
+        "semestral": ["licenciamentos"],
+        "anual": ["portfolio_marcas", "portfolio_patentes"]
+      },
+      "distribuicao_automatica": true,
+      "destinatarios_padrao": ["admin", "advogado_pi"]
+    }
+  },
+  "events": {
+    "emitted": [
+      "marca:criada",
+      "marca:atualizada",
+      "marca:removida",
+      "marca:status_alterado",
+      "marca:renovada",
+      "patente:criada",
+      "patente:atualizada",
+      "patente:removida",
+      "patente:status_alterado",
+      "patente:concedida",
+      "licenca:criada",
+      "licenca:atualizada",
+      "licenca:removida",
+      "licenca:vencida",
+      "prazo:criado",
+      "prazo:vencendo",
+      "prazo:vencido",
+      "prazo:cumprido",
+      "monitoramento:alerta",
+      "monitoramento:risco_alto",
+      "custo:criado",
+      "custo:vencendo",
+      "custo:pago",
+      "custo:vencido",
+      "renovacao:necessaria",
+      "renovacao:realizada",
+      "oposicao:recebida",
+      "nulidade:recebida",
+      "contrafacao:detectada",
+      "compliance:alerta",
+      "relatorio:gerado",
+      "backup:realizado"
+    ],
+    "listened": [
+      "pessoa:criada",
+      "pessoa:atualizada",
+      "pessoa:removida",
+      "documento:assinado",
+      "documento:vencido",
+      "contrato:assinado",
+      "contrato:vencendo",
+      "processo:criado",
+      "processo:atualizado",
+      "notificacao:enviada",
+      "pagamento:realizado",
+      "sistema:backup",
+      "sistema:manutencao",
+      "usuario:logado",
+      "usuario:deslogado"
+    ]
+  },
+  "api": {
+    "routes": {
+      "marcas": {
+        "GET /api/marcas": "listarMarcas",
+        "GET /api/marcas/:id": "obterMarca",
+        "POST /api/marcas": "criarMarca",
+        "PUT /api/marcas/:id": "atualizarMarca",
+        "DELETE /api/marcas/:id": "removerMarca",
+        "POST /api/marcas/:id/renovar": "renovarMarca",
+        "GET /api/marcas/:id/historico": "obterHistoricoMarca",
+        "POST /api/marcas/:id/upload": "uploadDocumentoMarca",
+        "GET /api/marcas/:id/documentos": "listarDocumentosMarca",
+        "POST /api/marcas/buscar": "buscarMarcas"
+      },
+      "patentes": {
+        "GET /api/patentes": "listarPatentes",
+        "GET /api/patentes/:id": "obterPatente",
+        "POST /api/patentes": "criarPatente",
+        "PUT /api/patentes/:id": "atualizarPatente",
+        "DELETE /api/patentes/:id": "removerPatente",
+        "GET /api/patentes/:id/historico": "obterHistoricoPatente",
+        "POST /api/patentes/:id/upload": "uploadDocumentoPatente",
+        "GET /api/patentes/:id/documentos": "listarDocumentosPatente",
+        "POST /api/patentes/buscar": "buscarPatentes"
+      },
+      "licencas": {
+        "GET /api/licencas": "listarLicencas",
+        "GET /api/licencas/:id": "obterLicenca",
+        "POST /api/licencas": "criarLicenca",
+        "PUT /api/licencas/:id": "atualizarLicenca",
+        "DELETE /api/licencas/:id": "removerLicenca",
+        "POST /api/licencas/:id/renovar": "renovarLicenca",
+        "GET /api/licencas/:id/royalties": "obterRoyaltiesLicenca",
+        "POST /api/licencas/:id/royalties": "registrarRoyalty"
+      },
+      "prazos": {
+        "GET /api/prazos": "listarPrazos",
+        "GET /api/prazos/:id": "obterPrazo",
+        "POST /api/prazos": "criarPrazo",
+        "PUT /api/prazos/:id": "atualizarPrazo",
+        "DELETE /api/prazos/:id": "removerPrazo",
+        "POST /api/prazos/:id/cumprir": "cumprirPrazo",
+        "GET /api/prazos/vencendo": "listarPrazosVencendo",
+        "GET /api/prazos/calendario": "obterCalendarioPrazos"
+      },
+      "monitoramento": {
+        "GET /api/monitoramento": "listarMonitoramento",
+        "GET /api/monitoramento/:id": "obterMonitoramento",
+        "POST /api/monitoramento": "criarMonitoramento",
+        "PUT /api/monitoramento/:id": "atualizarMonitoramento",
+        "DELETE /api/monitoramento/:id": "removerMonitoramento",
+        "POST /api/monitoramento/:id/acao": "registrarAcaoMonitoramento",
+        "GET /api/monitoramento/alertas": "listarAlertasMonitoramento"
+      },
+      "custos": {
+        "GET /api/custos": "listarCustos",
+        "GET /api/custos/:id": "obterCusto",
+        "POST /api/custos": "criarCusto",
+        "PUT /api/custos/:id": "atualizarCusto",
+        "DELETE /api/custos/:id": "removerCusto",
+        "POST /api/custos/:id/pagar": "registrarPagamentoCusto",
+        "GET /api/custos/vencendo": "listarCustosVencendo",
+        "GET /api/custos/relatorio": "obterRelatorioCustos"
+      },
+      "relatorios": {
+        "GET /api/relatorios/marcas": "relatorioMarcas",
+        "GET /api/relatorios/patentes": "relatorioPatentes",
+        "GET /api/relatorios/prazos": "relatorioPrazos",
+        "GET /api/relatorios/custos": "relatorioCustos",
+        "GET /api/relatorios/licencas": "relatorioLicencas",
+        "GET /api/relatorios/portfolio": "relatorioPortfolio",
+        "POST /api/relatorios/personalizado": "relatorioPersonalizado"
+      },
+      "dashboard": {
+        "GET /api/marcas/dashboard": "obterDashboard",
+        "GET /api/marcas/estatisticas": "obterEstatisticas",
+        "GET /api/marcas/alertas": "obterAlertas",
+        "GET /api/marcas/timeline": "obterTimeline"
+      },
+      "integracao": {
+        "POST /api/integracao/inpi/consultar": "consultarINPI",
+        "POST /api/integracao/inpi/sincronizar": "sincronizarINPI",
+        "GET /api/integracao/inpi/status": "statusIntegracaoINPI",
+        "POST /api/integracao/wipo/consultar": "consultarWIPO"
+      },
+      "busca": {
+        "POST /api/busca/marcas": "buscarMarcasAvancada",
+        "POST /api/busca/patentes": "buscarPatentesAvancada",
+        "POST /api/busca/similaridade": "buscarSimilaridade",
+        "POST /api/busca/anterioridade": "buscarAnterioridade"
+      }
+    }
+  },
+  "database": {
+    "tables": [
+      "marcas",
+      "patentes",
+      "prazos_pi",
+      "licencas",
+      "monitoramento",
+      "custos_pi",
+      "marcas_historico"
+    ],
+    "indexes": [
+      "idx_marcas_numero_interno",
+      "idx_marcas_numero_registro",
+      "idx_marcas_nome_marca",
+      "idx_marcas_titular",
+      "idx_marcas_status",
+      "idx_marcas_classe_nice",
+      "idx_marcas_data_deposito",
+      "idx_marcas_data_vigencia",
+      "idx_patentes_numero_interno",
+      "idx_patentes_numero_patente",
+      "idx_patentes_titulo",
+      "idx_patentes_titular",
+      "idx_patentes_status",
+      "idx_patentes_tipo",
+      "idx_patentes_data_deposito",
+      "idx_patentes_data_vigencia",
+      "idx_prazos_tipo_ativo",
+      "idx_prazos_ativo_id",
+      "idx_prazos_data_prazo",
+      "idx_prazos_data_alerta",
+      "idx_prazos_status",
+      "idx_prazos_responsavel",
+      "idx_licencas_numero_interno",
+      "idx_licencas_tipo_ativo",
+      "idx_licencas_ativo_id",
+      "idx_licencas_licenciante",
+      "idx_licencas_licenciado",
+      "idx_licencas_status",
+      "idx_monitoramento_tipo_ativo",
+      "idx_monitoramento_ativo_id",
+      "idx_monitoramento_risco_nivel",
+      "idx_monitoramento_status",
+      "idx_custos_tipo_ativo",
+      "idx_custos_ativo_id",
+      "idx_custos_data_vencimento",
+      "idx_custos_status",
+      "idx_historico_entidade",
+      "idx_historico_acao",
+      "idx_historico_usuario",
+      "idx_historico_timestamp"
+    ],
+    "views": [
+      "view_marcas_ativas",
+      "view_patentes_ativas",
+      "view_prazos_vencendo",
+      "view_custos_pendentes",
+      "view_licencas_ativas",
+      "view_monitoramento_alertas",
+      "view_portfolio_resumo",
+      "view_estatisticas_pi"
+    ]
+  },
+  "requirements": {
+    "node_version": ">=16.0.0",
+    "dependencies": {
+      "express": "^4.18.0",
+      "moment": "^2.29.4",
+      "node-cron": "^3.0.2",
+      "uuid": "^9.0.0",
+      "lodash": "^4.17.21",
+      "joi": "^17.9.0",
+      "axios": "^1.4.0",
+      "multer": "^1.4.5",
+      "sharp": "^0.32.0",
+      "pdf-lib": "^1.17.1",
+      "tesseract.js": "^4.1.0",
+      "crypto": "^1.0.1"
+    },
+    "optional_dependencies": {
+      "puppeteer": "^20.0.0",
+      "xlsx": "^0.18.5",
+      "docx": "^8.2.0",
+      "pdfkit": "^0.13.0",
+      "canvas": "^2.11.0",
+      "jimp": "^0.22.0"
+    }
+  },
+  "scripts": {
+    "test": "jest tests/marcas",
+    "lint": "eslint src/modules/marcas-module",
+    "docs": "jsdoc src/modules/marcas-module -d docs/marcas",
+    "backup-marcas": "node scripts/backup-marcas.js",
+    "sync-inpi": "node scripts/sync-inpi.js",
+    "verificar-prazos": "node scripts/verificar-prazos.js",
+    "gerar-relatorios": "node scripts/gerar-relatorios.js",
+    "monitorar-terceiros": "node scripts/monitorar-terceiros.js",
+    "calcular-custos": "node scripts/calcular-custos.js"
+  },
+  "monitoring": {
+    "metrics": [
+      "marcas_registradas",
+      "marcas_pendentes",
+      "patentes_concedidas",
+      "patentes_pendentes",
+      "prazos_vencendo",
+      "prazos_vencidos",
+      "custos_pendentes",
+      "custos_pagos",
+      "licencas_ativas",
+      "monitoramento_alertas",
+      "renovacoes_necessarias",
+      "oposicoes_recebidas",
+      "tempo_medio_registro",
+      "taxa_sucesso_pedidos",
+      "valor_portfolio"
+    ],
+    "alerts": [
+      "prazo_vencendo_critico",
+      "renovacao_marca_urgente",
+      "custo_vencido",
+      "oposicao_recebida",
+      "nulidade_recebida",
+      "contrafacao_detectada",
+      "licenca_vencida",
+      "monitoramento_risco_alto",
+      "integracao_inpi_falhando",
+      "backup_falhando",
+      "portfolio_desatualizado",
+      "compliance_violacao"
+    ],
+    "dashboards": [
+      "portfolio_overview",
+      "prazos_calendario",
+      "custos_financeiro",
+      "monitoramento_terceiros",
+      "licenciamentos_receitas",
+      "compliance_status",
+      "performance_registros",
+      "alertas_criticos"
+    ]
+  },
+  "security": {
+    "encryption": {
+      "dados_marcas": true,
+      "dados_patentes": true,
+      "documentos": true,
+      "contratos_licenca": true,
+      "algorithm": "AES-256-GCM",
+      "key_rotation": "quarterly"
+    },
+    "audit": {
+      "log_all_actions": true,
+      "retention_period": "7_years",
+      "compliance": ["LGPD", "SOX", "ISO27001"],
+      "tamper_detection": true,
+      "real_time_monitoring": true
+    },
+    "access_control": {
+      "role_based": true,
+      "marca_based": true,
+      "cliente_based": true,
+      "time_based": true,
+      "ip_whitelist": true,
+      "two_factor_required": true
+    },
+    "data_protection": {
+      "anonymization": true,
+      "pseudonymization": true,
+      "right_to_erasure": true,
+      "data_portability": true,
+      "consent_management": true
+    }
+  },
+  "integrations": {
+    "inpi": {
+      "consulta_marcas": true,
+      "consulta_patentes": true,
+      "acompanhamento_processos": true,
+      "download_documentos": true
+    },
+    "wipo": {
+      "madrid_system": false,
+      "pct_system": false,
+      "global_brand_database": false
+    },
+    "receita_federal": {
+      "validacao_cnpj": true,
+      "consulta_situacao": true
+    },
+    "tribunais": {
+      "consulta_processos": false,
+      "acompanhamento_decisoes": false
+    },
+    "cartorio_digital": {
+      "reconhecimento_firma": false,
+      "autenticacao_documentos": false
+    },
+    "bancos": {
+      "pagamento_taxas": false,
+      "conciliacao_automatica": false
+    }
+  },
+  "templates": {
+    "documentos": {
+      "procuracao_inpi": "templates/procuracao_inpi.docx",
+      "contrato_licenca": "templates/contrato_licenca.docx",
+      "contrato_cessao": "templates/contrato_cessao.docx",
+      "oposicao_marca": "templates/oposicao_marca.docx",
+      "recurso_inpi": "templates/recurso_inpi.docx",
+      "manifestacao_exigencia": "templates/manifestacao_exigencia.docx"
+    },
+    "relatorios": {
+      "portfolio_marcas": "templates/relatorio_portfolio_marcas.html",
+      "portfolio_patentes": "templates/relatorio_portfolio_patentes.html",
+      "prazos_vencimento": "templates/relatorio_prazos.html",
+      "custos_pi": "templates/relatorio_custos.html",
+      "monitoramento": "templates/relatorio_monitoramento.html"
+    },
+    "notificacoes": {
+      "prazo_vencendo": "templates/email_prazo_vencendo.html",
+      "renovacao_necessaria": "templates/email_renovacao.html",
+      "oposicao_recebida": "templates/email_oposicao.html",
+      "custo_vencido": "templates/email_custo_vencido.html"
+    }
+  },
+  "compliance": {
+    "frameworks": [
+      "LGPD (Lei Geral de Proteção de Dados)",
+      "Lei de Propriedade Industrial (Lei 9.279/96)",
+      "Lei de Software (Lei 9.609/98)",
+      "Lei de Direitos Autorais (Lei 9.610/98)",
+      "Acordo TRIPS",
+      "Convenção de Paris",
+      "Protocolo de Madrid",
+      "PCT (Patent Cooperation Treaty)"
+    ],
+    "controles": [
+      "Registro de Todas as Ações",
+      "Controle de Prazos Legais",
+      "Validação de Documentos",
+      "Monitoramento de Compliance",
+      "Backup e Recuperação",
+      "Segregação de Dados",
+      "Criptografia de Informações Sensíveis",
+      "Auditoria de Acessos"
+    ],
+    "relatorios": [
+      "Relatório de Prazos Cumpridos",
+      "Relatório de Acessos ao Sistema",
+      "Relatório de Alterações de Dados",
+      "Relatório de Backup e Recuperação",
+      "Relatório de Compliance LGPD",
+      "Relatório de Segurança da Informação"
+    ]
+  },
+  "backup": {
+    "automatic": true,
+    "frequency": "daily",
+    "retention": "7_years",
+    "encryption": true,
+    "compression": true,
+    "offsite": true,
+    "verification": true,
+    "incremental": true,
+    "include_documents": true,
+    "include_images": true
+  },
+  "performance": {
+    "cache": {
+      "marcas_data": "4_hours",
+      "patentes_data": "4_hours",
+      "inpi_responses": "6_hours",
+      "search_results": "2_hours",
+      "reports_data": "1_hour"
+    },
+    "optimization": {
+      "lazy_loading": true,
+      "image_compression": true,
+      "pdf_optimization": true,
+      "database_indexing": true,
+      "query_optimization": true
+    },
+    "limits": {
+      "max_file_size_mb": 50,
+      "max_search_results": 1000,
+      "max_concurrent_uploads": 5,
+      "max_report_records": 10000,
+      "api_rate_limit_per_minute": 100
+    }
+  }
+}

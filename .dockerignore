@@ -1,0 +1,96 @@
+# Fusione Core System - Docker Ignore
+# Arquivos e diretórios a serem ignorados durante o build
+
+# Dependências
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+logs/
+*.log
+
+# Dados temporários
+data/
+temp/
+tmp/
+
+# Arquivos de ambiente
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Arquivos de configuração local
+config/local.json
+config/development.json
+config/test.json
+
+# Arquivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Documentação
+README.md
+DOCS.md
+*.md
+docs/
+
+# Testes
+tests/
+*.test.js
+*.spec.js
+coverage/
+.nyc_output/
+jest.config.*
+
+# Build artifacts
+build/
+dist/
+out/
+
+# Cache
+.cache/
+.npm/
+.yarn/
+
+# Arquivos de backup
+*.bak
+*.backup
+*.old
+
+# Arquivos de certificados (devem ser montados como volumes)
+*.pem
+*.key
+*.crt
+*.p12
+
+# Scripts de desenvolvimento
+scripts/dev/
+scripts/test/
+
+# Arquivos de monitoramento local
+prometheus/
+grafana/
+
+# Arquivos de exemplo
+examples/
+samples/

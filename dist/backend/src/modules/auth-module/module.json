@@ -1,0 +1,45 @@
+{
+  "name": "auth-module",
+  "version": "1.0.0",
+  "description": "Módulo de autenticação e autorização de usuários",
+  "author": "Fusione Core System",
+  "main": "index.js",
+  "enabled": true,
+  "autoStart": true,
+  "priority": 0,
+  "dependencies": [],
+  "permissions": [
+    "events:listen",
+    "events:emit",
+    "config:read",
+    "database:read",
+    "database:write",
+    "cache:read",
+    "cache:write"
+  ],
+  "settings": {
+    "jwtSecret": "your-super-secret-jwt-key",
+    "jwtExpiresIn": "1h",
+    "refreshTokenExpiresIn": "7d",
+    "bcryptRounds": 12,
+    "maxLoginAttempts": 5,
+    "lockoutTime": 900000,
+    "enableRefreshTokens": true
+  },
+  "events": {
+    "listen": [
+      "user:login",
+      "user:logout",
+      "user:register",
+      "system:startup"
+    ],
+    "emit": [
+      "auth:login",
+      "auth:logout",
+      "auth:register",
+      "auth:token:refresh",
+      "auth:failed",
+      "auth:locked"
+    ]
+  }
+}

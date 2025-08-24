@@ -1,0 +1,30 @@
+{
+  "name": "xml-loader-module",
+  "version": "1.0.0",
+  "description": "Módulo para carregamento e processamento de arquivos XML",
+  "main": "index.js",
+  "enabled": true,
+  "dependencies": [],
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/xml/upload",
+      "handler": "uploadXML"
+    },
+    {
+      "method": "GET",
+      "path": "/xml/list",
+      "handler": "listXMLFiles"
+    },
+    {
+      "method": "POST",
+      "path": "/xml/process",
+      "handler": "processXML"
+    }
+  ],
+  "config": {
+    "maxFileSize": "10MB",
+    "allowedExtensions": [".xml"],
+    "uploadPath": "uploads/xml"
+  }
+}

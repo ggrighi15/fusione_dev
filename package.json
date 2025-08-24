@@ -6,11 +6,23 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "node --watch src/index.js",
-    "test": "node --test tests/**/*.test.js",
+    "dev": "nodemon src/index.js",
+    "setup": "node scripts/setup.js",
+    "migrate": "node scripts/migrate.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "build": "node scripts/build.js",
+    "build:frontend": "cd frontend && npm run build",
+    "install:all": "npm install && cd frontend && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "start:frontend": "cd frontend && npm start",
     "lint": "eslint src/**/*.js",
-    "format": "prettier --write src/**/*.js"
+    "format": "prettier --write src/**/*.js",
+    "docker:build": "docker build -t fusione-core .",
+    "docker:run": "docker-compose up -d",
+    "docker:stop": "docker-compose down",
+    "docker:logs": "docker-compose logs -f"
   },
   "keywords": [
     "fusione",
@@ -22,18 +34,36 @@
   "author": "Gustavo Righi <gustavorighi@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.8.1",
     "cors": "^2.8.5",
-    "helmet": "^7.1.0",
-    "dotenv": "^16.3.1",
-    "winston": "^3.11.0",
+    "csv-parser": "^3.2.0",
+    "dotenv": "^16.6.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.5.1",
+    "express-validator": "^7.2.1",
+    "geoip-lite": "^1.4.10",
+    "helmet": "^7.2.0",
     "joi": "^17.11.0",
-    "uuid": "^9.0.1"
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^6.12.8",
+    "multer": "^2.0.2",
+    "nodemailer": "^7.0.5",
+    "qrcode": "^1.5.4",
+    "redis": "^4.6.13",
+    "socket.io": "^4.8.1",
+    "speakeasy": "^2.0.0",
+    "useragent": "^2.3.0",
+    "uuid": "^9.0.1",
+    "winston": "^3.17.0",
+    "xlsx": "^0.18.5",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "eslint": "^8.55.0",
-    "prettier": "^3.1.0",
-    "nodemon": "^3.0.2"
+    "jest": "^27.5.1",
+    "nodemon": "^3.0.2",
+    "prettier": "^3.1.0"
   },
   "engines": {
     "node": ">=18.0.0"

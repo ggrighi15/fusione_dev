@@ -1,0 +1,222 @@
+{
+  "name": "business-logic-module",
+  "version": "1.0.0",
+  "description": "Módulo para lógica de negócio específica do domínio do usuário",
+  "author": "Fusione Core System",
+  "main": "index.js",
+  "enabled": true,
+  "autoStart": true,
+  "priority": 6,
+  "dependencies": [
+    "data-integration-module",
+    "analytics-module"
+  ],
+  "permissions": [
+    "events:listen",
+    "events:emit",
+    "config:read",
+    "config:write",
+    "cache:read",
+    "cache:write",
+    "database:read",
+    "database:write",
+    "api:register"
+  ],
+  "settings": {
+    "enableDataValidation": true,
+    "enableBusinessRules": true,
+    "enableAutomatedProcessing": true,
+    "enableReporting": true,
+    "cacheResults": true,
+    "maxProcessingBatch": 1000,
+    "validationTimeout": 30000,
+    "automationInterval": 3600000
+  },
+  "businessRules": {
+    "financial": {
+      "maxTransactionAmount": 100000,
+      "minTransactionAmount": 0.01,
+      "allowNegativeBalance": false,
+      "currencyValidation": true,
+      "feePercentage": 0.025
+    },
+    "inventory": {
+      "minStockLevel": 10,
+      "maxStockLevel": 10000,
+      "enableLowStockAlerts": true,
+      "autoReorderEnabled": false,
+      "reorderThreshold": 20
+    },
+    "customer": {
+      "requireEmailValidation": true,
+      "requirePhoneValidation": false,
+      "maxAccountsPerUser": 5,
+      "enableDuplicateDetection": true,
+      "duplicateThreshold": 0.8
+    },
+    "sales": {
+      "maxDiscountPercentage": 50,
+      "requireApprovalAbove": 10000,
+      "enableCommissionCalculation": true,
+      "taxCalculationEnabled": true,
+      "commissionRate": 0.05,
+      "taxRate": 0.18
+    }
+  },
+  "events": {
+    "listen": [
+      "data:import:success",
+      "data:validation:request",
+      "data:processing:request",
+      "user:created",
+      "user:updated",
+      "system:startup",
+      "business:rule:execute",
+      "inventory:stock:update",
+      "financial:transaction:create",
+      "customer:data:update",
+      "sales:order:create"
+    ],
+    "emit": [
+      "business:data:processed",
+      "business:data:validation_failed",
+      "business:rule:executed",
+      "business:rule:error",
+      "business:validation:completed",
+      "business:processing:completed",
+      "business:analysis:completed",
+      "business:anomalies:detected",
+      "inventory:low_stock_alert",
+      "customer:duplicate_detected",
+      "sales:approval_required",
+      "financial:fee:calculated",
+      "business:automation:completed"
+    ]
+  },
+  "api": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/business/validate",
+        "description": "Validar dados usando regras de negócio"
+      },
+      {
+        "method": "POST",
+        "path": "/business/process",
+        "description": "Processar dados com lógica de negócio"
+      },
+      {
+        "method": "POST",
+        "path": "/business/rules/execute",
+        "description": "Executar regra de negócio específica"
+      },
+      {
+        "method": "GET",
+        "path": "/business/rules",
+        "description": "Listar regras de negócio disponíveis"
+      },
+      {
+        "method": "PUT",
+        "path": "/business/rules/:ruleName",
+        "description": "Atualizar regra de negócio"
+      },
+      {
+        "method": "GET",
+        "path": "/business/stats",
+        "description": "Obter estatísticas do módulo"
+      },
+      {
+        "method": "POST",
+        "path": "/business/automation/run",
+        "description": "Executar tarefa de automação"
+      },
+      {
+        "method": "GET",
+        "path": "/business/processors",
+        "description": "Listar processadores de dados disponíveis"
+      }
+    ]
+  },
+  "automation": {
+    "tasks": [
+      {
+        "name": "data_cleanup",
+        "schedule": "0 2 * * *",
+        "description": "Limpeza automática de dados antigos",
+        "enabled": true
+      },
+      {
+        "name": "auto_backup",
+        "schedule": "0 3 * * *",
+        "description": "Backup automático de dados",
+        "enabled": true
+      },
+      {
+        "name": "data_analysis",
+        "schedule": "0 1 * * 1",
+        "description": "Análise semanal de dados",
+        "enabled": true
+      },
+      {
+        "name": "anomaly_detection",
+        "schedule": "0 */6 * * *",
+        "description": "Detecção de anomalias a cada 6 horas",
+        "enabled": true
+      }
+    ]
+  },
+  "validation": {
+    "rules": [
+      {
+        "name": "email",
+        "type": "regex",
+        "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+        "message": "Email inválido"
+      },
+      {
+        "name": "phone_br",
+        "type": "regex",
+        "pattern": "^\\(?[1-9]{2}\\)?\\s?9?[0-9]{4}-?[0-9]{4}$",
+        "message": "Telefone brasileiro inválido"
+      },
+      {
+        "name": "cpf",
+        "type": "function",
+        "message": "CPF inválido"
+      },
+      {
+        "name": "cnpj",
+        "type": "function",
+        "message": "CNPJ inválido"
+      },
+      {
+        "name": "currency",
+        "type": "regex",
+        "pattern": "^\\d+(\\.\\d{1,2})?$",
+        "message": "Valor monetário inválido"
+      }
+    ]
+  },
+  "processors": [
+    {
+      "name": "financial",
+      "description": "Processador de dados financeiros",
+      "supportedFields": ["amount", "currency", "fees", "taxes", "category"]
+    },
+    {
+      "name": "inventory",
+      "description": "Processador de dados de inventário",
+      "supportedFields": ["item", "quantity", "status", "reorderLevel"]
+    },
+    {
+      "name": "customer",
+      "description": "Processador de dados de clientes",
+      "supportedFields": ["name", "email", "phone", "cpf", "cnpj", "address"]
+    },
+    {
+      "name": "sales",
+      "description": "Processador de dados de vendas",
+      "supportedFields": ["amount", "discount", "commission", "taxes", "salesperson"]
+    }
+  ]
+}

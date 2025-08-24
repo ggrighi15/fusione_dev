@@ -1,0 +1,155 @@
+{
+  "name": "pessoas-module",
+  "version": "1.0.0",
+  "description": "Módulo para gestão de pessoas físicas e jurídicas",
+  "author": "Fusione Core System",
+  "main": "index.js",
+  "enabled": true,
+  "autoStart": true,
+  "priority": 3,
+  "dependencies": [
+    "auth-module",
+    "api-module"
+  ],
+  "permissions": [
+    "events:listen",
+    "events:emit",
+    "config:read",
+    "config:write",
+    "database:read",
+    "database:write",
+    "cache:read",
+    "cache:write",
+    "files:read",
+    "files:write"
+  ],
+  "settings": {
+    "receitaFederalApiUrl": "https://www.receitaws.com.br/v1",
+    "enableReceitaIntegration": true,
+    "documentStoragePath": "./storage/documents",
+    "maxDocumentSize": 10485760,
+    "allowedDocumentTypes": [".pdf", ".jpg", ".jpeg", ".png", ".doc", ".docx"],
+    "cacheTimeout": 86400000,
+    "auditEnabled": true
+  },
+  "events": {
+    "listen": [
+      "pessoa:created",
+      "pessoa:updated",
+      "pessoa:deleted",
+      "documento:uploaded"
+    ],
+    "emit": [
+      "pessoa:created",
+      "pessoa:updated",
+      "pessoa:deleted",
+      "documento:uploaded",
+      "vinculo:created",
+      "vinculo:removed"
+    ]
+  },
+  "api": {
+    "routes": [
+      {
+        "method": "POST",
+        "path": "/pessoas",
+        "handler": "cadastrarPessoa",
+        "auth": true,
+        "permissions": ["pessoas:create"]
+      },
+      {
+        "method": "GET",
+        "path": "/pessoas/:id",
+        "handler": "buscarPorId",
+        "auth": true,
+        "permissions": ["pessoas:read"]
+      },
+      {
+        "method": "PUT",
+        "path": "/pessoas/:id",
+        "handler": "atualizarPessoa",
+        "auth": true,
+        "permissions": ["pessoas:update"]
+      },
+      {
+        "method": "GET",
+        "path": "/pessoas",
+        "handler": "listarPessoas",
+        "auth": true,
+        "permissions": ["pessoas:read"]
+      },
+      {
+        "method": "GET",
+        "path": "/pessoas/documento/:documento",
+        "handler": "buscarPorDocumento",
+        "auth": true,
+        "permissions": ["pessoas:read"]
+      },
+      {
+        "method": "GET",
+        "path": "/pessoas/:id/historico",
+        "handler": "buscarHistorico",
+        "auth": true,
+        "permissions": ["pessoas:read"]
+      },
+      {
+        "method": "POST",
+        "path": "/pessoas/:id/vinculos",
+        "handler": "criarVinculo",
+        "auth": true,
+        "permissions": ["pessoas:update"]
+      },
+      {
+        "method": "GET",
+        "path": "/pessoas/:id/vinculos",
+        "handler": "listarVinculos",
+        "auth": true,
+        "permissions": ["pessoas:read"]
+      },
+      {
+        "method": "POST",
+        "path": "/pessoas/:id/documentos",
+        "handler": "uploadDocumento",
+        "auth": true,
+        "permissions": ["pessoas:update"]
+      },
+      {
+        "method": "GET",
+        "path": "/pessoas/:id/documentos",
+        "handler": "listarDocumentos",
+        "auth": true,
+        "permissions": ["pessoas:read"]
+      },
+      {
+        "method": "GET",
+        "path": "/pessoas/receita/:documento",
+        "handler": "consultarReceitaFederal",
+        "auth": true,
+        "permissions": ["pessoas:read"]
+      },
+      {
+        "method": "GET",
+        "path": "/pessoas/stats",
+        "handler": "getStats",
+        "auth": true,
+        "permissions": ["pessoas:read"]
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      "pessoas",
+      "pessoa_documentos",
+      "pessoa_historico",
+      "pessoa_vinculos"
+    ]
+  },
+  "requirements": {
+    "node": ">=16.0.0",
+    "packages": [
+      "axios",
+      "cpf-cnpj-validator",
+      "multer"
+    ]
+  }
+}

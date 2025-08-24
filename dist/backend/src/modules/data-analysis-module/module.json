@@ -1,0 +1,19 @@
+{
+  "name": "data-analysis-module",
+  "version": "1.0.0",
+  "description": "Módulo para análise e comparação de dados entre períodos, processamento de arquivos Excel e JSON",
+  "enabled": true,
+  "priority": 5,
+  "dependencies": ["api-module", "data-integration-module"],
+  "config": {
+    "uploadPath": "./uploads",
+    "outputPath": "./output/analysis",
+    "supportedFormats": ["xlsx", "json"],
+    "maxFileSize": "50MB",
+    "analysisTypes": [
+      "period_comparison",
+      "data_normalization",
+      "report_generation"
+    ]
+  }
+}

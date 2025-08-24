@@ -1,0 +1,935 @@
+{
+  "name": "barcas-module",
+  "version": "1.0.0",
+  "description": "Módulo de Gestão de Frota Náutica e Mobilidade",
+  "author": "Fusione Core System",
+  "license": "MIT",
+  "main": "index.js",
+  "type": "core-module",
+  "category": "fleet-management",
+  "priority": 8,
+  "dependencies": {
+    "required": [
+      "auth-module",
+      "pessoas-module",
+      "notification-module"
+    ],
+    "optional": [
+      "compliance-module",
+      "contratos-module",
+      "seguranca-module",
+      "societario-module"
+    ]
+  },
+  "permissions": {
+    "admin": [
+      "embarcacoes:create",
+      "embarcacoes:read",
+      "embarcacoes:update",
+      "embarcacoes:delete",
+      "tripulacao:manage_all",
+      "manutencoes:manage_all",
+      "operacoes:manage_all",
+      "custos:manage_all",
+      "barcas:reports",
+      "barcas:config"
+    ],
+    "comandante": [
+      "embarcacoes:read",
+      "embarcacoes:update_limited",
+      "tripulacao:read",
+      "manutencoes:create",
+      "manutencoes:read",
+      "operacoes:create",
+      "operacoes:manage_own",
+      "abastecimentos:create",
+      "abastecimentos:read",
+      "custos:create",
+      "custos:read_own",
+      "barcas:reports_limited"
+    ],
+    "imediato": [
+      "embarcacoes:read",
+      "tripulacao:read_limited",
+      "manutencoes:read",
+      "operacoes:read",
+      "operacoes:update_limited",
+      "abastecimentos:create",
+      "abastecimentos:read",
+      "custos:read_limited"
+    ],
+    "marinheiro": [
+      "embarcacoes:read_limited",
+      "operacoes:read_own",
+      "abastecimentos:read_own",
+      "manutencoes:read_limited"
+    ],
+    "gerente_frota": [
+      "embarcacoes:read",
+      "embarcacoes:update",
+      "tripulacao:read",
+      "tripulacao:create",
+      "manutencoes:manage_all",
+      "operacoes:read",
+      "custos:read",
+      "barcas:reports"
+    ],
+    "mecanico": [
+      "embarcacoes:read_technical",
+      "manutencoes:create",
+      "manutencoes:update",
+      "manutencoes:read",
+      "custos:create_maintenance",
+      "custos:read_maintenance"
+    ]
+  },
+  "settings": {
+    "numeracao": {
+      "embarcacao": {
+        "formato": "EMB-AAAA-NNNNNN",
+        "sequencial": true,
+        "reiniciar_anualmente": true,
+        "prefixo_customizavel": true
+      },
+      "manutencao": {
+        "formato": "MAN-AAAA-NNNNNN",
+        "sequencial": true,
+        "reiniciar_anualmente": true
+      },
+      "operacao": {
+        "formato": "OP-AAAA-NNNNNN",
+        "sequencial": true,
+        "reiniciar_anualmente": true
+      }
+    },
+    "tipos_embarcacao": {
+      "lancha": {
+        "nome": "Lancha",
+        "descricao": "Embarcação de recreio de pequeno porte",
+        "capacidade_maxima": 12,
+        "certificacao_requerida": "arrais"
+      },
+      "barco": {
+        "nome": "Barco",
+        "descricao": "Embarcação de médio porte",
+        "capacidade_maxima": 30,
+        "certificacao_requerida": "motonauta"
+      },
+      "iate": {
+        "nome": "Iate",
+        "descricao": "Embarcação de luxo",
+        "capacidade_maxima": 50,
+        "certificacao_requerida": "mestre"
+      },
+      "jet_ski": {
+        "nome": "Jet Ski",
+        "descricao": "Moto aquática",
+        "capacidade_maxima": 3,
+        "certificacao_requerida": "arrais"
+      },
+      "veleiro": {
+        "nome": "Veleiro",
+        "descricao": "Embarcação à vela",
+        "capacidade_maxima": 20,
+        "certificacao_requerida": "motonauta"
+      },
+      "catamara": {
+        "nome": "Catamarã",
+        "descricao": "Embarcação de dois cascos",
+        "capacidade_maxima": 40,
+        "certificacao_requerida": "mestre"
+      }
+    },
+    "categorias_uso": {
+      "recreio": {
+        "nome": "Recreio",
+        "descricao": "Uso pessoal e familiar",
+        "documentacao_especial": false
+      },
+      "comercial": {
+        "nome": "Comercial",
+        "descricao": "Atividade comercial",
+        "documentacao_especial": true,
+        "licencas_requeridas": ["alvara_funcionamento", "licenca_ambiental"]
+      },
+      "pesca": {
+        "nome": "Pesca",
+        "descricao": "Atividade pesqueira",
+        "documentacao_especial": true,
+        "licencas_requeridas": ["licenca_pesca", "registro_pescador"]
+      },
+      "turismo": {
+        "nome": "Turismo",
+        "descricao": "Atividade turística",
+        "documentacao_especial": true,
+        "licencas_requeridas": ["cadastur", "licenca_turismo"]
+      },
+      "transporte": {
+        "nome": "Transporte",
+        "descricao": "Transporte de passageiros",
+        "documentacao_especial": true,
+        "licencas_requeridas": ["autorizacao_transporte", "vistoria_anual"]
+      }
+    },
+    "manutencao": {
+      "preventiva": {
+        "intervalo_horas": 500,
+        "antecedencia_alerta": 50,
+        "tipos_obrigatorias": [
+          "motor",
+          "casco",
+          "equipamentos_seguranca",
+          "sistema_eletrico",
+          "sistema_hidraulico"
+        ],
+        "checklist_motor": [
+          "troca_oleo",
+          "filtro_combustivel",
+          "filtro_ar",
+          "velas_ignicao",
+          "correia_alternador",
+          "sistema_refrigeracao"
+        ],
+        "checklist_casco": [
+          "integridade_estrutural",
+          "vedacoes",
+          "pintura_antivegetativa",
+          "helice",
+          "eixo_propulsor"
+        ],
+        "checklist_seguranca": [
+          "coletes_salva_vidas",
+          "extintores",
+          "sinalizacao",
+          "radio_vhf",
+          "equipamentos_navegacao"
+        ]
+      },
+      "corretiva": {
+        "prazo_maximo_dias": 30,
+        "prioridade_critica": [
+          "motor",
+          "navegacao",
+          "seguranca",
+          "comunicacao"
+        ],
+        "fornecedores_autorizados": true,
+        "aprovacao_orcamento": true
+      },
+      "emergencial": {
+        "prazo_maximo_horas": 24,
+        "contatos_emergencia": true,
+        "servico_24h": true
+      }
+    },
+    "combustivel": {
+      "tipos_permitidos": {
+        "diesel": {
+          "nome": "Diesel Marítimo",
+          "densidade": 0.85,
+          "poder_calorifico": 42.7
+        },
+        "gasolina": {
+          "nome": "Gasolina Náutica",
+          "densidade": 0.75,
+          "poder_calorifico": 44.0
+        },
+        "gnv": {
+          "nome": "Gás Natural Veicular",
+          "densidade": 0.65,
+          "poder_calorifico": 50.0
+        }
+      },
+      "alerta_nivel_baixo": 20,
+      "alerta_nivel_critico": 10,
+      "consumo_medio": {
+        "lancha": 15,
+        "barco": 25,
+        "iate": 40,
+        "jet_ski": 8,
+        "veleiro": 5,
+        "catamara": 30
+      },
+      "capacidade_reserva": 10
+    },
+    "tripulacao": {
+      "funcoes": {
+        "comandante": {
+          "nome": "Comandante",
+          "descricao": "Responsável pela embarcação",
+          "certificacao_minima": "mestre",
+          "experiencia_minima_anos": 5,
+          "responsabilidades": [
+            "navegacao",
+            "seguranca",
+            "tripulacao",
+            "documentacao"
+          ]
+        },
+        "imediato": {
+          "nome": "Imediato",
+          "descricao": "Segundo em comando",
+          "certificacao_minima": "motonauta",
+          "experiencia_minima_anos": 3,
+          "responsabilidades": [
+            "apoio_navegacao",
+            "supervisao_tripulacao",
+            "manutencao_equipamentos"
+          ]
+        },
+        "marinheiro": {
+          "nome": "Marinheiro",
+          "descricao": "Tripulante operacional",
+          "certificacao_minima": "arrais",
+          "experiencia_minima_anos": 1,
+          "responsabilidades": [
+            "operacao_equipamentos",
+            "limpeza_embarcacao",
+            "apoio_passageiros"
+          ]
+        },
+        "maquinista": {
+          "nome": "Maquinista",
+          "descricao": "Responsável pelos motores",
+          "certificacao_minima": "motonauta",
+          "experiencia_minima_anos": 2,
+          "responsabilidades": [
+            "manutencao_motores",
+            "sistema_combustivel",
+            "sistema_eletrico"
+          ]
+        }
+      },
+      "certificacoes_obrigatorias": [
+        "arrais",
+        "motonauta",
+        "mestre",
+        "primeiros_socorros",
+        "combate_incendio"
+      ],
+      "renovacao_alerta_dias": 30,
+      "capacitacao_anual": true,
+      "exame_medico_anual": true,
+      "curso_reciclagem_bienal": true
+    },
+    "operacoes": {
+      "tipos_operacao": {
+        "recreio": {
+          "nome": "Recreio",
+          "documentacao_minima": ["termo_responsabilidade"],
+          "seguro_obrigatorio": false
+        },
+        "comercial": {
+          "nome": "Comercial",
+          "documentacao_minima": ["contrato_servico", "nota_fiscal"],
+          "seguro_obrigatorio": true
+        },
+        "turismo": {
+          "nome": "Turismo",
+          "documentacao_minima": ["voucher_turismo", "lista_passageiros"],
+          "seguro_obrigatorio": true,
+          "guia_turismo_obrigatorio": true
+        },
+        "transporte": {
+          "nome": "Transporte",
+          "documentacao_minima": ["manifesto_passageiros", "bilhetes"],
+          "seguro_obrigatorio": true,
+          "vistoria_pre_viagem": true
+        }
+      },
+      "condicoes_mar": {
+        "calmo": {
+          "nome": "Mar Calmo",
+          "altura_ondas_max": 0.5,
+          "vento_max_nos": 10,
+          "restricoes": []
+        },
+        "moderado": {
+          "nome": "Mar Moderado",
+          "altura_ondas_max": 1.5,
+          "vento_max_nos": 20,
+          "restricoes": ["jet_ski_limitado"]
+        },
+        "agitado": {
+          "nome": "Mar Agitado",
+          "altura_ondas_max": 3.0,
+          "vento_max_nos": 30,
+          "restricoes": ["jet_ski_proibido", "embarcacoes_pequenas_limitadas"]
+        },
+        "muito_agitado": {
+          "nome": "Mar Muito Agitado",
+          "altura_ondas_max": 5.0,
+          "vento_max_nos": 40,
+          "restricoes": ["apenas_embarcacoes_grandes", "tripulacao_experiente"]
+        }
+      },
+      "equipamentos_obrigatorios": {
+        "navegacao": [
+          "gps",
+          "bussola",
+          "carta_nautica",
+          "radio_vhf",
+          "radar"
+        ],
+        "seguranca": [
+          "coletes_salva_vidas",
+          "boia_circular",
+          "extintor",
+          "sinalizacao",
+          "kit_primeiros_socorros"
+        ],
+        "comunicacao": [
+          "radio_vhf",
+          "telefone_satelital",
+          "epirb"
+        ]
+      }
+    },
+    "custos": {
+      "categorias": {
+        "combustivel": {
+          "nome": "Combustível",
+          "subcategorias": ["diesel", "gasolina", "gnv", "lubrificantes"]
+        },
+        "manutencao": {
+          "nome": "Manutenção",
+          "subcategorias": ["preventiva", "corretiva", "emergencial", "pecas"]
+        },
+        "seguro": {
+          "nome": "Seguros",
+          "subcategorias": ["casco", "responsabilidade_civil", "tripulacao"]
+        },
+        "taxa_porto": {
+          "nome": "Taxas Portuárias",
+          "subcategorias": ["atracacao", "permanencia", "servicos"]
+        },
+        "tripulacao": {
+          "nome": "Tripulação",
+          "subcategorias": ["salarios", "beneficios", "treinamentos"]
+        },
+        "licencas": {
+          "nome": "Licenças e Taxas",
+          "subcategorias": ["renovacao_documentos", "vistorias", "taxas_governo"]
+        }
+      },
+      "centros_custo": [
+        "operacional",
+        "administrativo",
+        "manutencao",
+        "comercial"
+      ],
+      "moedas_aceitas": ["BRL", "USD", "EUR"],
+      "aprovacao_limites": {
+        "comandante": 1000,
+        "gerente_frota": 5000,
+        "admin": 999999
+      }
+    },
+    "compliance": {
+      "orgaos_fiscalizadores": {
+        "marinha": {
+          "nome": "Marinha do Brasil",
+          "competencias": ["navegacao", "seguranca", "meio_ambiente"],
+          "documentos_obrigatorios": [
+            "titulo_inscricao",
+            "certificado_seguranca",
+            "certificado_arqueacao"
+          ]
+        },
+        "capitania": {
+          "nome": "Capitania dos Portos",
+          "competencias": ["fiscalizacao", "autorizacoes", "infrações"],
+          "documentos_obrigatorios": [
+            "habilitacao_condutor",
+            "certificado_radiooperador"
+          ]
+        },
+        "ibama": {
+          "nome": "IBAMA",
+          "competencias": ["meio_ambiente", "areas_protegidas"],
+          "documentos_obrigatorios": [
+            "licenca_ambiental",
+            "certificado_poluicao"
+          ]
+        }
+      },
+      "verificacoes_automaticas": {
+        "documentos_vencimento": true,
+        "certificacoes_tripulacao": true,
+        "seguros_vigencia": true,
+        "licencas_operacao": true,
+        "vistorias_periodicas": true
+      },
+      "alertas_compliance": {
+        "documento_vencendo": [60, 30, 15, 7, 1],
+        "certificacao_vencendo": [90, 60, 30, 15],
+        "seguro_vencendo": [30, 15, 7, 1],
+        "vistoria_pendente": [30, 15, 7]
+      }
+    },
+    "documentos": {
+      "armazenamento": {
+        "local": "./storage/barcas",
+        "estrutura": "embarcacao_id/ano/categoria",
+        "backup_automatico": true,
+        "criptografia": true,
+        "versionamento": true
+      },
+      "tipos_permitidos": [
+        ".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png", ".tiff",
+        ".txt", ".rtf", ".odt", ".xls", ".xlsx", ".dwg", ".dxf"
+      ],
+      "tamanho_maximo": 52428800,
+      "assinatura_digital": true,
+      "watermark": true,
+      "ocr_automatico": true,
+      "categorias": {
+        "documentacao_embarcacao": [
+          "titulo_inscricao",
+          "certificado_arqueacao",
+          "certificado_seguranca",
+          "nota_fiscal_compra"
+        ],
+        "documentacao_tripulacao": [
+          "habilitacao",
+          "certificados_curso",
+          "exame_medico",
+          "carteira_trabalho"
+        ],
+        "seguros": [
+          "apolice_casco",
+          "apolice_responsabilidade",
+          "certificado_seguro"
+        ],
+        "manutencao": [
+          "ordem_servico",
+          "nota_fiscal_pecas",
+          "certificado_garantia",
+          "relatorio_tecnico"
+        ],
+        "operacional": [
+          "manifesto_passageiros",
+          "plano_navegacao",
+          "relatorio_viagem",
+          "ocorrencias"
+        ]
+      }
+    },
+    "integracao": {
+      "marinha_brasil": {
+        "consulta_embarcacoes": false,
+        "validacao_documentos": false,
+        "envio_relatorios": false
+      },
+      "capitania_portos": {
+        "consulta_habilitacoes": false,
+        "registro_ocorrencias": false
+      },
+      "fornecedores": {
+        "combustivel": {
+          "api_precos": false,
+          "pedidos_automaticos": false
+        },
+        "manutencao": {
+          "agendamento_online": false,
+          "orcamentos_automaticos": false
+        }
+      },
+      "meteorologia": {
+        "condicoes_mar": true,
+        "previsao_tempo": true,
+        "alertas_tempestade": true
+      },
+      "gps_tracking": {
+        "rastreamento_tempo_real": false,
+        "geofencing": false,
+        "historico_rotas": false
+      }
+    }
+  },
+  "events": {
+    "emitted": [
+      "embarcacao:criada",
+      "embarcacao:atualizada",
+      "embarcacao:inativada",
+      "tripulacao:adicionada",
+      "tripulacao:removida",
+      "tripulacao:atualizada",
+      "manutencao:agendada",
+      "manutencao:iniciada",
+      "manutencao:concluida",
+      "manutencao:vencendo",
+      "operacao:planejada",
+      "operacao:iniciada",
+      "operacao:concluida",
+      "operacao:cancelada",
+      "abastecimento:registrado",
+      "combustivel:baixo",
+      "combustivel:critico",
+      "custo:registrado",
+      "certificacao:vencendo",
+      "documento:vencendo",
+      "seguro:vencendo",
+      "vistoria:pendente",
+      "incidente:registrado",
+      "relatorio:gerado"
+    ],
+    "listened": [
+      "pessoa:criada",
+      "pessoa:atualizada",
+      "pessoa:inativada",
+      "documento:uploaded",
+      "documento:assinado",
+      "notification:send",
+      "compliance:auditoria",
+      "sistema:backup",
+      "weather:alert",
+      "emergency:signal"
+    ]
+  },
+  "api": {
+    "routes": {
+      "embarcacoes": {
+        "GET /api/embarcacoes": "listarEmbarcacoes",
+        "GET /api/embarcacoes/:id": "obterEmbarcacao",
+        "POST /api/embarcacoes": "criarEmbarcacao",
+        "PUT /api/embarcacoes/:id": "atualizarEmbarcacao",
+        "DELETE /api/embarcacoes/:id": "inativarEmbarcacao",
+        "GET /api/embarcacoes/:id/status": "obterStatusEmbarcacao",
+        "GET /api/embarcacoes/:id/localizacao": "obterLocalizacaoEmbarcacao"
+      },
+      "tripulacao": {
+        "GET /api/tripulacao": "listarTripulacao",
+        "GET /api/tripulacao/:id": "obterTripulante",
+        "POST /api/tripulacao": "adicionarTripulante",
+        "PUT /api/tripulacao/:id": "atualizarTripulante",
+        "DELETE /api/tripulacao/:id": "removerTripulante",
+        "GET /api/tripulacao/:id/certificacoes": "obterCertificacoes",
+        "POST /api/tripulacao/:id/certificacoes": "adicionarCertificacao"
+      },
+      "manutencoes": {
+        "GET /api/manutencoes": "listarManutencoes",
+        "GET /api/manutencoes/:id": "obterManutencao",
+        "POST /api/manutencoes": "agendarManutencao",
+        "PUT /api/manutencoes/:id": "atualizarManutencao",
+        "POST /api/manutencoes/:id/iniciar": "iniciarManutencao",
+        "POST /api/manutencoes/:id/concluir": "concluirManutencao",
+        "DELETE /api/manutencoes/:id": "cancelarManutencao",
+        "GET /api/embarcacoes/:id/manutencoes": "listarManutencoesPorEmbarcacao"
+      },
+      "operacoes": {
+        "GET /api/operacoes": "listarOperacoes",
+        "GET /api/operacoes/:id": "obterOperacao",
+        "POST /api/operacoes": "criarOperacao",
+        "PUT /api/operacoes/:id": "atualizarOperacao",
+        "POST /api/operacoes/:id/iniciar": "iniciarOperacao",
+        "POST /api/operacoes/:id/concluir": "concluirOperacao",
+        "DELETE /api/operacoes/:id": "cancelarOperacao",
+        "GET /api/embarcacoes/:id/operacoes": "listarOperacoesPorEmbarcacao",
+        "GET /api/operacoes/:id/rota": "obterRotaOperacao"
+      },
+      "abastecimentos": {
+        "GET /api/abastecimentos": "listarAbastecimentos",
+        "GET /api/abastecimentos/:id": "obterAbastecimento",
+        "POST /api/abastecimentos": "registrarAbastecimento",
+        "PUT /api/abastecimentos/:id": "atualizarAbastecimento",
+        "DELETE /api/abastecimentos/:id": "removerAbastecimento",
+        "GET /api/embarcacoes/:id/abastecimentos": "listarAbastecimentosPorEmbarcacao",
+        "GET /api/embarcacoes/:id/combustivel/nivel": "obterNivelCombustivel"
+      },
+      "custos": {
+        "GET /api/custos": "listarCustos",
+        "GET /api/custos/:id": "obterCusto",
+        "POST /api/custos": "registrarCusto",
+        "PUT /api/custos/:id": "atualizarCusto",
+        "DELETE /api/custos/:id": "removerCusto",
+        "GET /api/embarcacoes/:id/custos": "listarCustosPorEmbarcacao",
+        "GET /api/operacoes/:id/custos": "listarCustosPorOperacao"
+      },
+      "relatorios": {
+        "GET /api/barcas/relatorios": "listarRelatorios",
+        "POST /api/barcas/relatorios/gerar": "gerarRelatorio",
+        "GET /api/barcas/relatorios/:id": "obterRelatorio",
+        "GET /api/barcas/relatorios/:id/download": "baixarRelatorio"
+      },
+      "dashboard": {
+        "GET /api/barcas/dashboard": "obterDashboard",
+        "GET /api/barcas/estatisticas": "obterEstatisticas",
+        "GET /api/barcas/alertas": "obterAlertas",
+        "GET /api/barcas/frota/status": "obterStatusFrota"
+      },
+      "compliance": {
+        "GET /api/barcas/compliance": "obterStatusCompliance",
+        "POST /api/barcas/compliance/verificar": "verificarCompliance",
+        "GET /api/barcas/compliance/alertas": "obterAlertasCompliance",
+        "GET /api/barcas/documentos/vencimentos": "obterDocumentosVencendo"
+      },
+      "tracking": {
+        "GET /api/embarcacoes/:id/tracking": "obterRastreamento",
+        "POST /api/embarcacoes/:id/tracking/posicao": "atualizarPosicao",
+        "GET /api/embarcacoes/:id/tracking/historico": "obterHistoricoRastreamento"
+      }
+    }
+  },
+  "database": {
+    "tables": [
+      "embarcacoes",
+      "tripulacao",
+      "manutencoes",
+      "operacoes",
+      "abastecimentos",
+      "custos_operacionais",
+      "barcas_historico"
+    ],
+    "indexes": [
+      "idx_embarcacoes_numero",
+      "idx_embarcacoes_tipo",
+      "idx_embarcacoes_situacao",
+      "idx_embarcacoes_registro",
+      "idx_tripulacao_pessoa",
+      "idx_tripulacao_funcao",
+      "idx_tripulacao_situacao",
+      "idx_manutencoes_embarcacao",
+      "idx_manutencoes_tipo",
+      "idx_manutencoes_status",
+      "idx_manutencoes_data",
+      "idx_manutencoes_prioridade",
+      "idx_operacoes_embarcacao",
+      "idx_operacoes_comandante",
+      "idx_operacoes_tipo",
+      "idx_operacoes_status",
+      "idx_operacoes_data",
+      "idx_abastecimentos_embarcacao",
+      "idx_abastecimentos_data",
+      "idx_abastecimentos_tipo",
+      "idx_custos_embarcacao",
+      "idx_custos_tipo",
+      "idx_custos_data",
+      "idx_historico_entidade",
+      "idx_historico_data",
+      "idx_historico_usuario"
+    ],
+    "views": [
+      "view_embarcacoes_ativas",
+      "view_frota_status",
+      "view_tripulacao_ativa",
+      "view_manutencoes_pendentes",
+      "view_operacoes_andamento",
+      "view_custos_mensais",
+      "view_combustivel_consumo",
+      "view_certificacoes_vencendo"
+    ]
+  },
+  "requirements": {
+    "node_version": ">=16.0.0",
+    "dependencies": {
+      "express": "^4.18.0",
+      "moment": "^2.29.4",
+      "node-cron": "^3.0.2",
+      "uuid": "^9.0.0",
+      "multer": "^1.4.5",
+      "xlsx": "^0.18.5",
+      "pdf-lib": "^1.17.1",
+      "fs-extra": "^11.1.1",
+      "crypto": "^1.0.1",
+      "geolib": "^3.3.3",
+      "axios": "^1.4.0"
+    },
+    "optional_dependencies": {
+      "leaflet": "^1.9.0",
+      "chart.js": "^4.2.0",
+      "jspdf": "^2.5.1",
+      "html2canvas": "^1.4.1",
+      "socket.io": "^4.7.0",
+      "mqtt": "^4.3.7"
+    }
+  },
+  "scripts": {
+    "test": "jest tests/barcas",
+    "lint": "eslint src/modules/barcas-module",
+    "docs": "jsdoc src/modules/barcas-module -d docs/barcas",
+    "backup-barcas": "node scripts/backup-barcas.js",
+    "gerar-relatorio-frota": "node scripts/relatorio-frota.js",
+    "verificar-manutencoes": "node scripts/verificar-manutencoes.js",
+    "sync-tracking": "node scripts/sync-tracking.js"
+  },
+  "monitoring": {
+    "metrics": [
+      "embarcacoes_ativas",
+      "operacoes_andamento",
+      "manutencoes_pendentes",
+      "tripulacao_ativa",
+      "consumo_combustivel",
+      "custos_operacionais",
+      "horas_navegacao",
+      "distancia_percorrida",
+      "tempo_resposta_api",
+      "uso_memoria"
+    ],
+    "alerts": [
+      "embarcacao_sem_comunicacao",
+      "manutencao_vencida",
+      "combustivel_baixo",
+      "certificacao_vencendo",
+      "operacao_atrasada",
+      "custo_acima_orcamento",
+      "incidente_seguranca",
+      "documento_vencido"
+    ],
+    "dashboards": [
+      "frota_overview",
+      "operacoes_tempo_real",
+      "manutencoes_calendario",
+      "custos_analise",
+      "compliance_status",
+      "tripulacao_gestao",
+      "combustivel_consumo",
+      "rotas_mapa"
+    ]
+  },
+  "security": {
+    "encryption": {
+      "dados_embarcacoes": true,
+      "dados_tripulacao": true,
+      "dados_operacionais": true,
+      "documentos_embarcacao": true,
+      "algorithm": "AES-256-GCM",
+      "key_rotation": "quarterly"
+    },
+    "audit": {
+      "log_all_actions": true,
+      "retention_period": "7_years",
+      "compliance": ["LGPD", "Normam_03", "Normam_08"],
+      "tamper_detection": true,
+      "real_time_monitoring": true
+    },
+    "access_control": {
+      "role_based": true,
+      "embarcacao_based": true,
+      "time_based": true,
+      "location_based": false,
+      "two_factor_required": true
+    },
+    "data_protection": {
+      "personal_data_anonymization": true,
+      "gdpr_compliance": true,
+      "data_retention_policies": true,
+      "right_to_be_forgotten": true
+    }
+  },
+  "integrations": {
+    "marinha_brasil": {
+      "siscomex": false,
+      "renave": false,
+      "sistema_capitanias": false
+    },
+    "meteorologia": {
+      "inmet": true,
+      "cptec": true,
+      "weather_api": true
+    },
+    "tracking": {
+      "ais_system": false,
+      "satellite_tracking": false,
+      "gps_providers": false
+    },
+    "fornecedores": {
+      "combustivel_apis": false,
+      "manutencao_sistemas": false,
+      "pecas_catalogos": false
+    },
+    "financeiro": {
+      "bancos_apis": false,
+      "cartoes_credito": false,
+      "sistemas_pagamento": false
+    }
+  },
+  "templates": {
+    "manifesto_passageiros": {
+      "nome": "Manifesto de Passageiros",
+      "arquivo": "templates/manifesto_passageiros.pdf",
+      "variaveis": [
+        "embarcacao_nome", "numero_inscricao", "comandante",
+        "origem", "destino", "data_saida", "passageiros_lista"
+      ]
+    },
+    "plano_navegacao": {
+      "nome": "Plano de Navegação",
+      "arquivo": "templates/plano_navegacao.pdf",
+      "variaveis": [
+        "embarcacao_dados", "rota_planejada", "previsao_tempo",
+        "equipamentos_seguranca", "contatos_emergencia"
+      ]
+    },
+    "relatorio_manutencao": {
+      "nome": "Relatório de Manutenção",
+      "arquivo": "templates/relatorio_manutencao.pdf",
+      "variaveis": [
+        "embarcacao_dados", "tipo_manutencao", "servicos_realizados",
+        "pecas_utilizadas", "custos", "responsavel_tecnico"
+      ]
+    },
+    "ordem_servico": {
+      "nome": "Ordem de Serviço",
+      "arquivo": "templates/ordem_servico.pdf",
+      "variaveis": [
+        "numero_os", "embarcacao_dados", "descricao_servico",
+        "prazo_execucao", "orcamento", "fornecedor"
+      ]
+    }
+  },
+  "compliance": {
+    "frameworks": [
+      "NORMAM-03/DPC (Amadores)",
+      "NORMAM-08/DPC (Tráfego e Permanência)",
+      "NORMAM-17/DPC (Atividades de Inspeção Naval)",
+      "Lei 9.537/97 (Segurança do Tráfego Aquaviário)",
+      "LGPD",
+      "Código de Trânsito Aquaviário"
+    ],
+    "obrigacoes": [
+      "Inscrição na Capitania dos Portos",
+      "Habilitação do Condutor",
+      "Certificados de Segurança",
+      "Vistorias Periódicas",
+      "Seguros Obrigatórios",
+      "Equipamentos de Segurança"
+    ],
+    "verificacoes": [
+      "Validade Documentos",
+      "Certificações Tripulação",
+      "Equipamentos Segurança",
+      "Manutenções Preventivas",
+      "Seguros Vigentes",
+      "Licenças Operação"
+    ]
+  },
+  "backup": {
+    "automatic": true,
+    "frequency": "daily",
+    "retention": "7_years",
+    "encryption": true,
+    "offsite": true,
+    "verification": true,
+    "incremental": true
+  },
+  "performance": {
+    "cache": {
+      "embarcacoes_ativas": "1_hour",
+      "tripulacao_ativa": "2_hours",
+      "operacoes_andamento": "15_minutes",
+      "estatisticas_frota": "30_minutes"
+    },
+    "indexing": {
+      "full_text_search": true,
+      "geospatial_search": true,
+      "faceted_search": true
+    },
+    "optimization": {
+      "lazy_loading": true,
+      "pagination": true,
+      "compression": true,
+      "cdn_assets": true
+    }
+  }
+}

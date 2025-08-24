@@ -1,0 +1,46 @@
+{
+  "name": "notification-module",
+  "version": "1.0.0",
+  "description": "Módulo de notificações em tempo real via WebSocket e outros canais",
+  "author": "Fusione Core System",
+  "main": "index.js",
+  "enabled": true,
+  "autoStart": true,
+  "priority": 4,
+  "dependencies": [],
+  "permissions": [
+    "events:listen",
+    "events:emit",
+    "config:read",
+    "websocket:send",
+    "cache:read",
+    "cache:write",
+    "database:read",
+    "database:write"
+  ],
+  "settings": {
+    "enableWebSocket": true,
+    "enableEmail": false,
+    "enableSMS": false,
+    "enablePush": false,
+    "retryAttempts": 3,
+    "retryDelay": 5000,
+    "queueSize": 1000,
+    "batchSize": 10
+  },
+  "events": {
+    "listen": [
+      "user:*",
+      "system:*",
+      "auth:*",
+      "api:*",
+      "notification:send"
+    ],
+    "emit": [
+      "notification:sent",
+      "notification:failed",
+      "notification:queued",
+      "notification:delivered"
+    ]
+  }
+}

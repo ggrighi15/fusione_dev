@@ -1,0 +1,351 @@
+{
+  "name": "notifications-module",
+  "version": "1.0.0",
+  "description": "Módulo de notificações personalizadas com suporte a email, SMS, push e webhook",
+  "author": "Fusione Core System",
+  "license": "MIT",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "nodemailer": "^6.9.0",
+    "twilio": "^4.0.0",
+    "firebase-admin": "^11.0.0"
+  },
+  "config": {
+    "email": {
+      "enabled": true,
+      "smtp": {
+        "host": "localhost",
+        "port": 587,
+        "secure": false
+      },
+      "templates": {
+        "path": "./templates/email",
+        "defaultTemplate": "default.html"
+      }
+    },
+    "sms": {
+      "enabled": false,
+      "provider": "twilio"
+    },
+    "push": {
+      "enabled": false,
+      "provider": "firebase"
+    },
+    "webhook": {
+      "enabled": true,
+      "timeout": 5000,
+      "retries": 3,
+      "retryDelay": 1000
+    },
+    "queue": {
+      "enabled": true,
+      "maxRetries": 3,
+      "retryDelay": 5000
+    }
+  },
+  "notificationTypes": {
+    "email": {
+      "name": "Email",
+      "description": "Notificações por email usando SMTP",
+      "enabled": true,
+      "templates": ["welcome", "notification", "alert", "report"],
+      "validation": {
+        "required": ["to", "subject"],
+        "optional": ["template", "data", "html", "text", "attachments"]
+      }
+    },
+    "sms": {
+      "name": "SMS",
+      "description": "Notificações por SMS usando provedores externos",
+      "enabled": false,
+      "providers": ["twilio", "nexmo", "aws-sns"],
+      "validation": {
+        "required": ["to", "message"],
+        "optional": ["from"]
+      }
+    },
+    "push": {
+      "name": "Push Notification",
+      "description": "Notificações push para dispositivos móveis",
+      "enabled": false,
+      "providers": ["firebase", "apns"],
+      "validation": {
+        "required": ["to", "title", "body"],
+        "optional": ["icon", "badge", "data"]
+      }
+    },
+    "webhook": {
+      "name": "Webhook",
+      "description": "Notificações via HTTP POST para URLs externas",
+      "enabled": true,
+      "validation": {
+        "required": ["to", "payload"],
+        "optional": ["headers", "timeout"]
+      }
+    }
+  },
+  "templates": {
+    "welcome": {
+      "name": "Boas-vindas",
+      "description": "Template para novos usuários",
+      "variables": ["name", "email", "activationLink"]
+    },
+    "notification": {
+      "name": "Notificação Geral",
+      "description": "Template genérico para notificações",
+      "variables": ["title", "message", "actionUrl"]
+    },
+    "alert": {
+      "name": "Alerta do Sistema",
+      "description": "Template para alertas críticos",
+      "variables": ["title", "message", "severity", "timestamp"]
+    },
+    "report": {
+      "name": "Relatório Disponível",
+      "description": "Template para notificar sobre relatórios",
+      "variables": ["reportName", "reportType", "downloadUrl", "expiresAt"]
+    }
+  },
+  "events": {
+    "listens": [
+      "user:registered",
+      "user:login",
+      "user:passwordReset",
+      "report:generated",
+      "system:alert",
+      "system:maintenance",
+      "data:imported",
+      "data:exported",
+      "module:error",
+      "cache:cleared"
+    ],
+    "emits": [
+      "notification:sent",
+      "notification:failed",
+      "notification:queued",
+      "notification:retry",
+      "template:added",
+      "template:removed",
+      "transport:configured",
+      "transport:failed"
+    ]
+  },
+  "api": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/send",
+        "description": "Enviar uma notificação",
+        "parameters": {
+          "type": "string (email|sms|push|webhook)",
+          "to": "string",
+          "template": "string (opcional)",
+          "data": "object (opcional)",
+          "options": "object (opcional)"
+        }
+      },
+      {
+        "method": "POST",
+        "path": "/send/batch",
+        "description": "Enviar múltiplas notificações",
+        "parameters": {
+          "notifications": "array"
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/templates",
+        "description": "Listar templates disponíveis"
+      },
+      {
+        "method": "POST",
+        "path": "/templates",
+        "description": "Adicionar novo template",
+        "parameters": {
+          "name": "string",
+          "subject": "string",
+          "html": "string",
+          "text": "string (opcional)"
+        }
+      },
+      {
+        "method": "DELETE",
+        "path": "/templates/:name",
+        "description": "Remover template"
+      },
+      {
+        "method": "GET",
+        "path": "/history",
+        "description": "Obter histórico de notificações",
+        "parameters": {
+          "limit": "number (opcional)",
+          "type": "string (opcional)",
+          "status": "string (opcional)"
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/stats",
+        "description": "Obter estatísticas do módulo"
+      },
+      {
+        "method": "GET",
+        "path": "/queue",
+        "description": "Obter status da fila de notificações"
+      },
+      {
+        "method": "POST",
+        "path": "/queue/clear",
+        "description": "Limpar fila de notificações"
+      },
+      {
+        "method": "POST",
+        "path": "/test",
+        "description": "Testar configuração de transporte",
+        "parameters": {
+          "type": "string (email|sms|push|webhook)",
+          "to": "string"
+        }
+      }
+    ]
+  },
+  "features": {
+    "multipleTransports": {
+      "description": "Suporte a múltiplos tipos de notificação",
+      "enabled": true
+    },
+    "templateEngine": {
+      "description": "Sistema de templates personalizáveis",
+      "enabled": true
+    },
+    "queueSystem": {
+      "description": "Fila de notificações com retry automático",
+      "enabled": true
+    },
+    "eventIntegration": {
+      "description": "Integração com sistema de eventos",
+      "enabled": true
+    },
+    "statisticsTracking": {
+      "description": "Rastreamento de estatísticas e métricas",
+      "enabled": true
+    },
+    "historyLogging": {
+      "description": "Log histórico de notificações enviadas",
+      "enabled": true
+    },
+    "batchProcessing": {
+      "description": "Processamento em lote de notificações",
+      "enabled": true
+    },
+    "failureHandling": {
+      "description": "Tratamento robusto de falhas e retry",
+      "enabled": true
+    }
+  },
+  "validation": {
+    "notification": {
+      "type": {
+        "required": true,
+        "enum": ["email", "sms", "push", "webhook"]
+      },
+      "to": {
+        "required": true,
+        "type": "string",
+        "minLength": 1
+      },
+      "template": {
+        "required": false,
+        "type": "string"
+      },
+      "data": {
+        "required": false,
+        "type": "object"
+      }
+    },
+    "template": {
+      "name": {
+        "required": true,
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9_-]+$"
+      },
+      "subject": {
+        "required": true,
+        "type": "string",
+        "minLength": 1
+      },
+      "html": {
+        "required": false,
+        "type": "string"
+      },
+      "text": {
+        "required": false,
+        "type": "string"
+      }
+    }
+  },
+  "performance": {
+    "queueProcessing": {
+      "batchSize": 10,
+      "processingInterval": 1000,
+      "maxConcurrent": 5
+    },
+    "caching": {
+      "templates": true,
+      "transportConfig": true
+    },
+    "optimization": {
+      "connectionPooling": true,
+      "keepAlive": true,
+      "compression": true
+    }
+  },
+  "security": {
+    "encryption": {
+      "credentials": true,
+      "sensitiveData": true
+    },
+    "validation": {
+      "inputSanitization": true,
+      "templateInjection": true,
+      "urlValidation": true
+    },
+    "rateLimit": {
+      "enabled": true,
+      "maxPerMinute": 100,
+      "maxPerHour": 1000
+    }
+  },
+  "monitoring": {
+    "metrics": {
+      "totalSent": "counter",
+      "totalFailed": "counter",
+      "queueSize": "gauge",
+      "processingTime": "histogram",
+      "successRate": "gauge"
+    },
+    "alerts": {
+      "highFailureRate": {
+        "threshold": 10,
+        "timeWindow": "5m"
+      },
+      "queueBacklog": {
+        "threshold": 100,
+        "timeWindow": "1m"
+      },
+      "transportFailure": {
+        "threshold": 1,
+        "timeWindow": "1m"
+      }
+    },
+    "healthCheck": {
+      "endpoint": "/health",
+      "checks": [
+        "transportConnectivity",
+        "queueStatus",
+        "templateAvailability"
+      ]
+    }
+  }
+}
