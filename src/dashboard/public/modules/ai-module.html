@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Module - Fusione Core System</title>
+    <link rel="icon" type="image/svg+xml" href="../logo-fusione.svg">
+    
+    <!-- CSS Libraries -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+    
+    <style>
+        .ai-specific {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .ai-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+        
+        .model-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .model-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--success-color);
+            animation: pulse 2s infinite;
+        }
+        
+        .model-indicator.loading {
+            background: var(--warning-color);
+        }
+        
+        .model-indicator.error {
+            background: var(--error-color);
+        }
+        
+        .prediction-form {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .prediction-result {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--success-color);
+            margin-top: 20px;
+        }
+        
+        .confidence-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .confidence-fill {
+            height: 100%;
+            background: var(--gradient-success);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .model-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .metric-item {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+        
+        .metric-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+        
+        .training-progress {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .epoch-info {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .loss-chart {
+            height: 200px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header ai-specific animate__animated animate__fadeInDown">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div>
+                        <h1 class="title">AI Module</h1>
+                        <p class="subtitle">Inteligência Artificial e Machine Learning</p>
+                    </div>
+                </div>
+                <div class="system-status">
+                    <div class="status-item">
+                        <span class="status-value" id="modelsLoaded">-</span>
+                        <span class="status-label">Modelos Carregados</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-value" id="predictions">-</span>
+                        <span class="status-label">Predições</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-value" id="accuracy">-</span>
+                        <span class="status-label">Precisão Média</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Model Status Section -->
+        <section class="ai-card animate__animated animate__fadeInUp">
+            <h2 class="section-title">
+                <i class="fas fa-cogs"></i>
+                Status dos Modelos
+            </h2>
+            <div id="modelStatusContainer">
+                <div class="model-status">
+                    <div class="model-indicator"></div>
+                    <div>
+                        <strong>Modelo de Classificação de Texto</strong>
+                        <div style="font-size: 12px; color: var(--text-secondary);">BERT - Português</div>
+                    </div>
+                    <div style="margin-left: auto; font-size: 12px; color: var(--success-color);">Ativo</div>
+                </div>
+                
+                <div class="model-status">
+                    <div class="model-indicator loading"></div>
+                    <div>
+                        <strong>Modelo de Análise de Sentimento</strong>
+                        <div style="font-size: 12px; color: var(--text-secondary);">RoBERTa - Multilingual</div>
+                    </div>
+                    <div style="margin-left: auto; font-size: 12px; color: var(--warning-color);">Carregando</div>
+                </div>
+                
+                <div class="model-status">
+                    <div class="model-indicator"></div>
+                    <div>
+                        <strong>Modelo de Extração de Entidades</strong>
+                        <div style="font-size: 12px; color: var(--text-secondary);">spaCy - pt_core_news_lg</div>
+                    </div>
+                    <div style="margin-left: auto; font-size: 12px; color: var(--success-color);">Ativo</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Model Metrics -->
+        <section class="model-metrics animate__animated animate__fadeInUp">
+            <div class="metric-item">
+                <span class="metric-value" id="totalInferences">0</span>
+                <div class="metric-label">Total de Inferências</div>
+            </div>
+            <div class="metric-item">
+                <span class="metric-value" id="avgInferenceTime">0ms</span>
+                <div class="metric-label">Tempo Médio de Inferência</div>
+            </div>
+            <div class="metric-item">
+                <span class="metric-value" id="memoryUsage">0MB</span>
+                <div class="metric-label">Uso de Memória</div>
+            </div>
+            <div class="metric-item">
+                <span class="metric-value" id="gpuUtilization">0%</span>
+                <div class="metric-label">Utilização GPU</div>
+            </div>
+        </section>
+
+        <!-- Prediction Interface -->
+        <section class="prediction-form animate__animated animate__fadeInUp">
+            <h3 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-magic"></i>
+                Interface de Predição
+            </h3>
+            
+            <div class="form-group">
+                <label class="form-label" for="modelSelect">Selecionar Modelo:</label>
+                <select id="modelSelect" class="form-input">
+                    <option value="text-classification">Classificação de Texto</option>
+                    <option value="sentiment-analysis">Análise de Sentimento</option>
+                    <option value="entity-extraction">Extração de Entidades</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="inputText">Texto para Análise:</label>
+                <textarea id="inputText" class="form-input form-textarea" 
+                    placeholder="Digite o texto que deseja analisar..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <button class="btn btn-primary" onclick="runPrediction()" style="width: 100%;">
+                    <i class="fas fa-play"></i>
+                    Executar Predição
+                </button>
+            </div>
+            
+            <div id="predictionResult" style="display: none;"></div>
+        </section>
+
+        <!-- Training Progress -->
+        <section class="training-progress animate__animated animate__fadeInUp">
+            <div class="progress-header">
+                <h3 style="margin: 0; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-chart-line"></i>
+                    Progresso do Treinamento
+                </h3>
+                <div class="epoch-info">
+                    Época: <span id="currentEpoch">0</span> / <span id="totalEpochs">100</span>
+                </div>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="trainingProgress" style="width: 0%;"></div>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 14px;">
+                <span>Loss: <span id="currentLoss">0.000</span></span>
+                <span>Accuracy: <span id="currentAccuracy">0.00%</span></span>
+                <span>ETA: <span id="estimatedTime">--:--</span></span>
+            </div>
+            
+            <div class="loss-chart" id="lossChart">
+                <i class="fas fa-chart-area" style="font-size: 48px; opacity: 0.3;"></i>
+                <span style="margin-left: 15px; opacity: 0.7;">Gráfico de Loss em Tempo Real</span>
+            </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <section class="module-actions" style="display: flex; gap: 15px; margin-top: 30px;">
+            <button class="btn btn-primary" onclick="startTraining()">
+                <i class="fas fa-play"></i>
+                Iniciar Treinamento
+            </button>
+            <button class="btn btn-secondary" onclick="stopTraining()">
+                <i class="fas fa-stop"></i>
+                Parar Treinamento
+            </button>
+            <button class="btn btn-secondary" onclick="exportModel()">
+                <i class="fas fa-download"></i>
+                Exportar Modelo
+            </button>
+            <button class="btn btn-secondary" onclick="loadModel()">
+                <i class="fas fa-upload"></i>
+                Carregar Modelo
+            </button>
+            <button class="btn btn-secondary" onclick="window.location.href='../index.html'">
+                <i class="fas fa-arrow-left"></i>
+                Voltar ao Dashboard
+            </button>
+        </section>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <script>
+        // AI Module specific functionality
+        class AIModuleInterface {
+            constructor() {
+                this.socket = io();
+                this.isTraining = false;
+                this.trainingData = {
+                    currentEpoch: 0,
+                    totalEpochs: 100,
+                    loss: 0,
+                    accuracy: 0
+                };
+                
+                this.init();
+            }
+            
+            init() {
+                this.setupSocketListeners();
+                this.loadModuleData();
+                this.startMetricsUpdate();
+            }
+            
+            setupSocketListeners() {
+                this.socket.on('ai-metrics', (data) => {
+                    this.updateMetrics(data);
+                });
+                
+                this.socket.on('training-progress', (data) => {
+                    this.updateTrainingProgress(data);
+                });
+                
+                this.socket.on('model-status', (data) => {
+                    this.updateModelStatus(data);
+                });
+            }
+            
+            async loadModuleData() {
+                try {
+                    const response = await fetch('/api/ai-module/status');
+                    const data = await response.json();
+                    
+                    this.updateMetrics(data.metrics);
+                    this.updateModelStatus(data.models);
+                } catch (error) {
+                    console.error('Erro ao carregar dados do módulo AI:', error);
+                }
+            }
+            
+            updateMetrics(metrics) {
+                document.getElementById('modelsLoaded').textContent = metrics.modelsLoaded || 0;
+                document.getElementById('predictions').textContent = (metrics.predictions || 0).toLocaleString();
+                document.getElementById('accuracy').textContent = (metrics.accuracy || 0).toFixed(2) + '%';
+                
+                document.getElementById('totalInferences').textContent = (metrics.totalInferences || 0).toLocaleString();
+                document.getElementById('avgInferenceTime').textContent = (metrics.avgInferenceTime || 0) + 'ms';
+                document.getElementById('memoryUsage').textContent = (metrics.memoryUsage || 0) + 'MB';
+                document.getElementById('gpuUtilization').textContent = (metrics.gpuUtilization || 0) + '%';
+            }
+            
+            updateModelStatus(models) {
+                // Update model status indicators
+                const container = document.getElementById('modelStatusContainer');
+                if (models && container) {
+                    // Update existing model status or create new ones
+                    console.log('Updating model status:', models);
+                }
+            }
+            
+            updateTrainingProgress(data) {
+                this.trainingData = { ...this.trainingData, ...data };
+                
+                const progress = (data.currentEpoch / data.totalEpochs) * 100;
+                document.getElementById('trainingProgress').style.width = progress + '%';
+                
+                document.getElementById('currentEpoch').textContent = data.currentEpoch;
+                document.getElementById('totalEpochs').textContent = data.totalEpochs;
+                document.getElementById('currentLoss').textContent = data.loss.toFixed(3);
+                document.getElementById('currentAccuracy').textContent = (data.accuracy * 100).toFixed(2) + '%';
+                document.getElementById('estimatedTime').textContent = data.eta || '--:--';
+            }
+            
+            startMetricsUpdate() {
+                setInterval(() => {
+                    if (!document.hidden) {
+                        this.loadModuleData();
+                    }
+                }, 5000);
+            }
+        }
+        
+        // Global functions
+        async function runPrediction() {
+            const model = document.getElementById('modelSelect').value;
+            const text = document.getElementById('inputText').value;
+            
+            if (!text.trim()) {
+                alert('Por favor, digite um texto para análise.');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/ai-module/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ model, text })
+                });
+                
+                const result = await response.json();
+                displayPredictionResult(result);
+            } catch (error) {
+                console.error('Erro na predição:', error);
+                alert('Erro ao executar predição');
+            }
+        }
+        
+        function displayPredictionResult(result) {
+            const container = document.getElementById('predictionResult');
+            
+            let resultHTML = `
+                <div class="prediction-result">
+                    <h4 style="margin-bottom: 15px;">Resultado da Predição</h4>
+                    <div><strong>Resultado:</strong> ${result.prediction}</div>
+                    <div><strong>Confiança:</strong> ${(result.confidence * 100).toFixed(2)}%</div>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" style="width: ${result.confidence * 100}%"></div>
+                    </div>
+            `;
+            
+            if (result.entities) {
+                resultHTML += `
+                    <div style="margin-top: 15px;">
+                        <strong>Entidades Encontradas:</strong>
+                        <div style="margin-top: 10px;">
+                            ${result.entities.map(entity => 
+                                `<span style="background: var(--primary-color); padding: 4px 8px; border-radius: 4px; margin-right: 8px; font-size: 12px;">
+                                    ${entity.text} (${entity.label})
+                                </span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            resultHTML += '</div>';
+            
+            container.innerHTML = resultHTML;
+            container.style.display = 'block';
+        }
+        
+        async function startTraining() {
+            try {
+                const response = await fetch('/api/ai-module/training/start', {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    alert('Treinamento iniciado com sucesso!');
+                } else {
+                    alert('Erro ao iniciar treinamento: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Erro ao iniciar treinamento:', error);
+                alert('Erro ao iniciar treinamento');
+            }
+        }
+        
+        async function stopTraining() {
+            try {
+                const response = await fetch('/api/ai-module/training/stop', {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    alert('Treinamento parado com sucesso!');
+                } else {
+                    alert('Erro ao parar treinamento: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Erro ao parar treinamento:', error);
+                alert('Erro ao parar treinamento');
+            }
+        }
+        
+        function exportModel() {
+            const link = document.createElement('a');
+            link.href = '/api/ai-module/model/export';
+            link.download = 'ai-model.zip';
+            link.click();
+        }
+        
+        function loadModel() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.zip,.pkl,.h5';
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('model', file);
+                    
+                    try {
+                        const response = await fetch('/api/ai-module/model/import', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        
+                        const result = await response.json();
+                        if (result.success) {
+                            alert('Modelo carregado com sucesso!');
+                        } else {
+                            alert('Erro ao carregar modelo: ' + result.error);
+                        }
+                    } catch (error) {
+                        console.error('Erro ao carregar modelo:', error);
+                        alert('Erro ao carregar modelo');
+                    }
+                }
+            };
+            input.click();
+        }
+        
+        // Initialize AI Module Interface
+        let aiModule;
+        document.addEventListener('DOMContentLoaded', () => {
+            aiModule = new AIModuleInterface();
+        });
+    </script>
+</body>
+</html>

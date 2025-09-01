@@ -1,0 +1,117 @@
+{
+  "auditId": "audit_1756687692326_436d638d",
+  "timestamp": "2025-09-01T00:48:12.326Z",
+  "startTime": 1756687692326,
+  "endTime": 1756687692329,
+  "duration": 3,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:48:12.326Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:12.327Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:12.327Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:12.327Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:12.327Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:12.327Z"
+      }
+    ],
+    "vulnerabilitiesFound": 0,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:48:12.327Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:12.327Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:12.327Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "path_traversal",
+            "severity": "high",
+            "description": "Problema de código detectado: path_traversal",
+            "recommendation": "Revisar e corrigir código fonte"
+          }
+        ],
+        "timestamp": "2025-09-01T00:48:12.328Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "path_traversal",
+        "severity": "high",
+        "description": "Problema de código detectado: path_traversal",
+        "recommendation": "Revisar e corrigir código fonte"
+      }
+    ],
+    "riskScore": 7,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:48:12.328Z",
+    "events": [
+      {
+        "id": "event_1756687692328_55ae2e7c",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-31T20:28:45.848Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 55,
+      "failedLoginAttempts": 10,
+      "blockedRequests": 33,
+      "activeThreats": 3,
+      "securityScore": 3,
+      "lastSecurityUpdate": "2025-09-01T00:48:12.328Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "low",
+  "recommendations": []
+}

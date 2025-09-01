@@ -1,0 +1,184 @@
+{
+  "auditId": "audit_1756341918427_98bc2e1d",
+  "timestamp": "2025-08-28T00:45:18.435Z",
+  "startTime": 1756341918427,
+  "endTime": 1756341918462,
+  "duration": 35,
+  "penetrationTesting": {
+    "timestamp": "2025-08-28T00:45:18.435Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "sql_injection",
+            "severity": "high",
+            "description": "Possível vulnerabilidade de SQL Injection detectada com payload: ' UNION SELECT * FROM users --",
+            "recommendation": "Implementar prepared statements e validação de entrada"
+          }
+        ],
+        "timestamp": "2025-08-28T00:45:18.435Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-28T00:45:18.440Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "weak_authentication",
+            "severity": "critical",
+            "description": "Senha fraca detectada: admin123",
+            "recommendation": "Implementar política de senhas fortes e autenticação multi-fator"
+          }
+        ],
+        "timestamp": "2025-08-28T00:45:18.440Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "privilege_escalation",
+            "severity": "high",
+            "description": "Possível vulnerabilidade de escalação de privilégios detectada",
+            "recommendation": "Revisar controles de acesso e implementar princípio do menor privilégio"
+          }
+        ],
+        "timestamp": "2025-08-28T00:45:18.440Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-28T00:45:18.440Z"
+      }
+    ],
+    "vulnerabilitiesFound": 3,
+    "criticalIssues": 1,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-08-28T00:45:18.449Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "dependency_vulnerability",
+            "severity": "medium",
+            "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+            "recommendation": "Atualizar express para versão mais recente"
+          },
+          {
+            "type": "dependency_vulnerability",
+            "severity": "low",
+            "description": "Vulnerabilidade encontrada em mongoose@5.13.0: CVE-2022-24304",
+            "recommendation": "Atualizar mongoose para versão mais recente"
+          }
+        ],
+        "timestamp": "2025-08-28T00:45:18.449Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-28T00:45:18.449Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-28T00:45:18.449Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "dependency_vulnerability",
+        "severity": "medium",
+        "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+        "recommendation": "Atualizar express para versão mais recente"
+      },
+      {
+        "type": "dependency_vulnerability",
+        "severity": "low",
+        "description": "Vulnerabilidade encontrada em mongoose@5.13.0: CVE-2022-24304",
+        "recommendation": "Atualizar mongoose para versão mais recente"
+      }
+    ],
+    "riskScore": 5,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-08-28T00:45:18.456Z",
+    "events": [
+      {
+        "id": "event_1756341918456_4b9652f7",
+        "type": "login_attempt",
+        "severity": "high",
+        "timestamp": "2025-08-27T20:14:16.253Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756341918459_9c8714b4",
+        "type": "login_attempt",
+        "severity": "low",
+        "timestamp": "2025-08-27T10:12:44.382Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756341918459_c70a4f4b",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-08-27T16:39:34.955Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [
+      {
+        "id": "alert_1756341918460_a5b63b5f",
+        "type": "multiple_failed_logins",
+        "severity": "high",
+        "timestamp": "2025-08-28T00:45:18.460Z",
+        "description": "Múltiplas tentativas de login falharam para o mesmo usuário",
+        "recommendation": "Investigar possível ataque de força bruta"
+      }
+    ],
+    "metrics": {
+      "totalSecurityEvents": 9,
+      "failedLoginAttempts": 4,
+      "blockedRequests": 18,
+      "activeThreats": 3,
+      "securityScore": 38,
+      "lastSecurityUpdate": "2025-08-28T00:45:18.460Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "medium",
+  "recommendations": [
+    {
+      "priority": "medium",
+      "category": "security_improvement",
+      "message": "Melhorias de segurança recomendadas"
+    },
+    {
+      "priority": "critical",
+      "category": "penetration_testing",
+      "message": "Corrigir vulnerabilidades críticas encontradas nos testes de penetração"
+    }
+  ]
+}

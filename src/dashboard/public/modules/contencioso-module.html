@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contencioso Module - Fusione Core System</title>
+    <link rel="icon" type="image/svg+xml" href="../logo-fusione.svg">
+    
+    <!-- CSS Libraries -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+    
+    <style>
+        .contencioso-specific {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+        }
+        
+        .contencioso-card {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(153, 27, 27, 0.1) 100%);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+        }
+        
+        .case-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .case-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .case-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .case-number {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .case-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-active {
+            background: var(--gradient-success);
+            color: white;
+        }
+        
+        .status-pending {
+            background: var(--gradient-warning);
+            color: white;
+        }
+        
+        .status-closed {
+            background: var(--gradient-error);
+            color: white;
+        }
+        
+        .case-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .detail-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .document-list {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .document-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .document-item:last-child {
+            border-bottom: none;
+        }
+        
+        .document-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .doc-pdf {
+            background: rgba(220, 38, 38, 0.2);
+            color: #dc2626;
+        }
+        
+        .doc-word {
+            background: rgba(37, 99, 235, 0.2);
+            color: #2563eb;
+        }
+        
+        .doc-excel {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.02);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.05);
+        }
+        
+        .upload-area.dragover {
+            border-color: var(--success-color);
+            background: rgba(16, 185, 129, 0.05);
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-color);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -22px;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            border: 3px solid var(--dark-bg);
+        }
+        
+        .timeline-date {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+        
+        .timeline-content {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        
+        .search-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .filter-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        
+        .filter-input {
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header contencioso-specific animate__animated animate__fadeInDown">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <i class="fas fa-gavel"></i>
+                    </div>
+                    <div>
+                        <h1 class="title">Contencioso Module</h1>
+                        <p class="subtitle">Gestão de Processos Jurídicos e Documentos Legais</p>
+                    </div>
+                </div>
+                <div class="system-status">
+                    <div class="status-item">
+                        <span class="status-value" id="totalCases">-</span>
+                        <span class="status-label">Processos</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-value" id="activeCases">-</span>
+                        <span class="status-label">Ativos</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-value" id="documentsProcessed">-</span>
+                        <span class="status-label">Documentos</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Statistics Section -->
+        <section class="stats-grid animate__animated animate__fadeInUp">
+            <div class="stat-card">
+                <span class="stat-value" id="pendingCases">0</span>
+                <div class="stat-label">Casos Pendentes</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" id="closedCases">0</span>
+                <div class="stat-label">Casos Fechados</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" id="avgProcessingTime">0</span>
+                <div class="stat-label">Tempo Médio (dias)</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" id="successRate">0%</span>
+                <div class="stat-label">Taxa de Sucesso</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" id="totalValue">R$ 0</span>
+                <div class="stat-label">Valor Total</div>
+            </div>
+        </section>
+
+        <!-- Search and Filters -->
+        <section class="contencioso-card animate__animated animate__fadeInUp">
+            <h2 class="section-title">
+                <i class="fas fa-search"></i>
+                Busca e Filtros
+            </h2>
+            <div class="search-filters">
+                <div class="filter-group">
+                    <label class="filter-label">Número do Processo</label>
+                    <input type="text" class="filter-input" id="caseNumberFilter" placeholder="Ex: 1234567-89.2023.8.26.0001">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Status</label>
+                    <select class="filter-input" id="statusFilter">
+                        <option value="">Todos</option>
+                        <option value="active">Ativo</option>
+                        <option value="pending">Pendente</option>
+                        <option value="closed">Fechado</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Tipo de Ação</label>
+                    <select class="filter-input" id="actionTypeFilter">
+                        <option value="">Todos</option>
+                        <option value="civil">Cível</option>
+                        <option value="criminal">Criminal</option>
+                        <option value="trabalhista">Trabalhista</option>
+                        <option value="tributario">Tributário</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Data Início</label>
+                    <input type="date" class="filter-input" id="startDateFilter">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Data Fim</label>
+                    <input type="date" class="filter-input" id="endDateFilter">
+                </div>
+                <div class="filter-group" style="justify-content: flex-end;">
+                    <button class="btn btn-primary" onclick="applyFilters()" style="margin-top: 20px;">
+                        <i class="fas fa-filter"></i>
+                        Aplicar Filtros
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cases List -->
+        <section class="contencioso-card animate__animated animate__fadeInUp">
+            <h2 class="section-title">
+                <i class="fas fa-folder-open"></i>
+                Processos Jurídicos
+            </h2>
+            <div id="casesList">
+                <!-- Cases will be loaded here -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Carregando processos...
+                </div>
+            </div>
+        </section>
+
+        <!-- Document Upload -->
+        <section class="contencioso-card animate__animated animate__fadeInUp">
+            <h2 class="section-title">
+                <i class="fas fa-cloud-upload-alt"></i>
+                Upload de Documentos
+            </h2>
+            <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: var(--text-secondary); margin-bottom: 15px;"></i>
+                <h3 style="margin-bottom: 10px;">Arraste arquivos aqui ou clique para selecionar</h3>
+                <p style="color: var(--text-secondary); font-size: 14px;">Suporte para PDF, DOC, DOCX, XLS, XLSX</p>
+                <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.xls,.xlsx" style="display: none;">
+            </div>
+            <div id="uploadProgress" style="display: none; margin-top: 20px;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="uploadProgressBar" style="width: 0%;"></div>
+                </div>
+                <div style="text-align: center; margin-top: 10px; font-size: 14px;">
+                    <span id="uploadStatus">Enviando...</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Activity Timeline -->
+        <section class="contencioso-card animate__animated animate__fadeInUp">
+            <h2 class="section-title">
+                <i class="fas fa-history"></i>
+                Atividades Recentes
+            </h2>
+            <div class="timeline" id="activityTimeline">
+                <!-- Timeline items will be loaded here -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Carregando atividades...
+                </div>
+            </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <section class="module-actions" style="display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="createNewCase()">
+                <i class="fas fa-plus"></i>
+                Novo Processo
+            </button>
+            <button class="btn btn-secondary" onclick="generateReport()">
+                <i class="fas fa-chart-bar"></i>
+                Gerar Relatório
+            </button>
+            <button class="btn btn-secondary" onclick="exportData()">
+                <i class="fas fa-download"></i>
+                Exportar Dados
+            </button>
+            <button class="btn btn-secondary" onclick="importData()">
+                <i class="fas fa-upload"></i>
+                Importar Dados
+            </button>
+            <button class="btn btn-secondary" onclick="window.location.href='../index.html'">
+                <i class="fas fa-arrow-left"></i>
+                Voltar ao Dashboard
+            </button>
+        </section>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <script>
+        // Contencioso Module specific functionality
+        class ContenciosoModuleInterface {
+            constructor() {
+                this.socket = io();
+                this.cases = [];
+                this.filteredCases = [];
+                
+                this.init();
+            }
+            
+            init() {
+                this.setupSocketListeners();
+                this.setupFileUpload();
+                this.loadModuleData();
+                this.startMetricsUpdate();
+            }
+            
+            setupSocketListeners() {
+                this.socket.on('contencioso-metrics', (data) => {
+                    this.updateMetrics(data);
+                });
+                
+                this.socket.on('case-update', (data) => {
+                    this.handleCaseUpdate(data);
+                });
+                
+                this.socket.on('document-processed', (data) => {
+                    this.handleDocumentProcessed(data);
+                });
+            }
+            
+            setupFileUpload() {
+                const uploadArea = document.getElementById('uploadArea');
+                const fileInput = document.getElementById('fileInput');
+                
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.add('dragover');
+                });
+                
+                uploadArea.addEventListener('dragleave', () => {
+                    uploadArea.classList.remove('dragover');
+                });
+                
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('dragover');
+                    const files = e.dataTransfer.files;
+                    this.handleFileUpload(files);
+                });
+                
+                fileInput.addEventListener('change', (e) => {
+                    this.handleFileUpload(e.target.files);
+                });
+            }
+            
+            async loadModuleData() {
+                try {
+                    const [casesResponse, metricsResponse, activityResponse] = await Promise.all([
+                        fetch('/api/contencioso-module/cases'),
+                        fetch('/api/contencioso-module/metrics'),
+                        fetch('/api/contencioso-module/activity')
+                    ]);
+                    
+                    const casesData = await casesResponse.json();
+                    const metricsData = await metricsResponse.json();
+                    const activityData = await activityResponse.json();
+                    
+                    this.cases = casesData.cases || [];
+                    this.filteredCases = [...this.cases];
+                    
+                    this.updateMetrics(metricsData);
+                    this.renderCases();
+                    this.renderActivity(activityData.activities || []);
+                } catch (error) {
+                    console.error('Erro ao carregar dados do módulo Contencioso:', error);
+                    this.showError('Erro ao carregar dados');
+                }
+            }
+            
+            updateMetrics(metrics) {
+                document.getElementById('totalCases').textContent = metrics.totalCases || 0;
+                document.getElementById('activeCases').textContent = metrics.activeCases || 0;
+                document.getElementById('documentsProcessed').textContent = (metrics.documentsProcessed || 0).toLocaleString();
+                
+                document.getElementById('pendingCases').textContent = metrics.pendingCases || 0;
+                document.getElementById('closedCases').textContent = metrics.closedCases || 0;
+                document.getElementById('avgProcessingTime').textContent = metrics.avgProcessingTime || 0;
+                document.getElementById('successRate').textContent = (metrics.successRate || 0).toFixed(1) + '%';
+                document.getElementById('totalValue').textContent = 'R$ ' + (metrics.totalValue || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+            }
+            
+            renderCases() {
+                const container = document.getElementById('casesList');
+                
+                if (this.filteredCases.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            <i class="fas fa-folder-open" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                            <h3>Nenhum processo encontrado</h3>
+                            <p>Crie um novo processo ou ajuste os filtros de busca.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const casesHTML = this.filteredCases.map(caseItem => this.createCaseHTML(caseItem)).join('');
+                container.innerHTML = casesHTML;
+            }
+            
+            createCaseHTML(caseItem) {
+                const statusClass = this.getStatusClass(caseItem.status);
+                const documents = caseItem.documents || [];
+                
+                return `
+                    <div class="case-item" data-case-id="${caseItem.id}">
+                        <div class="case-header">
+                            <div class="case-number">${caseItem.number}</div>
+                            <div class="case-status ${statusClass}">${caseItem.status}</div>
+                        </div>
+                        
+                        <div class="case-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Tipo de Ação</div>
+                                <div class="detail-value">${caseItem.actionType}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Cliente</div>
+                                <div class="detail-value">${caseItem.client}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Valor da Causa</div>
+                                <div class="detail-value">R$ ${(caseItem.value || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Data de Abertura</div>
+                                <div class="detail-value">${new Date(caseItem.openDate).toLocaleDateString('pt-BR')}</div>
+                            </div>
+                        </div>
+                        
+                        ${documents.length > 0 ? `
+                            <div class="document-list">
+                                <h4 style="margin-bottom: 10px; font-size: 14px;">Documentos (${documents.length})</h4>
+                                ${documents.slice(0, 3).map(doc => `
+                                    <div class="document-item">
+                                        <div class="document-icon ${this.getDocumentClass(doc.type)}">
+                                            <i class="${this.getDocumentIcon(doc.type)}"></i>
+                                        </div>
+                                        <div style="flex: 1;">
+                                            <div style="font-weight: 600; font-size: 14px;">${doc.name}</div>
+                                            <div style="font-size: 12px; color: var(--text-secondary);">
+                                                ${this.formatFileSize(doc.size)} • ${new Date(doc.uploadDate).toLocaleDateString('pt-BR')}
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;" onclick="downloadDocument('${doc.id}')">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                    </div>
+                                `).join('')}
+                                ${documents.length > 3 ? `<div style="text-align: center; margin-top: 10px; font-size: 12px; color: var(--text-secondary);">+${documents.length - 3} documentos</div>` : ''}
+                            </div>
+                        ` : ''}
+                        
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <button class="btn btn-primary" onclick="viewCase('${caseItem.id}')">
+                                <i class="fas fa-eye"></i>
+                                Visualizar
+                            </button>
+                            <button class="btn btn-secondary" onclick="editCase('${caseItem.id}')">
+                                <i class="fas fa-edit"></i>
+                                Editar
+                            </button>
+                            <button class="btn btn-secondary" onclick="addDocument('${caseItem.id}')">
+                                <i class="fas fa-paperclip"></i>
+                                Anexar
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            renderActivity(activities) {
+                const container = document.getElementById('activityTimeline');
+                
+                if (activities.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            <i class="fas fa-history" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                            <h3>Nenhuma atividade recente</h3>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const activitiesHTML = activities.map(activity => `
+                    <div class="timeline-item">
+                        <div class="timeline-date">${new Date(activity.date).toLocaleString('pt-BR')}</div>
+                        <div class="timeline-content">${activity.description}</div>
+                    </div>
+                `).join('');
+                
+                container.innerHTML = activitiesHTML;
+            }
+            
+            async handleFileUpload(files) {
+                const formData = new FormData();
+                Array.from(files).forEach(file => {
+                    formData.append('documents', file);
+                });
+                
+                const progressContainer = document.getElementById('uploadProgress');
+                const progressBar = document.getElementById('uploadProgressBar');
+                const statusText = document.getElementById('uploadStatus');
+                
+                progressContainer.style.display = 'block';
+                
+                try {
+                    const response = await fetch('/api/contencioso-module/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        progressBar.style.width = '100%';
+                        statusText.textContent = 'Upload concluído com sucesso!';
+                        setTimeout(() => {
+                            progressContainer.style.display = 'none';
+                            progressBar.style.width = '0%';
+                        }, 2000);
+                        
+                        this.loadModuleData(); // Reload data
+                    } else {
+                        throw new Error(result.error);
+                    }
+                } catch (error) {
+                    console.error('Erro no upload:', error);
+                    statusText.textContent = 'Erro no upload: ' + error.message;
+                    progressBar.style.background = 'var(--gradient-error)';
+                }
+            }
+            
+            // Utility methods
+            getStatusClass(status) {
+                switch (status.toLowerCase()) {
+                    case 'ativo': case 'active': return 'status-active';
+                    case 'pendente': case 'pending': return 'status-pending';
+                    case 'fechado': case 'closed': return 'status-closed';
+                    default: return 'status-pending';
+                }
+            }
+            
+            getDocumentClass(type) {
+                if (type.includes('pdf')) return 'doc-pdf';
+                if (type.includes('word') || type.includes('doc')) return 'doc-word';
+                if (type.includes('excel') || type.includes('sheet')) return 'doc-excel';
+                return 'doc-pdf';
+            }
+            
+            getDocumentIcon(type) {
+                if (type.includes('pdf')) return 'fas fa-file-pdf';
+                if (type.includes('word') || type.includes('doc')) return 'fas fa-file-word';
+                if (type.includes('excel') || type.includes('sheet')) return 'fas fa-file-excel';
+                return 'fas fa-file';
+            }
+            
+            formatFileSize(bytes) {
+                if (bytes === 0) return '0 B';
+                const k = 1024;
+                const sizes = ['B', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+            
+            showError(message) {
+                // Show error notification
+                console.error(message);
+            }
+            
+            startMetricsUpdate() {
+                setInterval(() => {
+                    if (!document.hidden) {
+                        this.loadModuleData();
+                    }
+                }, 30000); // Update every 30 seconds
+            }
+        }
+        
+        // Global functions
+        function applyFilters() {
+            const caseNumber = document.getElementById('caseNumberFilter').value;
+            const status = document.getElementById('statusFilter').value;
+            const actionType = document.getElementById('actionTypeFilter').value;
+            const startDate = document.getElementById('startDateFilter').value;
+            const endDate = document.getElementById('endDateFilter').value;
+            
+            contenciosoModule.filteredCases = contenciosoModule.cases.filter(caseItem => {
+                if (caseNumber && !caseItem.number.toLowerCase().includes(caseNumber.toLowerCase())) return false;
+                if (status && caseItem.status.toLowerCase() !== status) return false;
+                if (actionType && caseItem.actionType.toLowerCase() !== actionType) return false;
+                if (startDate && new Date(caseItem.openDate) < new Date(startDate)) return false;
+                if (endDate && new Date(caseItem.openDate) > new Date(endDate)) return false;
+                return true;
+            });
+            
+            contenciosoModule.renderCases();
+        }
+        
+        function createNewCase() {
+            // Open new case modal/form
+            alert('Funcionalidade de criação de novo processo será implementada');
+        }
+        
+        function viewCase(caseId) {
+            // Open case details view
+            alert(`Visualizar processo: ${caseId}`);
+        }
+        
+        function editCase(caseId) {
+            // Open case edit form
+            alert(`Editar processo: ${caseId}`);
+        }
+        
+        function addDocument(caseId) {
+            // Open document upload for specific case
+            alert(`Adicionar documento ao processo: ${caseId}`);
+        }
+        
+        function downloadDocument(docId) {
+            // Download specific document
+            window.open(`/api/contencioso-module/document/${docId}/download`, '_blank');
+        }
+        
+        function generateReport() {
+            // Generate and download report
+            window.open('/api/contencioso-module/report', '_blank');
+        }
+        
+        function exportData() {
+            // Export data to Excel/CSV
+            window.open('/api/contencioso-module/export', '_blank');
+        }
+        
+        function importData() {
+            // Import data from file
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.xlsx,.csv';
+            input.click();
+        }
+        
+        // Initialize Contencioso Module Interface
+        let contenciosoModule;
+        document.addEventListener('DOMContentLoaded', () => {
+            contenciosoModule = new ContenciosoModuleInterface();
+        });
+    </script>
+</body>
+</html>

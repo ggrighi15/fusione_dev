@@ -1,0 +1,124 @@
+{
+  "auditId": "audit_1756687913893_cae59567",
+  "timestamp": "2025-09-01T00:51:53.894Z",
+  "startTime": 1756687913894,
+  "endTime": 1756687913897,
+  "duration": 3,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:51:53.894Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:53.894Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:53.894Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:53.894Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:53.894Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: X-Content-Type-Options",
+            "recommendation": "Configurar header X-Content-Type-Options no servidor web"
+          }
+        ],
+        "timestamp": "2025-09-01T00:51:53.895Z"
+      }
+    ],
+    "vulnerabilitiesFound": 1,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:51:53.895Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:53.895Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "configuration_issue",
+            "severity": "high",
+            "description": "Problema de configuração detectado: insecure_protocols",
+            "recommendation": "Revisar e corrigir configurações de segurança"
+          }
+        ],
+        "timestamp": "2025-09-01T00:51:53.895Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:53.895Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "configuration_issue",
+        "severity": "high",
+        "description": "Problema de configuração detectado: insecure_protocols",
+        "recommendation": "Revisar e corrigir configurações de segurança"
+      }
+    ],
+    "riskScore": 7,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:51:53.896Z",
+    "events": [
+      {
+        "id": "event_1756687913896_fbf5e787",
+        "type": "login_attempt",
+        "severity": "high",
+        "timestamp": "2025-09-01T00:14:17.899Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 54,
+      "failedLoginAttempts": 7,
+      "blockedRequests": 20,
+      "activeThreats": 1,
+      "securityScore": 25,
+      "lastSecurityUpdate": "2025-09-01T00:51:53.896Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "low",
+  "recommendations": []
+}

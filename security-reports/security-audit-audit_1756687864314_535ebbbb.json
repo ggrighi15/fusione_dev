@@ -1,0 +1,145 @@
+{
+  "auditId": "audit_1756687864314_535ebbbb",
+  "timestamp": "2025-09-01T00:51:04.314Z",
+  "startTime": 1756687864314,
+  "endTime": 1756687864317,
+  "duration": 3,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:51:04.314Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "sql_injection",
+            "severity": "high",
+            "description": "Possível vulnerabilidade de SQL Injection detectada com payload: '; DROP TABLE users; --",
+            "recommendation": "Implementar prepared statements e validação de entrada"
+          }
+        ],
+        "timestamp": "2025-09-01T00:51:04.315Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "xss",
+            "severity": "medium",
+            "description": "Possível vulnerabilidade XSS detectada com payload: <script>alert(\"XSS\")</script>",
+            "recommendation": "Implementar sanitização de entrada e Content Security Policy"
+          }
+        ],
+        "timestamp": "2025-09-01T00:51:04.315Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:04.315Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:04.315Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: X-Content-Type-Options",
+            "recommendation": "Configurar header X-Content-Type-Options no servidor web"
+          }
+        ],
+        "timestamp": "2025-09-01T00:51:04.315Z"
+      }
+    ],
+    "vulnerabilitiesFound": 3,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:51:04.316Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "dependency_vulnerability",
+            "severity": "high",
+            "description": "Vulnerabilidade encontrada em lodash@4.17.20: CVE-2021-23337",
+            "recommendation": "Atualizar lodash para versão mais recente"
+          }
+        ],
+        "timestamp": "2025-09-01T00:51:04.316Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:04.316Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:04.316Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "dependency_vulnerability",
+        "severity": "high",
+        "description": "Vulnerabilidade encontrada em lodash@4.17.20: CVE-2021-23337",
+        "recommendation": "Atualizar lodash para versão mais recente"
+      }
+    ],
+    "riskScore": 7,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:51:04.316Z",
+    "events": [
+      {
+        "id": "event_1756687864317_17bee1b3",
+        "type": "suspicious_activity",
+        "severity": "high",
+        "timestamp": "2025-08-31T17:19:42.081Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687864317_11a50d2b",
+        "type": "suspicious_activity",
+        "severity": "high",
+        "timestamp": "2025-08-31T05:08:59.415Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 64,
+      "failedLoginAttempts": 1,
+      "blockedRequests": 15,
+      "activeThreats": 1,
+      "securityScore": 56,
+      "lastSecurityUpdate": "2025-09-01T00:51:04.317Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "low",
+  "recommendations": []
+}

@@ -1,0 +1,149 @@
+{
+  "auditId": "audit_1756687555736_e8a54a28",
+  "timestamp": "2025-09-01T00:45:55.737Z",
+  "startTime": 1756687555736,
+  "endTime": 1756687555740,
+  "duration": 4,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:45:55.737Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "sql_injection",
+            "severity": "high",
+            "description": "Possível vulnerabilidade de SQL Injection detectada com payload: ' OR '1'='1",
+            "recommendation": "Implementar prepared statements e validação de entrada"
+          }
+        ],
+        "timestamp": "2025-09-01T00:45:55.737Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:45:55.737Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "weak_authentication",
+            "severity": "critical",
+            "description": "Senha fraca detectada: admin",
+            "recommendation": "Implementar política de senhas fortes e autenticação multi-fator"
+          }
+        ],
+        "timestamp": "2025-09-01T00:45:55.737Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:45:55.737Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: X-XSS-Protection",
+            "recommendation": "Configurar header X-XSS-Protection no servidor web"
+          }
+        ],
+        "timestamp": "2025-09-01T00:45:55.737Z"
+      }
+    ],
+    "vulnerabilitiesFound": 3,
+    "criticalIssues": 1,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:45:55.738Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:45:55.738Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "configuration_issue",
+            "severity": "high",
+            "description": "Problema de configuração detectado: insecure_protocols",
+            "recommendation": "Revisar e corrigir configurações de segurança"
+          }
+        ],
+        "timestamp": "2025-09-01T00:45:55.738Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:45:55.738Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "configuration_issue",
+        "severity": "high",
+        "description": "Problema de configuração detectado: insecure_protocols",
+        "recommendation": "Revisar e corrigir configurações de segurança"
+      }
+    ],
+    "riskScore": 7,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:45:55.739Z",
+    "events": [
+      {
+        "id": "event_1756687555739_8a079884",
+        "type": "login_attempt",
+        "severity": "high",
+        "timestamp": "2025-08-31T20:49:01.644Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 10,
+      "failedLoginAttempts": 12,
+      "blockedRequests": 7,
+      "activeThreats": 2,
+      "securityScore": 53,
+      "lastSecurityUpdate": "2025-09-01T00:45:55.739Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "medium",
+  "recommendations": [
+    {
+      "priority": "medium",
+      "category": "security_improvement",
+      "message": "Melhorias de segurança recomendadas"
+    },
+    {
+      "priority": "critical",
+      "category": "penetration_testing",
+      "message": "Corrigir vulnerabilidades críticas encontradas nos testes de penetração"
+    }
+  ]
+}

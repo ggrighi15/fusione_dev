@@ -1,0 +1,157 @@
+{
+  "auditId": "audit_1756054736688_533711e0",
+  "timestamp": "2025-08-24T16:58:56.689Z",
+  "startTime": 1756054736688,
+  "endTime": 1756054736690,
+  "duration": 2,
+  "penetrationTesting": {
+    "timestamp": "2025-08-24T16:58:56.689Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "sql_injection",
+            "severity": "high",
+            "description": "Possível vulnerabilidade de SQL Injection detectada com payload: ' UNION SELECT * FROM users --",
+            "recommendation": "Implementar prepared statements e validação de entrada"
+          }
+        ],
+        "timestamp": "2025-08-24T16:58:56.689Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-24T16:58:56.689Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-24T16:58:56.689Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-24T16:58:56.689Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-24T16:58:56.689Z"
+      }
+    ],
+    "vulnerabilitiesFound": 1,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-08-24T16:58:56.689Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "dependency_vulnerability",
+            "severity": "medium",
+            "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+            "recommendation": "Atualizar express para versão mais recente"
+          }
+        ],
+        "timestamp": "2025-08-24T16:58:56.689Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "configuration_issue",
+            "severity": "critical",
+            "description": "Problema de configuração detectado: default_credentials",
+            "recommendation": "Revisar e corrigir configurações de segurança"
+          }
+        ],
+        "timestamp": "2025-08-24T16:58:56.689Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-24T16:58:56.689Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "dependency_vulnerability",
+        "severity": "medium",
+        "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+        "recommendation": "Atualizar express para versão mais recente"
+      },
+      {
+        "type": "configuration_issue",
+        "severity": "critical",
+        "description": "Problema de configuração detectado: default_credentials",
+        "recommendation": "Revisar e corrigir configurações de segurança"
+      }
+    ],
+    "riskScore": 14,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-08-24T16:58:56.690Z",
+    "events": [
+      {
+        "id": "event_1756054736690_fbc4f504",
+        "type": "login_attempt",
+        "severity": "high",
+        "timestamp": "2025-08-24T06:01:10.286Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756054736690_4ad5f221",
+        "type": "login_attempt",
+        "severity": "low",
+        "timestamp": "2025-08-24T13:44:36.819Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756054736690_c3325a62",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-23T22:37:54.046Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 68,
+      "failedLoginAttempts": 16,
+      "blockedRequests": 11,
+      "activeThreats": 0,
+      "securityScore": 0,
+      "lastSecurityUpdate": "2025-08-24T16:58:56.690Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "medium",
+  "recommendations": [
+    {
+      "priority": "medium",
+      "category": "security_improvement",
+      "message": "Melhorias de segurança recomendadas"
+    }
+  ]
+}

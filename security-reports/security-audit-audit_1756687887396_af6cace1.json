@@ -1,0 +1,109 @@
+{
+  "auditId": "audit_1756687887396_af6cace1",
+  "timestamp": "2025-09-01T00:51:27.397Z",
+  "startTime": 1756687887396,
+  "endTime": 1756687887400,
+  "duration": 4,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:51:27.397Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:27.397Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:27.397Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:27.397Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:27.397Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:27.397Z"
+      }
+    ],
+    "vulnerabilitiesFound": 0,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:51:27.398Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "dependency_vulnerability",
+            "severity": "medium",
+            "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+            "recommendation": "Atualizar express para versão mais recente"
+          }
+        ],
+        "timestamp": "2025-09-01T00:51:27.398Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:27.398Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:27.398Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "dependency_vulnerability",
+        "severity": "medium",
+        "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+        "recommendation": "Atualizar express para versão mais recente"
+      }
+    ],
+    "riskScore": 4,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:51:27.399Z",
+    "events": [],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 50,
+      "failedLoginAttempts": 7,
+      "blockedRequests": 43,
+      "activeThreats": 4,
+      "securityScore": 87,
+      "lastSecurityUpdate": "2025-09-01T00:51:27.399Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "minimal",
+  "recommendations": []
+}

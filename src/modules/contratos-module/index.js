@@ -1,6 +1,6 @@
-const crypto = require('crypto');
-const fs = require('fs').promises;
-const path = require('path');
+import crypto from 'crypto';
+import { promises as fs } from 'fs';
+import path from 'path';
 
 /**
  * Módulo de Contratos - Gestão completa do ciclo de vida contratual
@@ -814,4 +814,4 @@ class ContratosModule {
     }
 }
 
-module.exports = ContratosModule;
+export default ContratosModule;

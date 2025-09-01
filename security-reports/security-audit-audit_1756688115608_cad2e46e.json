@@ -1,0 +1,152 @@
+{
+  "auditId": "audit_1756688115608_cad2e46e",
+  "timestamp": "2025-09-01T00:55:15.609Z",
+  "startTime": 1756688115608,
+  "endTime": 1756688115612,
+  "duration": 4,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:55:15.609Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:55:15.609Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:55:15.609Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:55:15.609Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:55:15.609Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:55:15.609Z"
+      }
+    ],
+    "vulnerabilitiesFound": 0,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:55:15.610Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "dependency_vulnerability",
+            "severity": "high",
+            "description": "Vulnerabilidade encontrada em lodash@4.17.20: CVE-2021-23337",
+            "recommendation": "Atualizar lodash para versão mais recente"
+          }
+        ],
+        "timestamp": "2025-09-01T00:55:15.610Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "configuration_issue",
+            "severity": "critical",
+            "description": "Problema de configuração detectado: default_credentials",
+            "recommendation": "Revisar e corrigir configurações de segurança"
+          }
+        ],
+        "timestamp": "2025-09-01T00:55:15.610Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:55:15.610Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "dependency_vulnerability",
+        "severity": "high",
+        "description": "Vulnerabilidade encontrada em lodash@4.17.20: CVE-2021-23337",
+        "recommendation": "Atualizar lodash para versão mais recente"
+      },
+      {
+        "type": "configuration_issue",
+        "severity": "critical",
+        "description": "Problema de configuração detectado: default_credentials",
+        "recommendation": "Revisar e corrigir configurações de segurança"
+      }
+    ],
+    "riskScore": 17,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:55:15.611Z",
+    "events": [
+      {
+        "id": "event_1756688115611_02abe8ed",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-09-01T00:29:15.116Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688115611_41e9cf0c",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-08-31T03:02:55.683Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [
+      {
+        "id": "alert_1756688115611_e384e4a7",
+        "type": "unusual_access_pattern",
+        "severity": "medium",
+        "timestamp": "2025-09-01T00:55:15.611Z",
+        "description": "Padrão de acesso incomum detectado",
+        "recommendation": "Verificar legitimidade do acesso"
+      }
+    ],
+    "metrics": {
+      "totalSecurityEvents": 75,
+      "failedLoginAttempts": 11,
+      "blockedRequests": 4,
+      "activeThreats": 3,
+      "securityScore": 53,
+      "lastSecurityUpdate": "2025-09-01T00:55:15.611Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "medium",
+  "recommendations": [
+    {
+      "priority": "medium",
+      "category": "security_improvement",
+      "message": "Melhorias de segurança recomendadas"
+    }
+  ]
+}

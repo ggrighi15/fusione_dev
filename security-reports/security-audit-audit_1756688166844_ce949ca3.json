@@ -1,0 +1,138 @@
+{
+  "auditId": "audit_1756688166844_ce949ca3",
+  "timestamp": "2025-09-01T00:56:06.844Z",
+  "startTime": 1756688166844,
+  "endTime": 1756688166847,
+  "duration": 3,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:56:06.844Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:56:06.844Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:56:06.844Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:56:06.844Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:56:06.844Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: X-Content-Type-Options",
+            "recommendation": "Configurar header X-Content-Type-Options no servidor web"
+          }
+        ],
+        "timestamp": "2025-09-01T00:56:06.845Z"
+      }
+    ],
+    "vulnerabilitiesFound": 1,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:56:06.845Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:56:06.845Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:56:06.845Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:56:06.845Z"
+      }
+    ],
+    "vulnerabilities": [],
+    "riskScore": 0,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:56:06.846Z",
+    "events": [
+      {
+        "id": "event_1756688166846_42305690",
+        "type": "access_denied",
+        "severity": "low",
+        "timestamp": "2025-08-31T06:17:59.879Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688166846_36c45fc7",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-31T18:54:36.348Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688166846_985785a7",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-08-31T17:07:47.071Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688166846_1b9d4e91",
+        "type": "login_attempt",
+        "severity": "medium",
+        "timestamp": "2025-08-31T21:01:52.936Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688166846_cc1b5d3a",
+        "type": "login_attempt",
+        "severity": "low",
+        "timestamp": "2025-09-01T00:55:02.797Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 47,
+      "failedLoginAttempts": 16,
+      "blockedRequests": 45,
+      "activeThreats": 0,
+      "securityScore": 33,
+      "lastSecurityUpdate": "2025-09-01T00:56:06.846Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "minimal",
+  "recommendations": []
+}

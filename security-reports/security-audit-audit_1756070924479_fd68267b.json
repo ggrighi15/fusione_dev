@@ -1,0 +1,158 @@
+{
+  "auditId": "audit_1756070924479_fd68267b",
+  "timestamp": "2025-08-24T21:28:44.480Z",
+  "startTime": 1756070924479,
+  "endTime": 1756070924482,
+  "duration": 3,
+  "penetrationTesting": {
+    "timestamp": "2025-08-24T21:28:44.480Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "sql_injection",
+            "severity": "high",
+            "description": "Possível vulnerabilidade de SQL Injection detectada com payload: ' UNION SELECT * FROM users --",
+            "recommendation": "Implementar prepared statements e validação de entrada"
+          }
+        ],
+        "timestamp": "2025-08-24T21:28:44.480Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "xss",
+            "severity": "medium",
+            "description": "Possível vulnerabilidade XSS detectada com payload: <img src=x onerror=alert(\"XSS\")>",
+            "recommendation": "Implementar sanitização de entrada e Content Security Policy"
+          }
+        ],
+        "timestamp": "2025-08-24T21:28:44.480Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-24T21:28:44.480Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-24T21:28:44.480Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: X-Content-Type-Options",
+            "recommendation": "Configurar header X-Content-Type-Options no servidor web"
+          }
+        ],
+        "timestamp": "2025-08-24T21:28:44.480Z"
+      }
+    ],
+    "vulnerabilitiesFound": 3,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-08-24T21:28:44.480Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "dependency_vulnerability",
+            "severity": "medium",
+            "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+            "recommendation": "Atualizar express para versão mais recente"
+          }
+        ],
+        "timestamp": "2025-08-24T21:28:44.480Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-24T21:28:44.481Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "hardcoded_secrets",
+            "severity": "critical",
+            "description": "Problema de código detectado: hardcoded_secrets",
+            "recommendation": "Revisar e corrigir código fonte"
+          }
+        ],
+        "timestamp": "2025-08-24T21:28:44.481Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "dependency_vulnerability",
+        "severity": "medium",
+        "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+        "recommendation": "Atualizar express para versão mais recente"
+      },
+      {
+        "type": "hardcoded_secrets",
+        "severity": "critical",
+        "description": "Problema de código detectado: hardcoded_secrets",
+        "recommendation": "Revisar e corrigir código fonte"
+      }
+    ],
+    "riskScore": 14,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-08-24T21:28:44.481Z",
+    "events": [],
+    "alerts": [
+      {
+        "id": "alert_1756070924481_ee9a83fe",
+        "type": "multiple_failed_logins",
+        "severity": "high",
+        "timestamp": "2025-08-24T21:28:44.481Z",
+        "description": "Múltiplas tentativas de login falharam para o mesmo usuário",
+        "recommendation": "Investigar possível ataque de força bruta"
+      }
+    ],
+    "metrics": {
+      "totalSecurityEvents": 5,
+      "failedLoginAttempts": 10,
+      "blockedRequests": 39,
+      "activeThreats": 1,
+      "securityScore": 30,
+      "lastSecurityUpdate": "2025-08-24T21:28:44.482Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "medium",
+  "recommendations": [
+    {
+      "priority": "medium",
+      "category": "security_improvement",
+      "message": "Melhorias de segurança recomendadas"
+    }
+  ]
+}

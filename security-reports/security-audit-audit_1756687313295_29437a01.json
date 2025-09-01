@@ -1,0 +1,159 @@
+{
+  "auditId": "audit_1756687313295_29437a01",
+  "timestamp": "2025-09-01T00:41:53.296Z",
+  "startTime": 1756687313295,
+  "endTime": 1756687313299,
+  "duration": 4,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:41:53.296Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:41:53.296Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "xss",
+            "severity": "medium",
+            "description": "Possível vulnerabilidade XSS detectada com payload: javascript:alert(\"XSS\")",
+            "recommendation": "Implementar sanitização de entrada e Content Security Policy"
+          }
+        ],
+        "timestamp": "2025-09-01T00:41:53.296Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:41:53.296Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:41:53.296Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:41:53.296Z"
+      }
+    ],
+    "vulnerabilitiesFound": 1,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:41:53.297Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "dependency_vulnerability",
+            "severity": "medium",
+            "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+            "recommendation": "Atualizar express para versão mais recente"
+          }
+        ],
+        "timestamp": "2025-09-01T00:41:53.297Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:41:53.297Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "insecure_random",
+            "severity": "medium",
+            "description": "Problema de código detectado: insecure_random",
+            "recommendation": "Revisar e corrigir código fonte"
+          },
+          {
+            "type": "path_traversal",
+            "severity": "high",
+            "description": "Problema de código detectado: path_traversal",
+            "recommendation": "Revisar e corrigir código fonte"
+          },
+          {
+            "type": "command_injection",
+            "severity": "critical",
+            "description": "Problema de código detectado: command_injection",
+            "recommendation": "Revisar e corrigir código fonte"
+          }
+        ],
+        "timestamp": "2025-09-01T00:41:53.297Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "dependency_vulnerability",
+        "severity": "medium",
+        "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+        "recommendation": "Atualizar express para versão mais recente"
+      },
+      {
+        "type": "insecure_random",
+        "severity": "medium",
+        "description": "Problema de código detectado: insecure_random",
+        "recommendation": "Revisar e corrigir código fonte"
+      },
+      {
+        "type": "path_traversal",
+        "severity": "high",
+        "description": "Problema de código detectado: path_traversal",
+        "recommendation": "Revisar e corrigir código fonte"
+      },
+      {
+        "type": "command_injection",
+        "severity": "critical",
+        "description": "Problema de código detectado: command_injection",
+        "recommendation": "Revisar e corrigir código fonte"
+      }
+    ],
+    "riskScore": 25,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:41:53.298Z",
+    "events": [],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 42,
+      "failedLoginAttempts": 9,
+      "blockedRequests": 3,
+      "activeThreats": 0,
+      "securityScore": 94,
+      "lastSecurityUpdate": "2025-09-01T00:41:53.298Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "medium",
+  "recommendations": [
+    {
+      "priority": "medium",
+      "category": "security_improvement",
+      "message": "Melhorias de segurança recomendadas"
+    }
+  ]
+}

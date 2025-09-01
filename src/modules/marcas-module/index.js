@@ -13,9 +13,10 @@
  * - Relatórios de propriedade intelectual
  */
 
-const moment = require('moment');
-const EventEmitter = require('events');
-const crypto = require('crypto');
+import moment from 'moment';
+import { EventEmitter } from 'events';
+import crypto from 'crypto';
+import cron from 'node-cron';
 
 class MarcasModule extends EventEmitter {
     constructor() {
@@ -280,7 +281,7 @@ class MarcasModule extends EventEmitter {
      * Inicia jobs de monitoramento
      */
     async startMonitoringJobs() {
-        const cron = require('node-cron');
+        // cron já importado no topo
         
         // Job diário para verificar prazos
         const prazoJob = cron.schedule('0 8 * * *', async () => {
@@ -702,4 +703,4 @@ class MarcasModule extends EventEmitter {
     }
 }
 
-module.exports = MarcasModule;
+export default MarcasModule;

@@ -1,0 +1,135 @@
+{
+  "auditId": "audit_1756687587605_e592db0b",
+  "timestamp": "2025-09-01T00:46:27.605Z",
+  "startTime": 1756687587605,
+  "endTime": 1756687587608,
+  "duration": 3,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:46:27.605Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "sql_injection",
+            "severity": "high",
+            "description": "Possível vulnerabilidade de SQL Injection detectada com payload: ' OR '1'='1",
+            "recommendation": "Implementar prepared statements e validação de entrada"
+          }
+        ],
+        "timestamp": "2025-09-01T00:46:27.605Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "xss",
+            "severity": "medium",
+            "description": "Possível vulnerabilidade XSS detectada com payload: <script>alert(\"XSS\")</script>",
+            "recommendation": "Implementar sanitização de entrada e Content Security Policy"
+          }
+        ],
+        "timestamp": "2025-09-01T00:46:27.606Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "weak_authentication",
+            "severity": "critical",
+            "description": "Senha fraca detectada: admin123",
+            "recommendation": "Implementar política de senhas fortes e autenticação multi-fator"
+          }
+        ],
+        "timestamp": "2025-09-01T00:46:27.606Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:46:27.606Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:46:27.606Z"
+      }
+    ],
+    "vulnerabilitiesFound": 3,
+    "criticalIssues": 1,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:46:27.606Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:46:27.607Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:46:27.607Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:46:27.607Z"
+      }
+    ],
+    "vulnerabilities": [],
+    "riskScore": 0,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:46:27.607Z",
+    "events": [
+      {
+        "id": "event_1756687587607_59aa1a8a",
+        "type": "access_denied",
+        "severity": "low",
+        "timestamp": "2025-08-31T18:16:28.939Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 22,
+      "failedLoginAttempts": 7,
+      "blockedRequests": 25,
+      "activeThreats": 3,
+      "securityScore": 56,
+      "lastSecurityUpdate": "2025-09-01T00:46:27.608Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "medium",
+  "recommendations": [
+    {
+      "priority": "medium",
+      "category": "security_improvement",
+      "message": "Melhorias de segurança recomendadas"
+    },
+    {
+      "priority": "critical",
+      "category": "penetration_testing",
+      "message": "Corrigir vulnerabilidades críticas encontradas nos testes de penetração"
+    }
+  ]
+}

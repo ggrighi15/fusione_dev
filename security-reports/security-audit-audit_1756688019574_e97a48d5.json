@@ -1,0 +1,170 @@
+{
+  "auditId": "audit_1756688019574_e97a48d5",
+  "timestamp": "2025-09-01T00:53:39.574Z",
+  "startTime": 1756688019574,
+  "endTime": 1756688019577,
+  "duration": 3,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:53:39.575Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:53:39.575Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:53:39.575Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:53:39.575Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:53:39.575Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:53:39.575Z"
+      }
+    ],
+    "vulnerabilitiesFound": 0,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:53:39.576Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "dependency_vulnerability",
+            "severity": "high",
+            "description": "Vulnerabilidade encontrada em lodash@4.17.20: CVE-2021-23337",
+            "recommendation": "Atualizar lodash para versão mais recente"
+          }
+        ],
+        "timestamp": "2025-09-01T00:53:39.576Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "configuration_issue",
+            "severity": "critical",
+            "description": "Problema de configuração detectado: default_credentials",
+            "recommendation": "Revisar e corrigir configurações de segurança"
+          }
+        ],
+        "timestamp": "2025-09-01T00:53:39.576Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "path_traversal",
+            "severity": "high",
+            "description": "Problema de código detectado: path_traversal",
+            "recommendation": "Revisar e corrigir código fonte"
+          }
+        ],
+        "timestamp": "2025-09-01T00:53:39.576Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "dependency_vulnerability",
+        "severity": "high",
+        "description": "Vulnerabilidade encontrada em lodash@4.17.20: CVE-2021-23337",
+        "recommendation": "Atualizar lodash para versão mais recente"
+      },
+      {
+        "type": "configuration_issue",
+        "severity": "critical",
+        "description": "Problema de configuração detectado: default_credentials",
+        "recommendation": "Revisar e corrigir configurações de segurança"
+      },
+      {
+        "type": "path_traversal",
+        "severity": "high",
+        "description": "Problema de código detectado: path_traversal",
+        "recommendation": "Revisar e corrigir código fonte"
+      }
+    ],
+    "riskScore": 24,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:53:39.577Z",
+    "events": [
+      {
+        "id": "event_1756688019577_35262aff",
+        "type": "suspicious_activity",
+        "severity": "medium",
+        "timestamp": "2025-08-31T13:02:40.117Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688019577_724c8547",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-31T04:01:22.359Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688019577_e742f1be",
+        "type": "login_attempt",
+        "severity": "medium",
+        "timestamp": "2025-08-31T08:25:14.653Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688019577_cd049a88",
+        "type": "access_denied",
+        "severity": "low",
+        "timestamp": "2025-08-31T23:16:26.337Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 30,
+      "failedLoginAttempts": 13,
+      "blockedRequests": 48,
+      "activeThreats": 4,
+      "securityScore": 70,
+      "lastSecurityUpdate": "2025-09-01T00:53:39.577Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "medium",
+  "recommendations": [
+    {
+      "priority": "medium",
+      "category": "security_improvement",
+      "message": "Melhorias de segurança recomendadas"
+    }
+  ]
+}

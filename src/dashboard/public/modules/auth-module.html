@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Module - Fusione Core System</title>
+    <link rel="icon" type="image/svg+xml" href="../logo-fusione.svg">
+    
+    <!-- CSS Libraries -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+    
+    <style>
+        .auth-specific {
+            background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+        }
+        
+        .auth-card {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(91, 33, 182, 0.1) 100%);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+        }
+        
+        .user-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .user-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .user-details h3 {
+            margin: 0 0 5px 0;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+        
+        .user-details p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .user-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-online {
+            background: var(--gradient-success);
+            color: white;
+        }
+        
+        .status-offline {
+            background: var(--gradient-error);
+            color: white;
+        }
+        
+        .status-away {
+            background: var(--gradient-warning);
+            color: white;
+        }
+        
+        .user-permissions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .permission-tag {
+            background: rgba(124, 58, 237, 0.2);
+            color: #a855f7;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .security-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .security-metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .security-metric:last-child {
+            border-bottom: none;
+        }
+        
+        .metric-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .metric-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .metric-icon.success {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+        
+        .metric-icon.warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+        
+        .metric-icon.danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        
+        .metric-details h4 {
+            margin: 0 0 4px 0;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .metric-details p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+        
+        .metric-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .session-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .session-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .session-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            font-size: 12px;
+        }
+        
+        .session-detail {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .session-label {
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+        }
+        
+        .session-value {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        .role-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .role-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .role-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .role-users-count {
+            background: rgba(124, 58, 237, 0.2);
+            color: #a855f7;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .permissions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        
+        .permission-group {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 6px;
+            padding: 12px;
+        }
+        
+        .permission-group h5 {
+            margin: 0 0 8px 0;
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+        
+        .permission-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .permission-list li {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .permission-list li i {
+            color: var(--success-color);
+        }
+        
+        .search-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .filter-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        
+        .filter-input {
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+        
+        .two-factor-setup {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .qr-code-container {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .backup-codes {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        
+        .backup-codes .code {
+            display: block;
+            margin: 5px 0;
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header auth-specific animate__animated animate__fadeInDown">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div>
+                        <h1 class="title">Auth Module</h1>
+                        <p class="subtitle">Gerenciamento de Autenticação e Segurança</p>
+                    </div>
+                </div>
+                <div class="system-status">
+                    <div class="status-item">
+                        <span class="status-value" id="totalUsers">-</span>
+                        <span class="status-label">Usuários</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-value" id="activeUsers">-</span>
+                        <span class="status-label">Ativos</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-value" id="activeSessions">-</span>
+                        <span class="status-label">Sessões</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Security Statistics -->
+        <section class="stats-grid animate__animated animate__fadeInUp">
+            <div class="stat-card">
+                <span class="stat-value" id="loginAttempts">0</span>
+                <div class="stat-label">Tentativas de Login (24h)</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" id="failedLogins">0</span>
+                <div class="stat-label">Logins Falharam</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" id="blockedIPs">0</span>
+                <div class="stat-label">IPs Bloqueados</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" id="twoFactorEnabled">0</span>
+                <div class="stat-label">2FA Habilitado</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" id="passwordResets">0</span>
+                <div class="stat-label">Reset de Senha (7d)</div>
+            </div>
+        </section>
+
+        <!-- Security Overview -->
+        <section class="auth-card animate__animated animate__fadeInUp">
+            <h2 class="section-title">
+                <i class="fas fa-shield-check"></i>
+                Visão Geral de Segurança
+            </h2>
+            <div class="security-panel">
+                <div class="security-metric">
+                    <div class="metric-info">
+                        <div class="metric-icon success">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="metric-details">
+                            <h4>Política de Senhas</h4>
+                            <p>Senhas fortes obrigatórias</p>
+                        </div>
+                    </div>
+                    <div class="metric-value" id="passwordPolicyScore">95%</div>
+                </div>
+                
+                <div class="security-metric">
+                    <div class="metric-info">
+                        <div class="metric-icon warning">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="metric-details">
+                            <h4>Sessões Expiradas</h4>
+                            <p>Últimas 24 horas</p>
+                        </div>
+                    </div>
+                    <div class="metric-value" id="expiredSessions">12</div>
+                </div>
+                
+                <div class="security-metric">
+                    <div class="metric-info">
+                        <div class="metric-icon danger">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="metric-details">
+                            <h4>Tentativas Suspeitas</h4>
+                            <p>Atividade anômala detectada</p>
+                        </div>
+                    </div>
+                    <div class="metric-value" id="suspiciousAttempts">3</div>
+                </div>
+                
+                <div class="security-metric">
+                    <div class="metric-info">
+                        <div class="metric-icon success">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <div class="metric-details">
+                            <h4>Tokens Ativos</h4>
+                            <p>JWT válidos em circulação</p>
+                        </div>
+                    </div>
+                    <div class="metric-value" id="activeTokens">156</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- User Management -->
+        <section class="auth-card animate__animated animate__fadeInUp">
+            <h2 class="section-title">
+                <i class="fas fa-users"></i>
+                Gerenciamento de Usuários
+            </h2>
+            
+            <div class="search-filters">
+                <div class="filter-group">
+                    <label class="filter-label">Buscar Usuário</label>
+                    <input type="text" class="filter-input" id="userSearchFilter" placeholder="Nome, email ou ID">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Status</label>
+                    <select class="filter-input" id="userStatusFilter">
+                        <option value="">Todos</option>
+                        <option value="online">Online</option>
+                        <option value="offline">Offline</option>
+                        <option value="away">Ausente</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Função</label>
+                    <select class="filter-input" id="userRoleFilter">
+                        <option value="">Todas</option>
+                        <option value="admin">Administrador</option>
+                        <option value="user">Usuário</option>
+                        <option value="guest">Convidado</option>
+                    </select>
+                </div>
+                <div class="filter-group" style="justify-content: flex-end;">
+                    <button class="btn btn-primary" onclick="applyUserFilters()" style="margin-top: 20px;">
+                        <i class="fas fa-filter"></i>
+                        Aplicar Filtros
+                    </button>
+                </div>
+            </div>
+            
+            <div id="usersList">
+                <!-- Users will be loaded here -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Carregando usuários...
+                </div>
+            </div>
+        </section>
+
+        <!-- Active Sessions -->
+        <section class="auth-card animate__animated animate__fadeInUp">
+            <h2 class="section-title">
+                <i class="fas fa-desktop"></i>
+                Sessões Ativas
+            </h2>
+            <div id="sessionsList">
+                <!-- Sessions will be loaded here -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Carregando sessões...
+                </div>
+            </div>
+        </section>
+
+        <!-- Roles and Permissions -->
+        <section class="auth-card animate__animated animate__fadeInUp">
+            <h2 class="section-title">
+                <i class="fas fa-user-tag"></i>
+                Funções e Permissões
+            </h2>
+            <div id="rolesList">
+                <!-- Roles will be loaded here -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Carregando funções...
+                </div>
+            </div>
+        </section>
+
+        <!-- Two-Factor Authentication Setup -->
+        <section class="auth-card animate__animated animate__fadeInUp">
+            <h2 class="section-title">
+                <i class="fas fa-mobile-alt"></i>
+                Configuração de Autenticação de Dois Fatores
+            </h2>
+            <div class="two-factor-setup">
+                <div style="display: flex; gap: 20px; align-items: flex-start;">
+                    <div style="flex: 1;">
+                        <h3>Configurar 2FA</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 15px;">
+                            Escaneie o código QR com seu aplicativo autenticador (Google Authenticator, Authy, etc.)
+                        </p>
+                        
+                        <div class="qr-code-container" id="qrCodeContainer">
+                            <div style="width: 200px; height: 200px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; margin: 0 auto; color: #666;">
+                                QR Code será gerado aqui
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; margin: 15px 0;">
+                            <strong>Chave Manual:</strong><br>
+                            <code id="manualKey" style="background: rgba(0,0,0,0.3); padding: 8px; border-radius: 4px; font-family: monospace;">XXXX XXXX XXXX XXXX</code>
+                        </div>
+                        
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <input type="text" class="filter-input" id="verificationCode" placeholder="Código de verificação" style="flex: 1;">
+                            <button class="btn btn-primary" onclick="verify2FA()">
+                                <i class="fas fa-check"></i>
+                                Verificar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div style="flex: 1;">
+                        <h3>Códigos de Backup</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 15px;">
+                            Guarde estes códigos em local seguro. Cada código pode ser usado apenas uma vez.
+                        </p>
+                        
+                        <div class="backup-codes" id="backupCodes">
+                            <span class="code">1234-5678</span>
+                            <span class="code">2345-6789</span>
+                            <span class="code">3456-7890</span>
+                            <span class="code">4567-8901</span>
+                            <span class="code">5678-9012</span>
+                            <span class="code">6789-0123</span>
+                            <span class="code">7890-1234</span>
+                            <span class="code">8901-2345</span>
+                        </div>
+                        
+                        <button class="btn btn-secondary" onclick="downloadBackupCodes()" style="width: 100%;">
+                            <i class="fas fa-download"></i>
+                            Baixar Códigos de Backup
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <section class="module-actions" style="display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="createNewUser()">
+                <i class="fas fa-user-plus"></i>
+                Novo Usuário
+            </button>
+            <button class="btn btn-secondary" onclick="createNewRole()">
+                <i class="fas fa-plus"></i>
+                Nova Função
+            </button>
+            <button class="btn btn-secondary" onclick="viewSecurityLogs()">
+                <i class="fas fa-file-alt"></i>
+                Logs de Segurança
+            </button>
+            <button class="btn btn-secondary" onclick="exportUserData()">
+                <i class="fas fa-download"></i>
+                Exportar Dados
+            </button>
+            <button class="btn btn-secondary" onclick="securitySettings()">
+                <i class="fas fa-cog"></i>
+                Configurações
+            </button>
+            <button class="btn btn-secondary" onclick="window.location.href='../index.html'">
+                <i class="fas fa-arrow-left"></i>
+                Voltar ao Dashboard
+            </button>
+        </section>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <script>
+        // Auth Module specific functionality
+        class AuthModuleInterface {
+            constructor() {
+                this.socket = io();
+                this.users = [];
+                this.filteredUsers = [];
+                this.sessions = [];
+                this.roles = [];
+                
+                this.init();
+            }
+            
+            init() {
+                this.setupSocketListeners();
+                this.loadModuleData();
+                this.startMetricsUpdate();
+            }
+            
+            setupSocketListeners() {
+                this.socket.on('auth-metrics', (data) => {
+                    this.updateMetrics(data);
+                });
+                
+                this.socket.on('user-update', (data) => {
+                    this.handleUserUpdate(data);
+                });
+                
+                this.socket.on('session-update', (data) => {
+                    this.handleSessionUpdate(data);
+                });
+                
+                this.socket.on('security-alert', (data) => {
+                    this.handleSecurityAlert(data);
+                });
+            }
+            
+            async loadModuleData() {
+                try {
+                    const [usersResponse, sessionsResponse, rolesResponse, metricsResponse] = await Promise.all([
+                        fetch('/api/auth-module/users'),
+                        fetch('/api/auth-module/sessions'),
+                        fetch('/api/auth-module/roles'),
+                        fetch('/api/auth-module/metrics')
+                    ]);
+                    
+                    const usersData = await usersResponse.json();
+                    const sessionsData = await sessionsResponse.json();
+                    const rolesData = await rolesResponse.json();
+                    const metricsData = await metricsResponse.json();
+                    
+                    this.users = usersData.users || [];
+                    this.filteredUsers = [...this.users];
+                    this.sessions = sessionsData.sessions || [];
+                    this.roles = rolesData.roles || [];
+                    
+                    this.updateMetrics(metricsData);
+                    this.renderUsers();
+                    this.renderSessions();
+                    this.renderRoles();
+                } catch (error) {
+                    console.error('Erro ao carregar dados do módulo Auth:', error);
+                    this.showError('Erro ao carregar dados');
+                }
+            }
+            
+            updateMetrics(metrics) {
+                document.getElementById('totalUsers').textContent = metrics.totalUsers || 0;
+                document.getElementById('activeUsers').textContent = metrics.activeUsers || 0;
+                document.getElementById('activeSessions').textContent = metrics.activeSessions || 0;
+                
+                document.getElementById('loginAttempts').textContent = (metrics.loginAttempts || 0).toLocaleString();
+                document.getElementById('failedLogins').textContent = metrics.failedLogins || 0;
+                document.getElementById('blockedIPs').textContent = metrics.blockedIPs || 0;
+                document.getElementById('twoFactorEnabled').textContent = metrics.twoFactorEnabled || 0;
+                document.getElementById('passwordResets').textContent = metrics.passwordResets || 0;
+                
+                document.getElementById('passwordPolicyScore').textContent = (metrics.passwordPolicyScore || 0) + '%';
+                document.getElementById('expiredSessions').textContent = metrics.expiredSessions || 0;
+                document.getElementById('suspiciousAttempts').textContent = metrics.suspiciousAttempts || 0;
+                document.getElementById('activeTokens').textContent = (metrics.activeTokens || 0).toLocaleString();
+            }
+            
+            renderUsers() {
+                const container = document.getElementById('usersList');
+                
+                if (this.filteredUsers.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            <i class="fas fa-users" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                            <h3>Nenhum usuário encontrado</h3>
+                            <p>Crie um novo usuário ou ajuste os filtros de busca.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const usersHTML = this.filteredUsers.map(user => this.createUserHTML(user)).join('');
+                container.innerHTML = usersHTML;
+            }
+            
+            createUserHTML(user) {
+                const statusClass = this.getUserStatusClass(user.status);
+                const initials = this.getInitials(user.name);
+                
+                return `
+                    <div class="user-item" data-user-id="${user.id}">
+                        <div class="user-header">
+                            <div class="user-info">
+                                <div class="user-avatar">${initials}</div>
+                                <div class="user-details">
+                                    <h3>${user.name}</h3>
+                                    <p>${user.email}</p>
+                                </div>
+                            </div>
+                            <div class="user-status ${statusClass}">${user.status}</div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                            <div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">Função</div>
+                                <div style="font-weight: 600; color: var(--text-primary);">${user.role}</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">Último Login</div>
+                                <div style="font-weight: 600; color: var(--text-primary);">${user.lastLogin ? new Date(user.lastLogin).toLocaleString('pt-BR') : 'Nunca'}</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">2FA</div>
+                                <div style="font-weight: 600; color: var(--text-primary);">${user.twoFactorEnabled ? 'Habilitado' : 'Desabilitado'}</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">Criado em</div>
+                                <div style="font-weight: 600; color: var(--text-primary);">${new Date(user.createdAt).toLocaleDateString('pt-BR')}</div>
+                            </div>
+                        </div>
+                        
+                        ${user.permissions && user.permissions.length > 0 ? `
+                            <div class="user-permissions">
+                                ${user.permissions.slice(0, 5).map(permission => `
+                                    <span class="permission-tag">${permission}</span>
+                                `).join('')}
+                                ${user.permissions.length > 5 ? `<span class="permission-tag">+${user.permissions.length - 5}</span>` : ''}
+                            </div>
+                        ` : ''}
+                        
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <button class="btn btn-primary" onclick="editUser('${user.id}')">
+                                <i class="fas fa-edit"></i>
+                                Editar
+                            </button>
+                            <button class="btn btn-secondary" onclick="resetPassword('${user.id}')">
+                                <i class="fas fa-key"></i>
+                                Reset Senha
+                            </button>
+                            <button class="btn btn-secondary" onclick="toggleUser('${user.id}', ${user.active})">
+                                <i class="fas fa-${user.active ? 'ban' : 'check'}"></i>
+                                ${user.active ? 'Desativar' : 'Ativar'}
+                            </button>
+                            <button class="btn btn-secondary" onclick="viewUserSessions('${user.id}')">
+                                <i class="fas fa-desktop"></i>
+                                Sessões
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            renderSessions() {
+                const container = document.getElementById('sessionsList');
+                
+                if (this.sessions.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            <i class="fas fa-desktop" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                            <h3>Nenhuma sessão ativa</h3>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const sessionsHTML = this.sessions.map(session => this.createSessionHTML(session)).join('');
+                container.innerHTML = sessionsHTML;
+            }
+            
+            createSessionHTML(session) {
+                return `
+                    <div class="session-item" data-session-id="${session.id}">
+                        <div class="session-header">
+                            <div style="font-weight: 600; color: var(--text-primary);">${session.userName}</div>
+                            <button class="btn btn-secondary" onclick="terminateSession('${session.id}')" style="padding: 4px 8px; font-size: 12px;">
+                                <i class="fas fa-times"></i>
+                                Encerrar
+                            </button>
+                        </div>
+                        
+                        <div class="session-info">
+                            <div class="session-detail">
+                                <div class="session-label">IP Address</div>
+                                <div class="session-value">${session.ipAddress}</div>
+                            </div>
+                            <div class="session-detail">
+                                <div class="session-label">User Agent</div>
+                                <div class="session-value">${session.userAgent}</div>
+                            </div>
+                            <div class="session-detail">
+                                <div class="session-label">Início</div>
+                                <div class="session-value">${new Date(session.startTime).toLocaleString('pt-BR')}</div>
+                            </div>
+                            <div class="session-detail">
+                                <div class="session-label">Última Atividade</div>
+                                <div class="session-value">${new Date(session.lastActivity).toLocaleString('pt-BR')}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            renderRoles() {
+                const container = document.getElementById('rolesList');
+                
+                if (this.roles.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            <i class="fas fa-user-tag" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                            <h3>Nenhuma função configurada</h3>
+                            <p>Crie funções para organizar permissões de usuários.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const rolesHTML = this.roles.map(role => this.createRoleHTML(role)).join('');
+                container.innerHTML = rolesHTML;
+            }
+            
+            createRoleHTML(role) {
+                const permissionGroups = this.groupPermissions(role.permissions || []);
+                
+                return `
+                    <div class="role-card" data-role-id="${role.id}">
+                        <div class="role-header">
+                            <div class="role-name">${role.name}</div>
+                            <div class="role-users-count">${role.userCount || 0} usuários</div>
+                        </div>
+                        
+                        <p style="color: var(--text-secondary); margin-bottom: 15px;">${role.description}</p>
+                        
+                        <div class="permissions-grid">
+                            ${Object.entries(permissionGroups).map(([group, permissions]) => `
+                                <div class="permission-group">
+                                    <h5>${group}</h5>
+                                    <ul class="permission-list">
+                                        ${permissions.map(permission => `
+                                            <li><i class="fas fa-check"></i> ${permission}</li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <button class="btn btn-primary" onclick="editRole('${role.id}')">
+                                <i class="fas fa-edit"></i>
+                                Editar
+                            </button>
+                            <button class="btn btn-secondary" onclick="duplicateRole('${role.id}')">
+                                <i class="fas fa-copy"></i>
+                                Duplicar
+                            </button>
+                            <button class="btn btn-secondary" onclick="deleteRole('${role.id}')">
+                                <i class="fas fa-trash"></i>
+                                Excluir
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Utility methods
+            getUserStatusClass(status) {
+                switch (status.toLowerCase()) {
+                    case 'online': return 'status-online';
+                    case 'offline': return 'status-offline';
+                    case 'away': case 'ausente': return 'status-away';
+                    default: return 'status-offline';
+                }
+            }
+            
+            getInitials(name) {
+                return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+            }
+            
+            groupPermissions(permissions) {
+                const groups = {};
+                permissions.forEach(permission => {
+                    const [group, action] = permission.split(':');
+                    if (!groups[group]) groups[group] = [];
+                    groups[group].push(action || permission);
+                });
+                return groups;
+            }
+            
+            showError(message) {
+                console.error(message);
+            }
+            
+            startMetricsUpdate() {
+                setInterval(() => {
+                    if (!document.hidden) {
+                        this.loadModuleData();
+                    }
+                }, 30000); // Update every 30 seconds
+            }
+        }
+        
+        // Global functions
+        function applyUserFilters() {
+            const searchTerm = document.getElementById('userSearchFilter').value.toLowerCase();
+            const status = document.getElementById('userStatusFilter').value;
+            const role = document.getElementById('userRoleFilter').value;
+            
+            authModule.filteredUsers = authModule.users.filter(user => {
+                if (searchTerm && !user.name.toLowerCase().includes(searchTerm) && 
+                    !user.email.toLowerCase().includes(searchTerm) && 
+                    !user.id.toLowerCase().includes(searchTerm)) return false;
+                if (status && user.status.toLowerCase() !== status) return false;
+                if (role && user.role.toLowerCase() !== role) return false;
+                return true;
+            });
+            
+            authModule.renderUsers();
+        }
+        
+        function createNewUser() {
+            alert('Funcionalidade de criação de usuário será implementada');
+        }
+        
+        function editUser(userId) {
+            alert(`Editar usuário: ${userId}`);
+        }
+        
+        function resetPassword(userId) {
+            if (confirm('Tem certeza que deseja resetar a senha deste usuário?')) {
+                alert(`Reset de senha para usuário: ${userId}`);
+            }
+        }
+        
+        function toggleUser(userId, isActive) {
+            const action = isActive ? 'desativar' : 'ativar';
+            if (confirm(`Tem certeza que deseja ${action} este usuário?`)) {
+                alert(`Usuário ${action}do: ${userId}`);
+            }
+        }
+        
+        function viewUserSessions(userId) {
+            alert(`Visualizar sessões do usuário: ${userId}`);
+        }
+        
+        function terminateSession(sessionId) {
+            if (confirm('Tem certeza que deseja encerrar esta sessão?')) {
+                alert(`Sessão encerrada: ${sessionId}`);
+            }
+        }
+        
+        function createNewRole() {
+            alert('Funcionalidade de criação de função será implementada');
+        }
+        
+        function editRole(roleId) {
+            alert(`Editar função: ${roleId}`);
+        }
+        
+        function duplicateRole(roleId) {
+            alert(`Duplicar função: ${roleId}`);
+        }
+        
+        function deleteRole(roleId) {
+            if (confirm('Tem certeza que deseja excluir esta função?')) {
+                alert(`Função excluída: ${roleId}`);
+            }
+        }
+        
+        function verify2FA() {
+            const code = document.getElementById('verificationCode').value;
+            if (!code) {
+                alert('Digite o código de verificação');
+                return;
+            }
+            alert('2FA verificado com sucesso!');
+        }
+        
+        function downloadBackupCodes() {
+            const codes = Array.from(document.querySelectorAll('.backup-codes .code')).map(el => el.textContent).join('\n');
+            const blob = new Blob([codes], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'backup-codes.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function viewSecurityLogs() {
+            alert('Funcionalidade de logs de segurança será implementada');
+        }
+        
+        function exportUserData() {
+            window.open('/api/auth-module/export', '_blank');
+        }
+        
+        function securitySettings() {
+            alert('Funcionalidade de configurações de segurança será implementada');
+        }
+        
+        // Initialize Auth Module Interface
+        let authModule;
+        document.addEventListener('DOMContentLoaded', () => {
+            authModule = new AuthModuleInterface();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+{
+  "auditId": "audit_1756687794526_73331cf4",
+  "timestamp": "2025-09-01T00:49:54.526Z",
+  "startTime": 1756687794526,
+  "endTime": 1756687794529,
+  "duration": 3,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:49:54.526Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:54.527Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:54.527Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:54.527Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:54.527Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: Strict-Transport-Security",
+            "recommendation": "Configurar header Strict-Transport-Security no servidor web"
+          }
+        ],
+        "timestamp": "2025-09-01T00:49:54.527Z"
+      }
+    ],
+    "vulnerabilitiesFound": 1,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:49:54.528Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:54.528Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "configuration_issue",
+            "severity": "high",
+            "description": "Problema de configuração detectado: weak_encryption",
+            "recommendation": "Revisar e corrigir configurações de segurança"
+          }
+        ],
+        "timestamp": "2025-09-01T00:49:54.528Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:54.528Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "configuration_issue",
+        "severity": "high",
+        "description": "Problema de configuração detectado: weak_encryption",
+        "recommendation": "Revisar e corrigir configurações de segurança"
+      }
+    ],
+    "riskScore": 7,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:49:54.529Z",
+    "events": [
+      {
+        "id": "event_1756687794529_72437498",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-08-31T15:11:21.399Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687794529_e2ea0d06",
+        "type": "login_attempt",
+        "severity": "high",
+        "timestamp": "2025-08-31T03:20:40.633Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687794529_882d3761",
+        "type": "login_attempt",
+        "severity": "high",
+        "timestamp": "2025-08-31T01:08:12.485Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 76,
+      "failedLoginAttempts": 5,
+      "blockedRequests": 3,
+      "activeThreats": 1,
+      "securityScore": 35,
+      "lastSecurityUpdate": "2025-09-01T00:49:54.529Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "low",
+  "recommendations": []
+}

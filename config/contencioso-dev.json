@@ -1,0 +1,96 @@
+{
+  "development": {
+    "module": "contencioso",
+    "environment": "development",
+    "debug": true,
+    "hotReload": true,
+    "logging": {
+      "level": "debug",
+      "file": "logs/contencioso/contencioso-dev.log",
+      "console": true,
+      "format": "detailed"
+    },
+    "api": {
+      "port": 3000,
+      "host": "0.0.0.0",
+      "prefix": "/api/v1/contencioso",
+      "cors": {
+        "enabled": true,
+        "origins": ["http://localhost:3000", "http://localhost:3001", "http://localhost:3002"]
+      },
+      "rateLimit": {
+        "enabled": false,
+        "windowMs": 900000,
+        "max": 1000
+      }
+    },
+    "database": {
+      "type": "sqlite",
+      "path": "data/contencioso-dev.db",
+      "logging": true,
+      "synchronize": true,
+      "dropSchema": false
+    },
+    "features": {
+      "autoMigration": true,
+      "seedData": true,
+      "mockData": true,
+      "testMode": true
+    },
+    "monitoring": {
+      "enabled": true,
+      "metrics": {
+        "enabled": true,
+        "endpoint": "/metrics"
+      },
+      "healthCheck": {
+        "enabled": true,
+        "endpoint": "/health",
+        "interval": 30000
+      }
+    },
+    "security": {
+      "jwt": {
+        "secret": "fusione-contencioso-dev-secret",
+        "expiresIn": "24h"
+      },
+      "bcrypt": {
+        "rounds": 8
+      }
+    },
+    "fileUpload": {
+      "enabled": true,
+      "maxSize": "50MB",
+      "allowedTypes": ["pdf", "doc", "docx", "xls", "xlsx", "jpg", "jpeg", "png"],
+      "destination": "uploads/contencioso/dev"
+    },
+    "notifications": {
+      "enabled": true,
+      "email": {
+        "enabled": false,
+        "provider": "mock"
+      },
+      "websocket": {
+        "enabled": true,
+        "namespace": "/contencioso"
+      }
+    },
+    "integration": {
+      "tribunais": {
+        "enabled": true,
+        "mockMode": true,
+        "timeout": 30000
+      },
+      "pje": {
+        "enabled": true,
+        "mockMode": true,
+        "baseUrl": "https://pje-mock.dev"
+      }
+    },
+    "cache": {
+      "enabled": true,
+      "type": "memory",
+      "ttl": 300
+    }
+  }
+}

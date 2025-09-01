@@ -9,12 +9,12 @@
  * @version 1.0.0
  */
 
-const EventEmitter = require('events');
-const fs = require('fs-extra');
-const path = require('path');
-const cron = require('node-cron');
-const { v4: uuidv4 } = require('uuid');
-const moment = require('moment');
+import { EventEmitter } from 'events';
+import fs from 'fs-extra';
+import path from 'path';
+import cron from 'node-cron';
+import { v4 as uuidv4 } from 'uuid';
+import moment from 'moment';
 
 class BoltsModule extends EventEmitter {
     constructor() {
@@ -976,4 +976,4 @@ class BoltsModule extends EventEmitter {
     }
 }
 
-module.exports = BoltsModule;
+export default BoltsModule;

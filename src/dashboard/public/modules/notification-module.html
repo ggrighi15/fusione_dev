@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Module - Fusione Core System</title>
+    <link rel="icon" type="image/svg+xml" href="../logo-fusione.svg">
+    
+    <!-- CSS Libraries -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+    
+    <style>
+        .notification-specific {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        
+        .notification-card {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        
+        .notification-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .notification-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .notification-item.unread {
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .notification-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .notification-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+        
+        .notification-icon.email {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+        
+        .notification-icon.sms {
+            background: linear-gradient(135deg, #10b981, #047857);
+        }
+        
+        .notification-icon.push {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+        
+        .notification-icon.webhook {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .notification-details h3 {
+            margin: 0 0 5px 0;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+        
+        .notification-details p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .notification-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-sent {
+            background: var(--gradient-success);
+            color: white;
+        }
+        
+        .status-pending {
+            background: var(--gradient-warning);
+            color: white;
+        }
+        
+        .status-failed {
+            background: var(--gradient-error);
+            color: white;
+        }
+        
+        .status-scheduled {
+            background: var(--gradient-info);
+            color: white;
+        }
+        
+        .notification-metadata {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .metadata-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .metadata-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        
+        .metadata-value {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .template-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .template-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary-color);
+        }
+        
+        .template-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .template-info h3 {
+            margin: 0 0 5px 0;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+        
+        .template-info p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .template-type {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .type-email {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+        
+        .type-sms {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+        
+        .type-push {
+            background: rgba(139, 92, 246, 0.2);
+            color: #8b5cf6;
+        }
+        
+        .type-webhook {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+        
+        .compose-form {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .recipient-list {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px;
+            min-height: 100px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .recipient-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin: 2px;
+        }
+        
+        .recipient-tag .remove {
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+        
+        .channel-config {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .channel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .channel-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .channel-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: var(--gradient-success);
+            color: white;
+        }
+        
+        .status-inactive {
+            background: var(--gradient-error);
+            color: white;
+        }
+        
+        .channel-settings {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .setting-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .setting-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        
+        .setting-value {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .queue-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .queue-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .queue-priority {
+            width: 8px;
+            height: 40px;
+            border-radius: 4px;
+        }
+        
+        .priority-high {
+            background: var(--gradient-error);
+        }
+        
+        .priority-medium {
+            background: var(--gradient-warning);
+        }
+        
+        .priority-low {
+            background: var(--gradient-info);
+        }
+        
+        .queue-details h4 {
+            margin: 0 0 4px 0;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .queue-details p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+        
+        .queue-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .filter-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header notification-specific animate__animated animate__fadeInDown">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div>
+                        <h1 class="title">Notification Module</h1>
+                        <p class="subtitle">Sistema de Notificações e Comunicação</p>
+                    </div>
+                </div>
+                <div class="system-status">
+                    <div class="status-item">
+                        <span class="status-value" id="totalNotifications">-</span>
+                        <span class="status-label">Notificações</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-value" id="pendingQueue">-</span>
+                        <span class="status-label">Na Fila</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-value" id="sentToday">-</span>
+                        <span class="status-label">Enviadas Hoje</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Statistics -->
+        <section class="stats-grid animate__animated animate__fadeInUp">
+            <div class="stat-card">
+                <span class="stat-value" id="emailsSent">0</span>
+                <div class="stat-label">Emails Enviados</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" id="smsSent">0</span>
+                <div class="stat-label">SMS Enviados</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" id="pushSent">0</span>
+                <div class="stat-label">Push Notifications</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" id="webhooksSent">0</span>
+                <div class="stat-label">Webhooks Enviados</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" id="deliveryRate">0%</span>
+                <div class="stat-label">Taxa de Entrega</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" id="openRate">0%</span>
+                <div class="stat-label">Taxa de Abertura</div>
+            </div>
+        </section>
+
+        <!-- Notification Channels -->
+        <section class="notification-card animate__animated animate__fadeInUp">
+            <h2 class="section-title">
+                <i class="fas fa-broadcast-tower"></i>
+                Canais de Notificação
+            </h2>
+            <div id="channelsList">
+                <!-- Channels will be loaded here -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Carregando canais...
+                </div>
+            </div>
+        </section>
+
+        <!-- Compose New Notification -->
+        <section class="notification-card animate__animated animate__fadeInUp">
+            <h2 class="section-title">
+                <i class="fas fa-edit"></i>
+                Compor Nova Notificação
+            </h2>
+            <div class="compose-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Tipo de Notificação</label>
+                        <select class="form-input" id="notificationType">
+                            <option value="">Selecione o tipo</option>
+                            <option value="email">Email</option>
+                            <option value="sms">SMS</option>
+                            <option value="push">Push Notification</option>
+                            <option value="webhook">Webhook</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Template</label>
+                        <select class="form-input" id="notificationTemplate">
+                            <option value="">Selecione um template</option>
+                            <option value="welcome">Boas-vindas</option>
+                            <option value="alert">Alerta do Sistema</option>
+                            <option value="reminder">Lembrete</option>
+                            <option value="report">Relatório</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Assunto/Título</label>
+                        <input type="text" class="form-input" id="notificationSubject" placeholder="Assunto da notificação">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Prioridade</label>
+                        <select class="form-input" id="notificationPriority">
+                            <option value="low">Baixa</option>
+                            <option value="medium" selected>Média</option>
+                            <option value="high">Alta</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Destinatários</label>
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <input type="text" class="form-input" id="recipientInput" placeholder="Email, telefone ou ID do usuário" style="flex: 1;">
+                        <button class="btn btn-secondary" onclick="addRecipient()">
+                            <i class="fas fa-plus"></i>
+                            Adicionar
+                        </button>
+                        <button class="btn btn-secondary" onclick="importRecipients()">
+                            <i class="fas fa-upload"></i>
+                            Importar
+                        </button>
+                    </div>
+                    <div class="recipient-list" id="recipientsList">
+                        <!-- Recipients will be added here -->
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Mensagem</label>
+                    <textarea class="form-input" id="notificationMessage" rows="6" placeholder="Conteúdo da notificação..."></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Agendar Envio</label>
+                        <input type="datetime-local" class="form-input" id="scheduleDateTime">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Expiração</label>
+                        <input type="datetime-local" class="form-input" id="expirationDateTime">
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="btn btn-primary" onclick="sendNotification()">
+                        <i class="fas fa-paper-plane"></i>
+                        Enviar Agora
+                    </button>
+                    <button class="btn btn-secondary" onclick="scheduleNotification()">
+                        <i class="fas fa-clock"></i>
+                        Agendar
+                    </button>
+                    <button class="btn btn-secondary" onclick="saveAsDraft()">
+                        <i class="fas fa-save"></i>
+                        Salvar Rascunho
+                    </button>
+                    <button class="btn btn-secondary" onclick="previewNotification()">
+                        <i class="fas fa-eye"></i>
+                        Visualizar
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Notification Queue -->
+        <section class="notification-card animate__animated animate__fadeInUp">
+            <h2 class="section-title">
+                <i class="fas fa-list"></i>
+                Fila de Notificações
+            </h2>
+            <div id="queueList">
+                <!-- Queue items will be loaded here -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Carregando fila...
+                </div>
+            </div>
+        </section>
+
+        <!-- Filters and Search -->
+        <section class="filter-section animate__animated animate__fadeInUp">
+            <h3 style="margin: 0 0 20px 0; color: var(--text-primary);">
+                <i class="fas fa-filter"></i>
+                Filtros de Notificações
+            </h3>
+            <div class="filter-row">
+                <div>
+                    <label class="form-label">Buscar Notificação</label>
+                    <input type="text" class="form-input" id="notificationSearchFilter" placeholder="Assunto ou conteúdo">
+                </div>
+                <div>
+                    <label class="form-label">Status</label>
+                    <select class="form-input" id="notificationStatusFilter">
+                        <option value="">Todos</option>
+                        <option value="sent">Enviado</option>
+                        <option value="pending">Pendente</option>
+                        <option value="failed">Falhou</option>
+                        <option value="scheduled">Agendado</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">Tipo</label>
+                    <select class="form-input" id="notificationTypeFilter">
+                        <option value="">Todos</option>
+                        <option value="email">Email</option>
+                        <option value="sms">SMS</option>
+                        <option value="push">Push</option>
+                        <option value="webhook">Webhook</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">Período</label>
+                    <select class="form-input" id="notificationPeriodFilter">
+                        <option value="">Todos</option>
+                        <option value="today">Hoje</option>
+                        <option value="week">Esta Semana</option>
+                        <option value="month">Este Mês</option>
+                    </select>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button class="btn btn-primary" onclick="applyNotificationFilters()">
+                    <i class="fas fa-search"></i>
+                    Aplicar Filtros
+                </button>
+                <button class="btn btn-secondary" onclick="clearNotificationFilters()">
+                    <i class="fas fa-times"></i>
+                    Limpar
+                </button>
+            </div>
+        </section>
+
+        <!-- Recent Notifications -->
+        <section class="notification-card animate__animated animate__fadeInUp">
+            <h2 class="section-title">
+                <i class="fas fa-history"></i>
+                Notificações Recentes
+            </h2>
+            <div id="notificationsList">
+                <!-- Notifications will be loaded here -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Carregando notificações...
+                </div>
+            </div>
+        </section>
+
+        <!-- Templates Management -->
+        <section class="notification-card animate__animated animate__fadeInUp">
+            <h2 class="section-title">
+                <i class="fas fa-file-alt"></i>
+                Templates de Notificação
+            </h2>
+            <div id="templatesList">
+                <!-- Templates will be loaded here -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Carregando templates...
+                </div>
+            </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <section class="module-actions" style="display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="createNewTemplate()">
+                <i class="fas fa-plus"></i>
+                Novo Template
+            </button>
+            <button class="btn btn-secondary" onclick="manageSubscriptions()">
+                <i class="fas fa-users"></i>
+                Gerenciar Inscrições
+            </button>
+            <button class="btn btn-secondary" onclick="viewAnalytics()">
+                <i class="fas fa-chart-line"></i>
+                Analytics
+            </button>
+            <button class="btn btn-secondary" onclick="exportNotificationData()">
+                <i class="fas fa-download"></i>
+                Exportar Dados
+            </button>
+            <button class="btn btn-secondary" onclick="notificationSettings()">
+                <i class="fas fa-cog"></i>
+                Configurações
+            </button>
+            <button class="btn btn-secondary" onclick="window.location.href='../index.html'">
+                <i class="fas fa-arrow-left"></i>
+                Voltar ao Dashboard
+            </button>
+        </section>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <script>
+        // Notification Module specific functionality
+        class NotificationModuleInterface {
+            constructor() {
+                this.socket = io();
+                this.notifications = [];
+                this.filteredNotifications = [];
+                this.templates = [];
+                this.channels = [];
+                this.queue = [];
+                this.recipients = [];
+                
+                this.init();
+            }
+            
+            init() {
+                this.setupSocketListeners();
+                this.loadModuleData();
+                this.startMetricsUpdate();
+            }
+            
+            setupSocketListeners() {
+                this.socket.on('notification-metrics', (data) => {
+                    this.updateMetrics(data);
+                });
+                
+                this.socket.on('notification-sent', (data) => {
+                    this.handleNotificationSent(data);
+                });
+                
+                this.socket.on('notification-failed', (data) => {
+                    this.handleNotificationFailed(data);
+                });
+                
+                this.socket.on('queue-update', (data) => {
+                    this.handleQueueUpdate(data);
+                });
+            }
+            
+            async loadModuleData() {
+                try {
+                    const [notificationsResponse, templatesResponse, channelsResponse, queueResponse, metricsResponse] = await Promise.all([
+                        fetch('/api/notification-module/notifications'),
+                        fetch('/api/notification-module/templates'),
+                        fetch('/api/notification-module/channels'),
+                        fetch('/api/notification-module/queue'),
+                        fetch('/api/notification-module/metrics')
+                    ]);
+                    
+                    const notificationsData = await notificationsResponse.json();
+                    const templatesData = await templatesResponse.json();
+                    const channelsData = await channelsResponse.json();
+                    const queueData = await queueResponse.json();
+                    const metricsData = await metricsResponse.json();
+                    
+                    this.notifications = notificationsData.notifications || [];
+                    this.filteredNotifications = [...this.notifications];
+                    this.templates = templatesData.templates || [];
+                    this.channels = channelsData.channels || [];
+                    this.queue = queueData.queue || [];
+                    
+                    this.updateMetrics(metricsData);
+                    this.renderNotifications();
+                    this.renderTemplates();
+                    this.renderChannels();
+                    this.renderQueue();
+                } catch (error) {
+                    console.error('Erro ao carregar dados do módulo Notification:', error);
+                    this.showError('Erro ao carregar dados');
+                }
+            }
+            
+            updateMetrics(metrics) {
+                document.getElementById('totalNotifications').textContent = metrics.totalNotifications || 0;
+                document.getElementById('pendingQueue').textContent = metrics.pendingQueue || 0;
+                document.getElementById('sentToday').textContent = metrics.sentToday || 0;
+                
+                document.getElementById('emailsSent').textContent = (metrics.emailsSent || 0).toLocaleString();
+                document.getElementById('smsSent').textContent = (metrics.smsSent || 0).toLocaleString();
+                document.getElementById('pushSent').textContent = (metrics.pushSent || 0).toLocaleString();
+                document.getElementById('webhooksSent').textContent = (metrics.webhooksSent || 0).toLocaleString();
+                document.getElementById('deliveryRate').textContent = (metrics.deliveryRate || 0) + '%';
+                document.getElementById('openRate').textContent = (metrics.openRate || 0) + '%';
+            }
+            
+            renderChannels() {
+                const container = document.getElementById('channelsList');
+                
+                if (this.channels.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            <i class="fas fa-broadcast-tower" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                            <h3>Nenhum canal configurado</h3>
+                            <p>Configure canais de notificação para começar a enviar mensagens.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const channelsHTML = this.channels.map(channel => this.createChannelHTML(channel)).join('');
+                container.innerHTML = channelsHTML;
+            }
+            
+            createChannelHTML(channel) {
+                const statusClass = channel.active ? 'status-active' : 'status-inactive';
+                const iconClass = this.getChannelIcon(channel.type);
+                
+                return `
+                    <div class="channel-config" data-channel-id="${channel.id}">
+                        <div class="channel-header">
+                            <div class="channel-name">
+                                <i class="${iconClass}"></i>
+                                ${channel.name}
+                            </div>
+                            <div class="channel-status ${statusClass}">
+                                ${channel.active ? 'Ativo' : 'Inativo'}
+                            </div>
+                        </div>
+                        
+                        <div class="channel-settings">
+                            <div class="setting-item">
+                                <div class="setting-label">Tipo</div>
+                                <div class="setting-value">${channel.type}</div>
+                            </div>
+                            <div class="setting-item">
+                                <div class="setting-label">Enviados Hoje</div>
+                                <div class="setting-value">${channel.sentToday || 0}</div>
+                            </div>
+                            <div class="setting-item">
+                                <div class="setting-label">Taxa de Sucesso</div>
+                                <div class="setting-value">${channel.successRate || 0}%</div>
+                            </div>
+                            <div class="setting-item">
+                                <div class="setting-label">Última Atualização</div>
+                                <div class="setting-value">${new Date(channel.lastUpdate).toLocaleString('pt-BR')}</div>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <button class="btn btn-primary" onclick="configureChannel('${channel.id}')" style="padding: 6px 12px; font-size: 12px;">
+                                <i class="fas fa-cog"></i>
+                                Configurar
+                            </button>
+                            <button class="btn btn-secondary" onclick="testChannel('${channel.id}')" style="padding: 6px 12px; font-size: 12px;">
+                                <i class="fas fa-vial"></i>
+                                Testar
+                            </button>
+                            <button class="btn btn-secondary" onclick="toggleChannel('${channel.id}', ${channel.active})" style="padding: 6px 12px; font-size: 12px;">
+                                <i class="fas fa-${channel.active ? 'pause' : 'play'}"></i>
+                                ${channel.active ? 'Desativar' : 'Ativar'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            renderQueue() {
+                const container = document.getElementById('queueList');
+                
+                if (this.queue.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            <i class="fas fa-list" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                            <h3>Fila vazia</h3>
+                            <p>Não há notificações na fila no momento.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const queueHTML = this.queue.map(item => this.createQueueItemHTML(item)).join('');
+                container.innerHTML = queueHTML;
+            }
+            
+            createQueueItemHTML(item) {
+                const priorityClass = `priority-${item.priority}`;
+                
+                return `
+                    <div class="queue-item" data-queue-id="${item.id}">
+                        <div class="queue-info">
+                            <div class="queue-priority ${priorityClass}"></div>
+                            <div class="queue-details">
+                                <h4>${item.subject}</h4>
+                                <p>${item.type} • ${item.recipients} destinatários • Agendado para ${new Date(item.scheduledFor).toLocaleString('pt-BR')}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="queue-actions">
+                            <button class="btn btn-primary" onclick="processNow('${item.id}')" style="padding: 4px 8px; font-size: 11px;">
+                                <i class="fas fa-play"></i>
+                                Processar
+                            </button>
+                            <button class="btn btn-secondary" onclick="editQueued('${item.id}')" style="padding: 4px 8px; font-size: 11px;">
+                                <i class="fas fa-edit"></i>
+                                Editar
+                            </button>
+                            <button class="btn btn-secondary" onclick="removeFromQueue('${item.id}')" style="padding: 4px 8px; font-size: 11px;">
+                                <i class="fas fa-times"></i>
+                                Remover
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            renderNotifications() {
+                const container = document.getElementById('notificationsList');
+                
+                if (this.filteredNotifications.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            <i class="fas fa-bell" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                            <h3>Nenhuma notificação encontrada</h3>
+                            <p>Envie sua primeira notificação ou ajuste os filtros de busca.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const notificationsHTML = this.filteredNotifications.map(notification => this.createNotificationHTML(notification)).join('');
+                container.innerHTML = notificationsHTML;
+            }
+            
+            createNotificationHTML(notification) {
+                const statusClass = this.getNotificationStatusClass(notification.status);
+                const iconClass = this.getChannelIcon(notification.type);
+                const unreadClass = notification.read ? '' : 'unread';
+                
+                return `
+                    <div class="notification-item ${unreadClass}" data-notification-id="${notification.id}">
+                        <div class="notification-header">
+                            <div class="notification-info">
+                                <div class="notification-icon ${notification.type}">
+                                    <i class="${iconClass}"></i>
+                                </div>
+                                <div class="notification-details">
+                                    <h3>${notification.subject}</h3>
+                                    <p>${notification.preview || notification.message.substring(0, 100)}...</p>
+                                </div>
+                            </div>
+                            <div class="notification-status ${statusClass}">${notification.status}</div>
+                        </div>
+                        
+                        <div class="notification-metadata">
+                            <div class="metadata-item">
+                                <div class="metadata-label">Tipo</div>
+                                <div class="metadata-value">${notification.type}</div>
+                            </div>
+                            <div class="metadata-item">
+                                <div class="metadata-label">Destinatários</div>
+                                <div class="metadata-value">${notification.recipientCount}</div>
+                            </div>
+                            <div class="metadata-item">
+                                <div class="metadata-label">Enviado em</div>
+                                <div class="metadata-value">${new Date(notification.sentAt).toLocaleString('pt-BR')}</div>
+                            </div>
+                            <div class="metadata-item">
+                                <div class="metadata-label">Taxa de Entrega</div>
+                                <div class="metadata-value">${notification.deliveryRate || 0}%</div>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 8px; margin-top: 15px;">
+                            <button class="btn btn-primary" onclick="viewNotificationDetails('${notification.id}')" style="padding: 6px 12px; font-size: 12px;">
+                                <i class="fas fa-eye"></i>
+                                Detalhes
+                            </button>
+                            ${notification.status === 'failed' ? `
+                                <button class="btn btn-secondary" onclick="resendNotification('${notification.id}')" style="padding: 6px 12px; font-size: 12px;">
+                                    <i class="fas fa-redo"></i>
+                                    Reenviar
+                                </button>
+                            ` : ''}
+                            <button class="btn btn-secondary" onclick="duplicateNotification('${notification.id}')" style="padding: 6px 12px; font-size: 12px;">
+                                <i class="fas fa-copy"></i>
+                                Duplicar
+                            </button>
+                            <button class="btn btn-secondary" onclick="deleteNotification('${notification.id}')" style="padding: 6px 12px; font-size: 12px;">
+                                <i class="fas fa-trash"></i>
+                                Excluir
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            renderTemplates() {
+                const container = document.getElementById('templatesList');
+                
+                if (this.templates.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            <i class="fas fa-file-alt" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                            <h3>Nenhum template encontrado</h3>
+                            <p>Crie templates para facilitar o envio de notificações.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const templatesHTML = this.templates.map(template => this.createTemplateHTML(template)).join('');
+                container.innerHTML = templatesHTML;
+            }
+            
+            createTemplateHTML(template) {
+                const typeClass = `type-${template.type}`;
+                
+                return `
+                    <div class="template-card" onclick="selectTemplate('${template.id}')" data-template-id="${template.id}">
+                        <div class="template-header">
+                            <div class="template-info">
+                                <h3>${template.name}</h3>
+                                <p>${template.description}</p>
+                            </div>
+                            <div class="template-type ${typeClass}">${template.type}</div>
+                        </div>
+                        
+                        <div style="background: rgba(255, 255, 255, 0.02); padding: 10px; border-radius: 6px; margin: 10px 0; font-size: 12px; color: var(--text-secondary);">
+                            ${template.preview || template.content.substring(0, 150)}...
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                            <div style="font-size: 12px; color: var(--text-secondary);">
+                                Usado ${template.usageCount || 0} vezes
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn btn-primary" onclick="event.stopPropagation(); useTemplate('${template.id}')" style="padding: 4px 8px; font-size: 11px;">
+                                    <i class="fas fa-paper-plane"></i>
+                                    Usar
+                                </button>
+                                <button class="btn btn-secondary" onclick="event.stopPropagation(); editTemplate('${template.id}')" style="padding: 4px 8px; font-size: 11px;">
+                                    <i class="fas fa-edit"></i>
+                                    Editar
+                                </button>
+                                <button class="btn btn-secondary" onclick="event.stopPropagation(); duplicateTemplate('${template.id}')" style="padding: 4px 8px; font-size: 11px;">
+                                    <i class="fas fa-copy"></i>
+                                    Duplicar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Utility methods
+            getChannelIcon(type) {
+                switch (type.toLowerCase()) {
+                    case 'email': return 'fas fa-envelope';
+                    case 'sms': return 'fas fa-sms';
+                    case 'push': return 'fas fa-mobile-alt';
+                    case 'webhook': return 'fas fa-link';
+                    default: return 'fas fa-bell';
+                }
+            }
+            
+            getNotificationStatusClass(status) {
+                switch (status.toLowerCase()) {
+                    case 'sent': return 'status-sent';
+                    case 'pending': return 'status-pending';
+                    case 'failed': return 'status-failed';
+                    case 'scheduled': return 'status-scheduled';
+                    default: return 'status-pending';
+                }
+            }
+            
+            showError(message) {
+                console.error(message);
+            }
+            
+            startMetricsUpdate() {
+                setInterval(() => {
+                    if (!document.hidden) {
+                        this.loadModuleData();
+                    }
+                }, 30000); // Update every 30 seconds
+            }
+        }
+        
+        // Global functions
+        function addRecipient() {
+            const input = document.getElementById('recipientInput');
+            const value = input.value.trim();
+            
+            if (!value) return;
+            
+            const recipientsList = document.getElementById('recipientsList');
+            const tag = document.createElement('span');
+            tag.className = 'recipient-tag';
+            tag.innerHTML = `
+                ${value}
+                <span class="remove" onclick="removeRecipient(this)">×</span>
+            `;
+            
+            recipientsList.appendChild(tag);
+            input.value = '';
+            
+            notificationModule.recipients.push(value);
+        }
+        
+        function removeRecipient(element) {
+            const tag = element.parentElement;
+            const value = tag.textContent.replace('×', '').trim();
+            
+            tag.remove();
+            
+            const index = notificationModule.recipients.indexOf(value);
+            if (index > -1) {
+                notificationModule.recipients.splice(index, 1);
+            }
+        }
+        
+        function importRecipients() {
+            alert('Funcionalidade de importação de destinatários será implementada');
+        }
+        
+        function sendNotification() {
+            const type = document.getElementById('notificationType').value;
+            const subject = document.getElementById('notificationSubject').value;
+            const message = document.getElementById('notificationMessage').value;
+            
+            if (!type || !subject || !message || notificationModule.recipients.length === 0) {
+                alert('Preencha todos os campos obrigatórios e adicione pelo menos um destinatário');
+                return;
+            }
+            
+            alert('Notificação enviada com sucesso!');
+        }
+        
+        function scheduleNotification() {
+            const dateTime = document.getElementById('scheduleDateTime').value;
+            if (!dateTime) {
+                alert('Selecione uma data e hora para agendamento');
+                return;
+            }
+            
+            alert('Notificação agendada com sucesso!');
+        }
+        
+        function saveAsDraft() {
+            alert('Rascunho salvo com sucesso!');
+        }
+        
+        function previewNotification() {
+            alert('Abrindo visualização da notificação...');
+        }
+        
+        function applyNotificationFilters() {
+            const searchTerm = document.getElementById('notificationSearchFilter').value.toLowerCase();
+            const status = document.getElementById('notificationStatusFilter').value;
+            const type = document.getElementById('notificationTypeFilter').value;
+            const period = document.getElementById('notificationPeriodFilter').value;
+            
+            notificationModule.filteredNotifications = notificationModule.notifications.filter(notification => {
+                if (searchTerm && !notification.subject.toLowerCase().includes(searchTerm) && 
+                    !notification.message.toLowerCase().includes(searchTerm)) return false;
+                if (status && notification.status.toLowerCase() !== status) return false;
+                if (type && notification.type.toLowerCase() !== type) return false;
+                
+                if (period) {
+                    const notificationDate = new Date(notification.sentAt);
+                    const now = new Date();
+                    
+                    switch (period) {
+                        case 'today':
+                            if (notificationDate.toDateString() !== now.toDateString()) return false;
+                            break;
+                        case 'week':
+                            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                            if (notificationDate < weekAgo) return false;
+                            break;
+                        case 'month':
+                            if (notificationDate.getMonth() !== now.getMonth() || notificationDate.getFullYear() !== now.getFullYear()) return false;
+                            break;
+                    }
+                }
+                
+                return true;
+            });
+            
+            notificationModule.renderNotifications();
+        }
+        
+        function clearNotificationFilters() {
+            document.getElementById('notificationSearchFilter').value = '';
+            document.getElementById('notificationStatusFilter').value = '';
+            document.getElementById('notificationTypeFilter').value = '';
+            document.getElementById('notificationPeriodFilter').value = '';
+            
+            notificationModule.filteredNotifications = [...notificationModule.notifications];
+            notificationModule.renderNotifications();
+        }
+        
+        function configureChannel(channelId) {
+            alert(`Configurar canal: ${channelId}`);
+        }
+        
+        function testChannel(channelId) {
+            alert(`Testando canal: ${channelId}`);
+        }
+        
+        function toggleChannel(channelId, isActive) {
+            const action = isActive ? 'desativar' : 'ativar';
+            if (confirm(`Tem certeza que deseja ${action} este canal?`)) {
+                alert(`Canal ${action}do: ${channelId}`);
+            }
+        }
+        
+        function processNow(queueId) {
+            if (confirm('Tem certeza que deseja processar esta notificação agora?')) {
+                alert(`Processando notificação: ${queueId}`);
+            }
+        }
+        
+        function editQueued(queueId) {
+            alert(`Editar notificação na fila: ${queueId}`);
+        }
+        
+        function removeFromQueue(queueId) {
+            if (confirm('Tem certeza que deseja remover esta notificação da fila?')) {
+                alert(`Removendo da fila: ${queueId}`);
+            }
+        }
+        
+        function selectTemplate(templateId) {
+            document.getElementById('notificationTemplate').value = templateId;
+        }
+        
+        function useTemplate(templateId) {
+            alert(`Usando template: ${templateId}`);
+        }
+        
+        function editTemplate(templateId) {
+            alert(`Editar template: ${templateId}`);
+        }
+        
+        function duplicateTemplate(templateId) {
+            alert(`Duplicar template: ${templateId}`);
+        }
+        
+        function viewNotificationDetails(notificationId) {
+            alert(`Visualizar detalhes: ${notificationId}`);
+        }
+        
+        function resendNotification(notificationId) {
+            if (confirm('Tem certeza que deseja reenviar esta notificação?')) {
+                alert(`Reenviando notificação: ${notificationId}`);
+            }
+        }
+        
+        function duplicateNotification(notificationId) {
+            alert(`Duplicar notificação: ${notificationId}`);
+        }
+        
+        function deleteNotification(notificationId) {
+            if (confirm('Tem certeza que deseja excluir esta notificação?')) {
+                alert(`Excluindo notificação: ${notificationId}`);
+            }
+        }
+        
+        function createNewTemplate() {
+            alert('Funcionalidade de criação de template será implementada');
+        }
+        
+        function manageSubscriptions() {
+            alert('Funcionalidade de gerenciamento de inscrições será implementada');
+        }
+        
+        function viewAnalytics() {
+            alert('Funcionalidade de analytics será implementada');
+        }
+        
+        function exportNotificationData() {
+            window.open('/api/notification-module/export', '_blank');
+        }
+        
+        function notificationSettings() {
+            alert('Funcionalidade de configurações será implementada');
+        }
+        
+        // Initialize Notification Module Interface
+        let notificationModule;
+        document.addEventListener('DOMContentLoaded', () => {
+            notificationModule = new NotificationModuleInterface();
+        });
+    </script>
+</body>
+</html>

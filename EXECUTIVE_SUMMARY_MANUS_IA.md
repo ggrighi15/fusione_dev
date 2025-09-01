@@ -10,7 +10,7 @@ Consolidar **TODOS** os sistemas **Fusione Core System**, **Propulsor** e **10 M
 
 ### **Fusione Core System (Expandido)**
 - **Arquitetura**: Modular, Event-Driven e Microserviços
-- **Tecnologia**: Node.js 18+ com MongoDB, Redis e Elasticsearch
+- **Tecnologia**: Node.js 18+ com Elasticsearch
 - **Módulos**: 8 módulos core + 10 módulos complementares + Propulsor
 - **Total**: 21 módulos integrados
 - **Características**: Escalável, seguro, flexível e compliance-ready
@@ -86,7 +86,7 @@ Consolidar **TODOS** os sistemas **Fusione Core System**, **Propulsor** e **10 M
 ├─────────────────────────────────────────────────────────────────────────────────────┤
 │                           SHARED INFRASTRUCTURE                                     │
 │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────────────────────────┐ │
-│  │  MongoDB    │ │    Redis    │ │Elasticsearch│ │         Event Bus               │ │
+│  │             │ │             │ │Elasticsearch│ │         Event Bus               │ │
 │  │  Cluster    │ │   Cluster   │ │   Cluster   │ │    (21 Módulos Integrados)      │ │
 │  └─────────────┘ └─────────────┘ └─────────────┘ └─────────────────────────────────┘ │
 │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────────────────────────┐ │

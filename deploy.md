@@ -238,10 +238,7 @@ NODE_ENV=production
 PORT=3001
 
 # Database
-MONGODB_URI=mongodb://localhost:27017/fusione_prod
-
-# Redis
-REDIS_URL=redis://localhost:6379
+# Database configuration removed - MongoDB and Redis no longer used
 
 # Security
 JWT_SECRET=seu-jwt-secret-muito-seguro
@@ -352,7 +349,7 @@ mkdir -p $BACKUP_DIR
 tar -czf $BACKUP_DIR/code.tar.gz /caminho/para/fusione_dev
 
 # Backup do banco (se houver)
-# mongodump --out $BACKUP_DIR/mongodb
+# Database backup commands removed - MongoDB no longer used
 
 echo "Backup concluído em $BACKUP_DIR"
 ```

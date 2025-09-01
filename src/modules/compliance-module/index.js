@@ -1,6 +1,6 @@
-const crypto = require('crypto');
-const fs = require('fs').promises;
-const path = require('path');
+import crypto from 'crypto';
+import { promises as fs } from 'fs';
+import path from 'path';
 
 /**
  * Módulo de Compliance - Monitoramento de integridade e conformidade legal
@@ -1013,4 +1013,4 @@ class ComplianceModule {
     }
 }
 
-module.exports = ComplianceModule;
+export default ComplianceModule;

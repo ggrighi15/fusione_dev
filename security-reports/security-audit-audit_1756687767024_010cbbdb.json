@@ -1,0 +1,124 @@
+{
+  "auditId": "audit_1756687767024_010cbbdb",
+  "timestamp": "2025-09-01T00:49:27.024Z",
+  "startTime": 1756687767024,
+  "endTime": 1756687767026,
+  "duration": 2,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:49:27.024Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:27.024Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:27.024Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:27.024Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "privilege_escalation",
+            "severity": "high",
+            "description": "Possível vulnerabilidade de escalação de privilégios detectada",
+            "recommendation": "Revisar controles de acesso e implementar princípio do menor privilégio"
+          }
+        ],
+        "timestamp": "2025-09-01T00:49:27.024Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:27.024Z"
+      }
+    ],
+    "vulnerabilitiesFound": 1,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:49:27.025Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:27.025Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:27.025Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:27.025Z"
+      }
+    ],
+    "vulnerabilities": [],
+    "riskScore": 0,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:49:27.025Z",
+    "events": [
+      {
+        "id": "event_1756687767026_c72bc5ae",
+        "type": "login_attempt",
+        "severity": "high",
+        "timestamp": "2025-09-01T00:08:53.160Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687767026_7890408d",
+        "type": "suspicious_activity",
+        "severity": "medium",
+        "timestamp": "2025-08-31T01:54:28.641Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687767026_aeafd8f8",
+        "type": "login_attempt",
+        "severity": "medium",
+        "timestamp": "2025-08-31T09:42:43.762Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 17,
+      "failedLoginAttempts": 18,
+      "blockedRequests": 26,
+      "activeThreats": 1,
+      "securityScore": 6,
+      "lastSecurityUpdate": "2025-09-01T00:49:27.026Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "minimal",
+  "recommendations": []
+}

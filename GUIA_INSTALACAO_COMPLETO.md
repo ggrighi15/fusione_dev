@@ -22,8 +22,7 @@
 
 #### Obrigatório
 - **Node.js 18+** - [Download](https://nodejs.org/)
-- **MongoDB 6+** - [Download](https://www.mongodb.com/try/download/community)
-- **Redis 6+** - [Download](https://redis.io/download)
+- **Elasticsearch 8+** - [Download](https://www.elastic.co/downloads/elasticsearch)
 
 #### Opcional
 - **Docker & Docker Compose** - [Download](https://www.docker.com/)
@@ -55,34 +54,15 @@ chmod +x install.sh
 # Verificar versões
 node --version  # Deve ser 18+
 npm --version
-mongod --version
-redis-server --version
+# Database services no longer required - MongoDB and Redis removed
 ```
 
 ### 2. Configurar Banco de Dados
 
-#### MongoDB
+#### Database Services
 ```bash
-# Iniciar MongoDB
-# Windows
-net start MongoDB
-
-# Linux/macOS
-sudo systemctl start mongod
-# ou
-mongod --dbpath /caminho/para/dados
-```
-
-#### Redis
-```bash
-# Iniciar Redis
-# Windows (se instalado via chocolatey)
-redis-server
-
-# Linux/macOS
-sudo systemctl start redis
-# ou
-redis-server
+# MongoDB and Redis are no longer required
+# The system now operates without these dependencies
 ```
 
 ### 3. Instalar Dependências
@@ -111,11 +91,7 @@ cp .env.example .env
 #### Configurações Essenciais
 ```env
 # Banco de dados
-MONGODB_URI=mongodb://localhost:27017/fusione-core
-
-# Cache
-REDIS_HOST=localhost
-REDIS_PORT=6379
+# Database configuration removed - MongoDB and Redis no longer used
 
 # Segurança (ALTERE ESTES VALORES!)
 JWT_SECRET=seu_jwt_secret_muito_seguro_aqui
@@ -172,13 +148,11 @@ docker-compose --profile monitoring up -d
 
 ### Portas dos Serviços
 - **Aplicação Principal**: 3000
-- **MongoDB**: 27017
-- **Redis**: 6379
+- **Application**: 3000
 - **Nginx**: 80, 443
 - **Grafana**: 3001
 - **Prometheus**: 9090
-- **Redis Commander**: 8081
-- **Mongo Express**: 8082
+- **Admin Panel**: 8080
 
 ## ⚙️ Configuração de Produção
 
@@ -250,27 +224,14 @@ docker-compose logs -f
 
 ### Problemas Comuns
 
-#### 1. Erro de Conexão com MongoDB
+#### 1. Application Connection Issues
+
 ```bash
-# Verificar se MongoDB está rodando
-# Windows
-sc query MongoDB
+# Check if application is running
+ps aux | grep node
 
-# Linux/macOS
-sudo systemctl status mongod
-
-# Testar conexão
-mongosh mongodb://localhost:27017/fusione-core
-```
-
-#### 2. Erro de Conexão com Redis
-```bash
-# Verificar se Redis está rodando
-redis-cli ping
-# Resposta esperada: PONG
-
-# Verificar configuração
-redis-cli config get '*'
+# Check application logs
+npm run logs
 ```
 
 #### 3. Porta em Uso
@@ -312,8 +273,8 @@ npm run dev
 ### Backup
 
 ```bash
-# Backup do MongoDB
-mongodump --uri="mongodb://localhost:27017/fusione-core" --out=backup/$(date +%Y%m%d)
+# Application backup
+npm run backup
 
 # Backup dos arquivos
 tar -czf backup/files-$(date +%Y%m%d).tar.gz data/ logs/ config/
@@ -370,8 +331,7 @@ curl http://localhost:3001/api/metrics
 node --version
 npm --version
 docker --version
-mongod --version
-redis-server --version
+# Database services no longer required
 
 # Logs relevantes
 tail -100 logs/fusione-core.log

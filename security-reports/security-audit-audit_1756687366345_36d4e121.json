@@ -1,0 +1,138 @@
+{
+  "auditId": "audit_1756687366345_36d4e121",
+  "timestamp": "2025-09-01T00:42:46.345Z",
+  "startTime": 1756687366345,
+  "endTime": 1756687366350,
+  "duration": 5,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:42:46.346Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:42:46.346Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:42:46.346Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:42:46.346Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:42:46.346Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:42:46.346Z"
+      }
+    ],
+    "vulnerabilitiesFound": 0,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:42:46.347Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:42:46.348Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "configuration_issue",
+            "severity": "high",
+            "description": "Problema de configuração detectado: weak_encryption",
+            "recommendation": "Revisar e corrigir configurações de segurança"
+          }
+        ],
+        "timestamp": "2025-09-01T00:42:46.348Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:42:46.348Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "configuration_issue",
+        "severity": "high",
+        "description": "Problema de configuração detectado: weak_encryption",
+        "recommendation": "Revisar e corrigir configurações de segurança"
+      }
+    ],
+    "riskScore": 7,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:42:46.349Z",
+    "events": [
+      {
+        "id": "event_1756687366349_a913fc54",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-08-31T23:44:14.210Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687366349_71f5bd20",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-31T04:32:18.461Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687366349_967f9c19",
+        "type": "suspicious_activity",
+        "severity": "medium",
+        "timestamp": "2025-08-31T08:15:59.538Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687366349_754226eb",
+        "type": "suspicious_activity",
+        "severity": "high",
+        "timestamp": "2025-08-31T09:49:51.534Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 29,
+      "failedLoginAttempts": 10,
+      "blockedRequests": 19,
+      "activeThreats": 1,
+      "securityScore": 73,
+      "lastSecurityUpdate": "2025-09-01T00:42:46.349Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "low",
+  "recommendations": []
+}

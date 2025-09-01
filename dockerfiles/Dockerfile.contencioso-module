@@ -1,0 +1,67 @@
+FROM node:18-alpine
+
+# Install system dependencies for legal document processing
+RUN apk add --no-cache \
+    curl \
+    wget \
+    unzip \
+    libreoffice \
+    poppler-utils \
+    imagemagick \
+    ghostscript \
+    tesseract-ocr \
+    tesseract-ocr-por \
+    python3 \
+    py3-pip
+
+# Install Python libraries for document processing
+RUN pip3 install --no-cache-dir \
+    PyPDF2 \
+    pdfplumber \
+    python-docx \
+    openpyxl \
+    beautifulsoup4 \
+    requests
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install Node.js dependencies with legal-specific packages
+RUN npm install && \
+    npm install --save-dev \
+    pdf-parse \
+    mammoth \
+    cheerio \
+    axios \
+    moment \
+    validator \
+    multer \
+    sharp
+
+# Copy application code
+COPY . .
+
+# Create directories for legal documents and data
+RUN mkdir -p /app/data/contencioso/processos \
+             /app/data/contencioso/documentos \
+             /app/data/contencioso/templates \
+             /app/data/contencioso/backup \
+             /app/uploads/contencioso \
+             /app/logs
+
+# Set permissions
+RUN chown -R node:node /app
+USER node
+
+# Expose port
+EXPOSE 3000 9229
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
+
+# Start command
+CMD ["npm", "run", "dev:contencioso"]

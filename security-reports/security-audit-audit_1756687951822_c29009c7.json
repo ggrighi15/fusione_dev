@@ -1,0 +1,138 @@
+{
+  "auditId": "audit_1756687951822_c29009c7",
+  "timestamp": "2025-09-01T00:52:31.823Z",
+  "startTime": 1756687951823,
+  "endTime": 1756687951826,
+  "duration": 3,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:52:31.823Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:31.824Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "xss",
+            "severity": "medium",
+            "description": "Possível vulnerabilidade XSS detectada com payload: <script>alert(\"XSS\")</script>",
+            "recommendation": "Implementar sanitização de entrada e Content Security Policy"
+          }
+        ],
+        "timestamp": "2025-09-01T00:52:31.824Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:31.824Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:31.824Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: Strict-Transport-Security",
+            "recommendation": "Configurar header Strict-Transport-Security no servidor web"
+          }
+        ],
+        "timestamp": "2025-09-01T00:52:31.824Z"
+      }
+    ],
+    "vulnerabilitiesFound": 2,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:52:31.824Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:31.824Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:31.824Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:31.824Z"
+      }
+    ],
+    "vulnerabilities": [],
+    "riskScore": 0,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:52:31.825Z",
+    "events": [
+      {
+        "id": "event_1756687951825_f3882ae5",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-08-31T19:05:04.598Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687951825_a5e7ef21",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-31T17:24:39.811Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687951825_96ffa1e2",
+        "type": "suspicious_activity",
+        "severity": "medium",
+        "timestamp": "2025-08-31T22:01:37.468Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687951825_1260f6db",
+        "type": "suspicious_activity",
+        "severity": "low",
+        "timestamp": "2025-08-31T19:23:41.684Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 35,
+      "failedLoginAttempts": 14,
+      "blockedRequests": 23,
+      "activeThreats": 3,
+      "securityScore": 0,
+      "lastSecurityUpdate": "2025-09-01T00:52:31.825Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "minimal",
+  "recommendations": []
+}

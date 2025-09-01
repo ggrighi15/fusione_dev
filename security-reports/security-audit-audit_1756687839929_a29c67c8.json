@@ -1,0 +1,131 @@
+{
+  "auditId": "audit_1756687839929_a29c67c8",
+  "timestamp": "2025-09-01T00:50:39.929Z",
+  "startTime": 1756687839929,
+  "endTime": 1756687839931,
+  "duration": 2,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:50:39.929Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:50:39.929Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:50:39.929Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:50:39.929Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:50:39.929Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:50:39.929Z"
+      }
+    ],
+    "vulnerabilitiesFound": 0,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:50:39.930Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:50:39.930Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "configuration_issue",
+            "severity": "medium",
+            "description": "Problema de configuração detectado: debug_mode_enabled",
+            "recommendation": "Revisar e corrigir configurações de segurança"
+          }
+        ],
+        "timestamp": "2025-09-01T00:50:39.930Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:50:39.930Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "configuration_issue",
+        "severity": "medium",
+        "description": "Problema de configuração detectado: debug_mode_enabled",
+        "recommendation": "Revisar e corrigir configurações de segurança"
+      }
+    ],
+    "riskScore": 4,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:50:39.931Z",
+    "events": [
+      {
+        "id": "event_1756687839931_bbf581af",
+        "type": "suspicious_activity",
+        "severity": "low",
+        "timestamp": "2025-08-31T09:43:05.772Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687839931_6fa4574e",
+        "type": "login_attempt",
+        "severity": "low",
+        "timestamp": "2025-08-31T07:24:06.220Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687839931_89eb8da3",
+        "type": "login_attempt",
+        "severity": "high",
+        "timestamp": "2025-08-31T16:08:10.266Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 17,
+      "failedLoginAttempts": 16,
+      "blockedRequests": 22,
+      "activeThreats": 3,
+      "securityScore": 23,
+      "lastSecurityUpdate": "2025-09-01T00:50:39.931Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "minimal",
+  "recommendations": []
+}

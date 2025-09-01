@@ -1,0 +1,155 @@
+{
+  "auditId": "audit_1756328555947_dc76237e",
+  "timestamp": "2025-08-27T21:02:35.948Z",
+  "startTime": 1756328555947,
+  "endTime": 1756328555953,
+  "duration": 6,
+  "penetrationTesting": {
+    "timestamp": "2025-08-27T21:02:35.949Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-27T21:02:35.949Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-27T21:02:35.949Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-27T21:02:35.949Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-27T21:02:35.949Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-27T21:02:35.949Z"
+      }
+    ],
+    "vulnerabilitiesFound": 0,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-08-27T21:02:35.950Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "dependency_vulnerability",
+            "severity": "low",
+            "description": "Vulnerabilidade encontrada em mongoose@5.13.0: CVE-2022-24304",
+            "recommendation": "Atualizar mongoose para versão mais recente"
+          }
+        ],
+        "timestamp": "2025-08-27T21:02:35.950Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "configuration_issue",
+            "severity": "high",
+            "description": "Problema de configuração detectado: insecure_protocols",
+            "recommendation": "Revisar e corrigir configurações de segurança"
+          },
+          {
+            "type": "configuration_issue",
+            "severity": "high",
+            "description": "Problema de configuração detectado: weak_encryption",
+            "recommendation": "Revisar e corrigir configurações de segurança"
+          }
+        ],
+        "timestamp": "2025-08-27T21:02:35.950Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-27T21:02:35.950Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "dependency_vulnerability",
+        "severity": "low",
+        "description": "Vulnerabilidade encontrada em mongoose@5.13.0: CVE-2022-24304",
+        "recommendation": "Atualizar mongoose para versão mais recente"
+      },
+      {
+        "type": "configuration_issue",
+        "severity": "high",
+        "description": "Problema de configuração detectado: insecure_protocols",
+        "recommendation": "Revisar e corrigir configurações de segurança"
+      },
+      {
+        "type": "configuration_issue",
+        "severity": "high",
+        "description": "Problema de configuração detectado: weak_encryption",
+        "recommendation": "Revisar e corrigir configurações de segurança"
+      }
+    ],
+    "riskScore": 15,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-08-27T21:02:35.951Z",
+    "events": [
+      {
+        "id": "event_1756328555951_b52ceb95",
+        "type": "login_attempt",
+        "severity": "low",
+        "timestamp": "2025-08-27T10:20:09.624Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756328555952_13babd42",
+        "type": "suspicious_activity",
+        "severity": "high",
+        "timestamp": "2025-08-27T07:17:01.744Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 78,
+      "failedLoginAttempts": 16,
+      "blockedRequests": 40,
+      "activeThreats": 4,
+      "securityScore": 77,
+      "lastSecurityUpdate": "2025-08-27T21:02:35.952Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "medium",
+  "recommendations": [
+    {
+      "priority": "medium",
+      "category": "security_improvement",
+      "message": "Melhorias de segurança recomendadas"
+    }
+  ]
+}

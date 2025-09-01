@@ -1,0 +1,483 @@
+version: '3.8'
+
+services:
+  # AI Module Development Container
+  ai-module-dev:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.ai-module
+    container_name: fusione-ai-module-dev
+    ports:
+      - "3010:3000"
+      - "9230:9229"  # Debug port
+    environment:
+      - NODE_ENV=development
+      - DEBUG_MODE=true
+      - MODULE_NAME=ai-module
+      - AI_MODEL_CACHE_SIZE=500
+      - AI_CONFIDENCE_THRESHOLD=0.8
+      - ENABLE_ML_TRAINING=true
+      - ENABLE_NLP=true
+    volumes:
+      - ./src/modules/ai-module:/app/src/modules/ai-module
+      - ./src/core:/app/src/core
+      - ./config:/app/config
+      - ./data/ai-models:/app/data/ai-models
+      - ai-module-node-modules:/app/node_modules
+    depends_on:
+      - ai-module-db
+      - redis-ai
+    networks:
+      - fusione-ai-network
+    profiles:
+      - ai-development
+    command: ["npm", "run", "dev:ai"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Contencioso Module Development Container
+  contencioso-module-dev:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.contencioso-module
+    container_name: fusione-contencioso-module-dev
+    ports:
+      - "3011:3000"
+      - "9231:9229"  # Debug port
+    environment:
+      - NODE_ENV=development
+      - DEBUG_MODE=true
+      - MODULE_NAME=contencioso-module
+      - ENABLE_TRIBUNAL_INTEGRATION=true
+      - ENABLE_PJE_INTEGRATION=true
+      - MAX_PROCESS_SIZE=100MB
+      - NOTIFICATION_ENABLED=true
+    volumes:
+      - ./src/modules/contencioso-module:/app/src/modules/contencioso-module
+      - ./src/core:/app/src/core
+      - ./config:/app/config
+      - ./data/contencioso:/app/data/contencioso
+      - contencioso-module-node-modules:/app/node_modules
+    depends_on:
+      - contencioso-module-db
+      - redis-contencioso
+    networks:
+      - fusione-contencioso-network
+    profiles:
+      - contencioso-development
+    command: ["npm", "run", "dev:contencioso"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Data Analysis Module Development Container
+  data-analysis-module-dev:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.data-analysis-module
+    container_name: fusione-data-analysis-module-dev
+    ports:
+      - "3012:3000"
+      - "9232:9229"  # Debug port
+    environment:
+      - NODE_ENV=development
+      - DEBUG_MODE=true
+      - MODULE_NAME=data-analysis-module
+      - MAX_FILE_SIZE=50MB
+      - UPLOAD_PATH=/app/uploads
+      - OUTPUT_PATH=/app/output/analysis
+      - SUPPORTED_FORMATS=xlsx,json,csv
+    volumes:
+      - ./src/modules/data-analysis-module:/app/src/modules/data-analysis-module
+      - ./src/core:/app/src/core
+      - ./config:/app/config
+      - ./uploads:/app/uploads
+      - ./output:/app/output
+      - data-analysis-module-node-modules:/app/node_modules
+    depends_on:
+      - data-analysis-module-db
+      - redis-data-analysis
+    networks:
+      - fusione-data-analysis-network
+    profiles:
+      - data-analysis-development
+    command: ["npm", "run", "dev:data-analysis"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Auth Module Development Container
+  auth-module-dev:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.auth-module
+    container_name: fusione-auth-module-dev
+    ports:
+      - "3013:3000"
+      - "9233:9229"  # Debug port
+    environment:
+      - NODE_ENV=development
+      - DEBUG_MODE=true
+      - MODULE_NAME=auth-module
+      - JWT_SECRET=dev-secret-key
+      - JWT_EXPIRES_IN=24h
+      - BCRYPT_ROUNDS=10
+      - ENABLE_2FA=true
+      - SESSION_TIMEOUT=30m
+    volumes:
+      - ./src/modules/auth-module:/app/src/modules/auth-module
+      - ./src/core:/app/src/core
+      - ./config:/app/config
+      - auth-module-node-modules:/app/node_modules
+    depends_on:
+      - auth-module-db
+      - redis-auth
+    networks:
+      - fusione-auth-network
+    profiles:
+      - auth-development
+    command: ["npm", "run", "dev:auth"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Reports Module Development Container
+  reports-module-dev:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.reports-module
+    container_name: fusione-reports-module-dev
+    ports:
+      - "3014:3000"
+      - "9234:9229"  # Debug port
+    environment:
+      - NODE_ENV=development
+      - DEBUG_MODE=true
+      - MODULE_NAME=reports-module
+      - REPORT_CACHE_TTL=3600
+      - MAX_REPORT_SIZE=200MB
+      - ENABLE_PDF_GENERATION=true
+      - ENABLE_EXCEL_EXPORT=true
+    volumes:
+      - ./src/modules/reports-module:/app/src/modules/reports-module
+      - ./src/core:/app/src/core
+      - ./config:/app/config
+      - ./templates:/app/templates
+      - reports-module-node-modules:/app/node_modules
+    depends_on:
+      - reports-module-db
+      - redis-reports
+    networks:
+      - fusione-reports-network
+    profiles:
+      - reports-development
+    command: ["npm", "run", "dev:reports"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Notification Module Development Container
+  notification-module-dev:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.notification-module
+    container_name: fusione-notification-module-dev
+    ports:
+      - "3015:3000"
+      - "9235:9229"  # Debug port
+    environment:
+      - NODE_ENV=development
+      - DEBUG_MODE=true
+      - MODULE_NAME=notification-module
+      - SMTP_HOST=localhost
+      - SMTP_PORT=1025
+      - ENABLE_EMAIL=true
+      - ENABLE_SMS=false
+      - ENABLE_PUSH=true
+    volumes:
+      - ./src/modules/notification-module:/app/src/modules/notification-module
+      - ./src/core:/app/src/core
+      - ./config:/app/config
+      - notification-module-node-modules:/app/node_modules
+    depends_on:
+      - notification-module-db
+      - redis-notification
+      - mailhog
+    networks:
+      - fusione-notification-network
+    profiles:
+      - notification-development
+    command: ["npm", "run", "dev:notification"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Database Services for each module
+  ai-module-db:
+    image: mysql:8.0
+    container_name: fusione-ai-module-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=ai_root_password
+      - MYSQL_DATABASE=fusione_ai_dev
+      - MYSQL_USER=ai_user
+      - MYSQL_PASSWORD=ai_password
+    volumes:
+      - ai-module-db-data:/var/lib/mysql
+      - ./sql/ai-module:/docker-entrypoint-initdb.d
+    networks:
+      - fusione-ai-network
+    profiles:
+      - ai-development
+
+  contencioso-module-db:
+    image: mysql:8.0
+    container_name: fusione-contencioso-module-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=contencioso_root_password
+      - MYSQL_DATABASE=fusione_contencioso_dev
+      - MYSQL_USER=contencioso_user
+      - MYSQL_PASSWORD=contencioso_password
+    volumes:
+      - contencioso-module-db-data:/var/lib/mysql
+      - ./sql/contencioso-module:/docker-entrypoint-initdb.d
+    networks:
+      - fusione-contencioso-network
+    profiles:
+      - contencioso-development
+
+  data-analysis-module-db:
+    image: mysql:8.0
+    container_name: fusione-data-analysis-module-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=data_analysis_root_password
+      - MYSQL_DATABASE=fusione_data_analysis_dev
+      - MYSQL_USER=data_analysis_user
+      - MYSQL_PASSWORD=data_analysis_password
+    volumes:
+      - data-analysis-module-db-data:/var/lib/mysql
+      - ./sql/data-analysis-module:/docker-entrypoint-initdb.d
+    networks:
+      - fusione-data-analysis-network
+    profiles:
+      - data-analysis-development
+
+  auth-module-db:
+    image: mysql:8.0
+    container_name: fusione-auth-module-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=auth_root_password
+      - MYSQL_DATABASE=fusione_auth_dev
+      - MYSQL_USER=auth_user
+      - MYSQL_PASSWORD=auth_password
+    volumes:
+      - auth-module-db-data:/var/lib/mysql
+      - ./sql/auth-module:/docker-entrypoint-initdb.d
+    networks:
+      - fusione-auth-network
+    profiles:
+      - auth-development
+
+  reports-module-db:
+    image: mysql:8.0
+    container_name: fusione-reports-module-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=reports_root_password
+      - MYSQL_DATABASE=fusione_reports_dev
+      - MYSQL_USER=reports_user
+      - MYSQL_PASSWORD=reports_password
+    volumes:
+      - reports-module-db-data:/var/lib/mysql
+      - ./sql/reports-module:/docker-entrypoint-initdb.d
+    networks:
+      - fusione-reports-network
+    profiles:
+      - reports-development
+
+  notification-module-db:
+    image: mysql:8.0
+    container_name: fusione-notification-module-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=notification_root_password
+      - MYSQL_DATABASE=fusione_notification_dev
+      - MYSQL_USER=notification_user
+      - MYSQL_PASSWORD=notification_password
+    volumes:
+      - notification-module-db-data:/var/lib/mysql
+      - ./sql/notification-module:/docker-entrypoint-initdb.d
+    networks:
+      - fusione-notification-network
+    profiles:
+      - notification-development
+
+  # Redis Services for each module
+  redis-ai:
+    image: redis:7-alpine
+    container_name: fusione-redis-ai
+    volumes:
+      - redis-ai-data:/data
+    networks:
+      - fusione-ai-network
+    profiles:
+      - ai-development
+
+  redis-contencioso:
+    image: redis:7-alpine
+    container_name: fusione-redis-contencioso
+    volumes:
+      - redis-contencioso-data:/data
+    networks:
+      - fusione-contencioso-network
+    profiles:
+      - contencioso-development
+
+  redis-data-analysis:
+    image: redis:7-alpine
+    container_name: fusione-redis-data-analysis
+    volumes:
+      - redis-data-analysis-data:/data
+    networks:
+      - fusione-data-analysis-network
+    profiles:
+      - data-analysis-development
+
+  redis-auth:
+    image: redis:7-alpine
+    container_name: fusione-redis-auth
+    volumes:
+      - redis-auth-data:/data
+    networks:
+      - fusione-auth-network
+    profiles:
+      - auth-development
+
+  redis-reports:
+    image: redis:7-alpine
+    container_name: fusione-redis-reports
+    volumes:
+      - redis-reports-data:/data
+    networks:
+      - fusione-reports-network
+    profiles:
+      - reports-development
+
+  redis-notification:
+    image: redis:7-alpine
+    container_name: fusione-redis-notification
+    volumes:
+      - redis-notification-data:/data
+    networks:
+      - fusione-notification-network
+    profiles:
+      - notification-development
+
+  # Development Tools
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: fusione-mailhog
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # Web UI
+    networks:
+      - fusione-notification-network
+    profiles:
+      - notification-development
+
+  # Module Development Dashboard
+  module-dashboard:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.module-dashboard
+    container_name: fusione-module-dashboard
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DASHBOARD_MODE=true
+    volumes:
+      - ./src/dashboard:/app/src/dashboard
+      - ./config:/app/config
+    networks:
+      - fusione-ai-network
+      - fusione-contencioso-network
+      - fusione-data-analysis-network
+      - fusione-auth-network
+      - fusione-reports-network
+      - fusione-notification-network
+    profiles:
+      - dashboard
+    command: ["npm", "run", "dev:dashboard"]
+
+volumes:
+  # Node modules volumes for each module
+  ai-module-node-modules:
+  contencioso-module-node-modules:
+  data-analysis-module-node-modules:
+  auth-module-node-modules:
+  reports-module-node-modules:
+  notification-module-node-modules:
+  
+  # Database volumes for each module
+  ai-module-db-data:
+  contencioso-module-db-data:
+  data-analysis-module-db-data:
+  auth-module-db-data:
+  reports-module-db-data:
+  notification-module-db-data:
+  
+  # Redis volumes for each module
+  redis-ai-data:
+  redis-contencioso-data:
+  redis-data-analysis-data:
+  redis-auth-data:
+  redis-reports-data:
+  redis-notification-data:
+
+networks:
+  fusione-ai-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+  
+  fusione-contencioso-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
+  
+  fusione-data-analysis-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.22.0.0/16
+  
+  fusione-auth-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.23.0.0/16
+  
+  fusione-reports-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.24.0.0/16
+  
+  fusione-notification-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16

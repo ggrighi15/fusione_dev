@@ -1,0 +1,140 @@
+{
+  "auditId": "audit_1756637401467_ab594d52",
+  "timestamp": "2025-08-31T10:50:01.469Z",
+  "startTime": 1756637401468,
+  "endTime": 1756637401470,
+  "duration": 2,
+  "penetrationTesting": {
+    "timestamp": "2025-08-31T10:50:01.469Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T10:50:01.469Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T10:50:01.469Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T10:50:01.469Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T10:50:01.469Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: Strict-Transport-Security",
+            "recommendation": "Configurar header Strict-Transport-Security no servidor web"
+          }
+        ],
+        "timestamp": "2025-08-31T10:50:01.469Z"
+      }
+    ],
+    "vulnerabilitiesFound": 1,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-08-31T10:50:01.469Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T10:50:01.469Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T10:50:01.469Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T10:50:01.469Z"
+      }
+    ],
+    "vulnerabilities": [],
+    "riskScore": 0,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-08-31T10:50:01.470Z",
+    "events": [
+      {
+        "id": "event_1756637401470_8b505e2d",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-30T16:47:47.352Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756637401470_a75f1326",
+        "type": "access_denied",
+        "severity": "low",
+        "timestamp": "2025-08-30T16:17:12.610Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756637401470_e9b250b7",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-08-30T15:45:44.937Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756637401470_87ae9b5d",
+        "type": "login_attempt",
+        "severity": "low",
+        "timestamp": "2025-08-31T09:18:52.709Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [
+      {
+        "id": "alert_1756637401470_33b04fe5",
+        "type": "multiple_failed_logins",
+        "severity": "high",
+        "timestamp": "2025-08-31T10:50:01.470Z",
+        "description": "Múltiplas tentativas de login falharam para o mesmo usuário",
+        "recommendation": "Investigar possível ataque de força bruta"
+      }
+    ],
+    "metrics": {
+      "totalSecurityEvents": 64,
+      "failedLoginAttempts": 6,
+      "blockedRequests": 22,
+      "activeThreats": 3,
+      "securityScore": 17,
+      "lastSecurityUpdate": "2025-08-31T10:50:01.470Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "low",
+  "recommendations": []
+}

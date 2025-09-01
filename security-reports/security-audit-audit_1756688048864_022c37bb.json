@@ -1,0 +1,138 @@
+{
+  "auditId": "audit_1756688048864_022c37bb",
+  "timestamp": "2025-09-01T00:54:08.864Z",
+  "startTime": 1756688048864,
+  "endTime": 1756688048867,
+  "duration": 3,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:54:08.865Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:54:08.865Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:54:08.865Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:54:08.865Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:54:08.865Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: X-XSS-Protection",
+            "recommendation": "Configurar header X-XSS-Protection no servidor web"
+          }
+        ],
+        "timestamp": "2025-09-01T00:54:08.865Z"
+      }
+    ],
+    "vulnerabilitiesFound": 1,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:54:08.866Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:54:08.866Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:54:08.866Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:54:08.866Z"
+      }
+    ],
+    "vulnerabilities": [],
+    "riskScore": 0,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:54:08.866Z",
+    "events": [
+      {
+        "id": "event_1756688048866_b7901682",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-31T19:00:11.206Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688048867_3486834a",
+        "type": "suspicious_activity",
+        "severity": "high",
+        "timestamp": "2025-08-31T13:12:52.022Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688048867_621ae301",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-31T05:47:49.524Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688048867_20dbccbc",
+        "type": "login_attempt",
+        "severity": "low",
+        "timestamp": "2025-08-31T03:28:00.997Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688048867_47cbc2d3",
+        "type": "suspicious_activity",
+        "severity": "low",
+        "timestamp": "2025-09-01T00:34:46.703Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 39,
+      "failedLoginAttempts": 17,
+      "blockedRequests": 49,
+      "activeThreats": 2,
+      "securityScore": 91,
+      "lastSecurityUpdate": "2025-09-01T00:54:08.867Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "minimal",
+  "recommendations": []
+}

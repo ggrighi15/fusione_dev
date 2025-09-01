@@ -1,7 +1,7 @@
-const path = require('path');
-const fs = require('fs').promises;
-const crypto = require('crypto');
-const EventEmitter = require('events');
+import path from 'path';
+import { promises as fs } from 'fs';
+import crypto from 'crypto';
+import { EventEmitter } from 'events';
 
 class ContenciosoModule extends EventEmitter {
     constructor(core) {
@@ -732,4 +732,4 @@ class ContenciosoModule extends EventEmitter {
     }
 }
 
-module.exports = ContenciosoModule;
+export default ContenciosoModule;

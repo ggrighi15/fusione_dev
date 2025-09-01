@@ -1,0 +1,140 @@
+{
+  "auditId": "audit_1756688053177_fa0da8aa",
+  "timestamp": "2025-09-01T00:54:13.178Z",
+  "startTime": 1756688053177,
+  "endTime": 1756688053181,
+  "duration": 4,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:54:13.178Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:54:13.178Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:54:13.178Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:54:13.178Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:54:13.178Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:54:13.178Z"
+      }
+    ],
+    "vulnerabilitiesFound": 0,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:54:13.179Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:54:13.179Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "configuration_issue",
+            "severity": "high",
+            "description": "Problema de configuração detectado: insecure_protocols",
+            "recommendation": "Revisar e corrigir configurações de segurança"
+          }
+        ],
+        "timestamp": "2025-09-01T00:54:13.179Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:54:13.179Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "configuration_issue",
+        "severity": "high",
+        "description": "Problema de configuração detectado: insecure_protocols",
+        "recommendation": "Revisar e corrigir configurações de segurança"
+      }
+    ],
+    "riskScore": 7,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:54:13.180Z",
+    "events": [
+      {
+        "id": "event_1756688053180_a719e440",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-31T00:59:48.933Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688053180_dcab2b93",
+        "type": "suspicious_activity",
+        "severity": "high",
+        "timestamp": "2025-08-31T16:16:22.331Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688053180_659065a1",
+        "type": "login_attempt",
+        "severity": "medium",
+        "timestamp": "2025-08-31T18:32:32.947Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [
+      {
+        "id": "alert_1756688053180_128a0a43",
+        "type": "multiple_failed_logins",
+        "severity": "high",
+        "timestamp": "2025-09-01T00:54:13.180Z",
+        "description": "Múltiplas tentativas de login falharam para o mesmo usuário",
+        "recommendation": "Investigar possível ataque de força bruta"
+      }
+    ],
+    "metrics": {
+      "totalSecurityEvents": 9,
+      "failedLoginAttempts": 3,
+      "blockedRequests": 22,
+      "activeThreats": 0,
+      "securityScore": 42,
+      "lastSecurityUpdate": "2025-09-01T00:54:13.180Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "low",
+  "recommendations": []
+}

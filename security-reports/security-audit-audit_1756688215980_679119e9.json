@@ -1,0 +1,133 @@
+{
+  "auditId": "audit_1756688215980_679119e9",
+  "timestamp": "2025-09-01T00:56:55.980Z",
+  "startTime": 1756688215980,
+  "endTime": 1756688215984,
+  "duration": 4,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:56:55.981Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:56:55.981Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:56:55.981Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:56:55.981Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:56:55.981Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: X-Content-Type-Options",
+            "recommendation": "Configurar header X-Content-Type-Options no servidor web"
+          }
+        ],
+        "timestamp": "2025-09-01T00:56:55.981Z"
+      }
+    ],
+    "vulnerabilitiesFound": 1,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:56:55.982Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:56:55.982Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:56:55.982Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:56:55.982Z"
+      }
+    ],
+    "vulnerabilities": [],
+    "riskScore": 0,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:56:55.983Z",
+    "events": [
+      {
+        "id": "event_1756688215983_7cb93487",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-08-31T08:10:16.803Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688215983_ce29d42a",
+        "type": "access_denied",
+        "severity": "low",
+        "timestamp": "2025-08-31T20:10:18.711Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688215983_381668c1",
+        "type": "login_attempt",
+        "severity": "medium",
+        "timestamp": "2025-08-31T08:05:00.419Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [
+      {
+        "id": "alert_1756688215984_cae48ab9",
+        "type": "multiple_failed_logins",
+        "severity": "high",
+        "timestamp": "2025-09-01T00:56:55.984Z",
+        "description": "Múltiplas tentativas de login falharam para o mesmo usuário",
+        "recommendation": "Investigar possível ataque de força bruta"
+      }
+    ],
+    "metrics": {
+      "totalSecurityEvents": 48,
+      "failedLoginAttempts": 6,
+      "blockedRequests": 34,
+      "activeThreats": 0,
+      "securityScore": 97,
+      "lastSecurityUpdate": "2025-09-01T00:56:55.984Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "low",
+  "recommendations": []
+}

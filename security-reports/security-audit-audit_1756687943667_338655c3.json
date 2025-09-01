@@ -1,0 +1,152 @@
+{
+  "auditId": "audit_1756687943667_338655c3",
+  "timestamp": "2025-09-01T00:52:23.667Z",
+  "startTime": 1756687943667,
+  "endTime": 1756687943671,
+  "duration": 4,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:52:23.668Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "sql_injection",
+            "severity": "high",
+            "description": "Possível vulnerabilidade de SQL Injection detectada com payload: ' UNION SELECT * FROM users --",
+            "recommendation": "Implementar prepared statements e validação de entrada"
+          }
+        ],
+        "timestamp": "2025-09-01T00:52:23.668Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:23.668Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:23.668Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:23.668Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: X-XSS-Protection",
+            "recommendation": "Configurar header X-XSS-Protection no servidor web"
+          }
+        ],
+        "timestamp": "2025-09-01T00:52:23.668Z"
+      }
+    ],
+    "vulnerabilitiesFound": 2,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:52:23.669Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:23.669Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "configuration_issue",
+            "severity": "high",
+            "description": "Problema de configuração detectado: weak_encryption",
+            "recommendation": "Revisar e corrigir configurações de segurança"
+          }
+        ],
+        "timestamp": "2025-09-01T00:52:23.669Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:23.669Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "configuration_issue",
+        "severity": "high",
+        "description": "Problema de configuração detectado: weak_encryption",
+        "recommendation": "Revisar e corrigir configurações de segurança"
+      }
+    ],
+    "riskScore": 7,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:52:23.670Z",
+    "events": [
+      {
+        "id": "event_1756687943670_a6a177e8",
+        "type": "login_attempt",
+        "severity": "low",
+        "timestamp": "2025-08-31T13:37:44.145Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687943670_1485ee6c",
+        "type": "suspicious_activity",
+        "severity": "medium",
+        "timestamp": "2025-08-31T03:09:05.282Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687943670_e7d9f7e2",
+        "type": "suspicious_activity",
+        "severity": "high",
+        "timestamp": "2025-08-31T03:26:48.678Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687943670_c5a46f2f",
+        "type": "login_attempt",
+        "severity": "medium",
+        "timestamp": "2025-08-31T23:50:08.475Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 87,
+      "failedLoginAttempts": 16,
+      "blockedRequests": 20,
+      "activeThreats": 4,
+      "securityScore": 16,
+      "lastSecurityUpdate": "2025-09-01T00:52:23.670Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "low",
+  "recommendations": []
+}

@@ -375,8 +375,8 @@ router.delete('/files/:id',
   requireRole(['admin']),
   [
     param('id')
-      .isMongoId()
-      .withMessage('ID inválido')
+      .notEmpty()
+      .withMessage('ID é obrigatório')
   ],
   validateRequest,
   async (req, res) => {
@@ -418,8 +418,8 @@ router.post('/reprocess/:id',
   requireRole(['admin', 'operator']),
   [
     param('id')
-      .isMongoId()
-      .withMessage('ID inválido')
+      .notEmpty()
+      .withMessage('ID é obrigatório')
   ],
   validateRequest,
   async (req, res) => {

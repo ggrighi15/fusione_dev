@@ -22,6 +22,7 @@ const Settings = React.lazy(() => import('./pages/Settings'));
 // Módulos principais
 const Analytics = React.lazy(() => import('./pages/Analytics'));
 const Reports = React.lazy(() => import('./pages/Reports'));
+const BusinessIntelligence = React.lazy(() => import('./pages/BusinessIntelligence'));
 const Notifications = React.lazy(() => import('./pages/Notifications'));
 const DataManagement = React.lazy(() => import('./pages/DataManagement'));
 const DataAnalysis = React.lazy(() => import('./pages/DataAnalysis'));
@@ -181,6 +182,18 @@ function App() {
               <MainLayout>
                 <Suspense fallback={<SuspenseFallback message="Carregando relatórios..." />}>
                   <Reports />
+                </Suspense>
+              </MainLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/business-intelligence"
+          element={
+            <ProtectedRoute>
+              <MainLayout>
+                <Suspense fallback={<SuspenseFallback message="Carregando Business Intelligence..." />}>
+                  <BusinessIntelligence />
                 </Suspense>
               </MainLayout>
             </ProtectedRoute>

@@ -1,0 +1,66 @@
+FROM node:18-alpine
+
+# Install system dependencies for report generation
+RUN apk add --no-cache \
+    curl \
+    libreoffice \
+    poppler-utils \
+    imagemagick \
+    ghostscript \
+    python3 \
+    py3-pip \
+    wkhtmltopdf \
+    xvfb \
+    ttf-dejavu \
+    fontconfig
+
+# Install Python libraries for report generation
+RUN pip3 install --no-cache-dir \
+    reportlab \
+    matplotlib \
+    seaborn \
+    plotly \
+    weasyprint
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install Node.js dependencies with report-specific packages
+RUN npm install && \
+    npm install --save-dev \
+    puppeteer \
+    jspdf \
+    html-pdf \
+    xlsx \
+    csv-writer \
+    handlebars \
+    mustache \
+    chart.js \
+    canvas
+
+# Copy application code
+COPY . .
+
+# Create directories for reports
+RUN mkdir -p /app/data/reports/generated \
+             /app/data/reports/templates \
+             /app/data/reports/cache \
+             /app/templates \
+             /app/logs
+
+# Set permissions
+RUN chown -R node:node /app
+USER node
+
+# Expose port
+EXPOSE 3000 9229
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
+
+# Start command
+CMD ["npm", "run", "dev:reports"]

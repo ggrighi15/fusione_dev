@@ -9,12 +9,12 @@
  * @version 1.0.0
  */
 
-const fs = require('fs-extra');
-const path = require('path');
-const moment = require('moment');
-const cron = require('node-cron');
-const { v4: uuidv4 } = require('uuid');
-const EventEmitter = require('events');
+import fs from 'fs-extra';
+import path from 'path';
+import moment from 'moment';
+import cron from 'node-cron';
+import { v4 as uuidv4 } from 'uuid';
+import { EventEmitter } from 'events';
 
 class SocietarioModule extends EventEmitter {
     constructor() {
@@ -947,4 +947,4 @@ class SocietarioModule extends EventEmitter {
     }
 }
 
-module.exports = SocietarioModule;
+export default SocietarioModule;

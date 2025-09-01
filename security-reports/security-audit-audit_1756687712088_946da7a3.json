@@ -1,0 +1,146 @@
+{
+  "auditId": "audit_1756687712088_946da7a3",
+  "timestamp": "2025-09-01T00:48:32.088Z",
+  "startTime": 1756687712088,
+  "endTime": 1756687712092,
+  "duration": 4,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:48:32.089Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:32.089Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "xss",
+            "severity": "medium",
+            "description": "Possível vulnerabilidade XSS detectada com payload: javascript:alert(\"XSS\")",
+            "recommendation": "Implementar sanitização de entrada e Content Security Policy"
+          }
+        ],
+        "timestamp": "2025-09-01T00:48:32.089Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:32.089Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:32.089Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:32.089Z"
+      }
+    ],
+    "vulnerabilitiesFound": 1,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:48:32.090Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:32.090Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:32.090Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "hardcoded_secrets",
+            "severity": "critical",
+            "description": "Problema de código detectado: hardcoded_secrets",
+            "recommendation": "Revisar e corrigir código fonte"
+          }
+        ],
+        "timestamp": "2025-09-01T00:48:32.090Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "hardcoded_secrets",
+        "severity": "critical",
+        "description": "Problema de código detectado: hardcoded_secrets",
+        "recommendation": "Revisar e corrigir código fonte"
+      }
+    ],
+    "riskScore": 10,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:48:32.091Z",
+    "events": [
+      {
+        "id": "event_1756687712091_69a394d1",
+        "type": "login_attempt",
+        "severity": "low",
+        "timestamp": "2025-08-31T11:35:30.505Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687712091_6dea2941",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-08-31T19:11:07.918Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [
+      {
+        "id": "alert_1756687712091_bbc35e3c",
+        "type": "unusual_access_pattern",
+        "severity": "medium",
+        "timestamp": "2025-09-01T00:48:32.091Z",
+        "description": "Padrão de acesso incomum detectado",
+        "recommendation": "Verificar legitimidade do acesso"
+      }
+    ],
+    "metrics": {
+      "totalSecurityEvents": 25,
+      "failedLoginAttempts": 18,
+      "blockedRequests": 18,
+      "activeThreats": 3,
+      "securityScore": 74,
+      "lastSecurityUpdate": "2025-09-01T00:48:32.091Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "medium",
+  "recommendations": [
+    {
+      "priority": "medium",
+      "category": "security_improvement",
+      "message": "Melhorias de segurança recomendadas"
+    }
+  ]
+}

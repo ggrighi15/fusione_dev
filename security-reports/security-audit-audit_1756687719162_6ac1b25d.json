@@ -1,0 +1,145 @@
+{
+  "auditId": "audit_1756687719162_6ac1b25d",
+  "timestamp": "2025-09-01T00:48:39.162Z",
+  "startTime": 1756687719162,
+  "endTime": 1756687719165,
+  "duration": 3,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:48:39.163Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:39.163Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:39.163Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:39.163Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:39.163Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:39.163Z"
+      }
+    ],
+    "vulnerabilitiesFound": 0,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:48:39.164Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "dependency_vulnerability",
+            "severity": "high",
+            "description": "Vulnerabilidade encontrada em lodash@4.17.20: CVE-2021-23337",
+            "recommendation": "Atualizar lodash para versão mais recente"
+          }
+        ],
+        "timestamp": "2025-09-01T00:48:39.164Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:39.164Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:48:39.164Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "dependency_vulnerability",
+        "severity": "high",
+        "description": "Vulnerabilidade encontrada em lodash@4.17.20: CVE-2021-23337",
+        "recommendation": "Atualizar lodash para versão mais recente"
+      }
+    ],
+    "riskScore": 7,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:48:39.165Z",
+    "events": [
+      {
+        "id": "event_1756687719165_f9665f94",
+        "type": "login_attempt",
+        "severity": "medium",
+        "timestamp": "2025-08-31T05:09:56.809Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687719165_4abc024b",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-31T11:53:30.316Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687719165_406e3792",
+        "type": "access_denied",
+        "severity": "low",
+        "timestamp": "2025-08-31T02:18:28.055Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687719165_8da36493",
+        "type": "login_attempt",
+        "severity": "medium",
+        "timestamp": "2025-08-31T11:04:52.266Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687719165_24d2c885",
+        "type": "suspicious_activity",
+        "severity": "medium",
+        "timestamp": "2025-08-31T14:42:13.209Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 58,
+      "failedLoginAttempts": 9,
+      "blockedRequests": 26,
+      "activeThreats": 3,
+      "securityScore": 87,
+      "lastSecurityUpdate": "2025-09-01T00:48:39.165Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "low",
+  "recommendations": []
+}

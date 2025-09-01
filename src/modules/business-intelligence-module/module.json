@@ -1,0 +1,422 @@
+{
+  "name": "business-intelligence-module",
+  "version": "1.0.0",
+  "description": "Sistema avançado de Business Intelligence com dashboards interativos e análise de dados em tempo real",
+  "author": "Fusione Core System",
+  "type": "core",
+  "category": "analytics",
+  "enabled": true,
+  "autoload": true,
+  "priority": 8,
+  "dependencies": [
+    "reports-module",
+    "data-integration-module",
+    "analytics-module"
+  ],
+  "optionalDependencies": [
+    "ai-module",
+    "notification-module"
+  ],
+  "permissions": [
+    "read:data",
+    "write:dashboards",
+    "read:reports",
+    "write:kpis",
+    "read:analytics",
+    "write:alerts",
+    "read:config",
+    "write:config"
+  ],
+  "config": {
+    "dataRefreshInterval": {
+      "type": "number",
+      "default": 300000,
+      "description": "Intervalo de atualização de dados em milissegundos (5 minutos)"
+    },
+    "maxDashboards": {
+      "type": "number",
+      "default": 50,
+      "description": "Número máximo de dashboards permitidos"
+    },
+    "maxWidgets": {
+      "type": "number",
+      "default": 100,
+      "description": "Número máximo de widgets por dashboard"
+    },
+    "cacheEnabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Habilitar cache de dados para melhor performance"
+    },
+    "cacheDuration": {
+      "type": "number",
+      "default": 600000,
+      "description": "Duração do cache em milissegundos (10 minutos)"
+    },
+    "realTimeEnabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Habilitar atualizações em tempo real"
+    },
+    "exportFormats": {
+      "type": "array",
+      "default": ["pdf", "excel", "png", "svg"],
+      "description": "Formatos de exportação suportados"
+    },
+    "alertThresholds": {
+      "type": "object",
+      "default": {
+        "critical": 90,
+        "warning": 75,
+        "info": 50
+      },
+      "description": "Limites para alertas automáticos"
+    }
+  },
+  "dashboardTypes": {
+    "executive": {
+      "name": "Dashboard Executivo",
+      "description": "Visão geral dos principais indicadores de negócio",
+      "defaultWidgets": ["kpi_overview", "revenue_chart", "process_status"],
+      "refreshInterval": 300000
+    },
+    "legal": {
+      "name": "Dashboard Jurídico",
+      "description": "Análise detalhada de processos e prazos jurídicos",
+      "defaultWidgets": ["legal_kpis", "process_trend", "deadlines_alert"],
+      "refreshInterval": 180000
+    },
+    "financial": {
+      "name": "Dashboard Financeiro",
+      "description": "Análise financeira e de rentabilidade",
+      "defaultWidgets": ["financial_kpis", "revenue_vs_expenses", "top_clients"],
+      "refreshInterval": 600000
+    },
+    "operational": {
+      "name": "Dashboard Operacional",
+      "description": "Métricas operacionais e de performance",
+      "defaultWidgets": ["system_performance", "user_activity", "error_rates"],
+      "refreshInterval": 120000
+    },
+    "custom": {
+      "name": "Dashboard Personalizado",
+      "description": "Dashboard configurável pelo usuário",
+      "defaultWidgets": [],
+      "refreshInterval": 300000
+    }
+  },
+  "widgetTypes": {
+    "kpi_grid": {
+      "name": "Grade de KPIs",
+      "description": "Exibe múltiplos indicadores em formato de grade",
+      "configurable": true,
+      "realTime": true
+    },
+    "line_chart": {
+      "name": "Gráfico de Linha",
+      "description": "Gráfico de linha para tendências temporais",
+      "configurable": true,
+      "realTime": true
+    },
+    "column_chart": {
+      "name": "Gráfico de Colunas",
+      "description": "Gráfico de colunas para comparações",
+      "configurable": true,
+      "realTime": true
+    },
+    "donut_chart": {
+      "name": "Gráfico de Rosca",
+      "description": "Gráfico circular para distribuições",
+      "configurable": true,
+      "realTime": true
+    },
+    "area_chart": {
+      "name": "Gráfico de Área",
+      "description": "Gráfico de área para volumes acumulados",
+      "configurable": true,
+      "realTime": true
+    },
+    "table": {
+      "name": "Tabela de Dados",
+      "description": "Tabela configurável para exibição de dados",
+      "configurable": true,
+      "realTime": true
+    },
+    "alert_widget": {
+      "name": "Widget de Alertas",
+      "description": "Exibe alertas e notificações importantes",
+      "configurable": true,
+      "realTime": true
+    },
+    "metric_card": {
+      "name": "Cartão de Métrica",
+      "description": "Exibe uma métrica individual com destaque",
+      "configurable": true,
+      "realTime": true
+    }
+  },
+  "kpiCategories": {
+    "legal": {
+      "name": "Jurídico",
+      "description": "Indicadores relacionados a processos jurídicos",
+      "color": "#1976d2"
+    },
+    "financial": {
+      "name": "Financeiro",
+      "description": "Indicadores financeiros e de rentabilidade",
+      "color": "#388e3c"
+    },
+    "operational": {
+      "name": "Operacional",
+      "description": "Indicadores operacionais e de eficiência",
+      "color": "#f57c00"
+    },
+    "system": {
+      "name": "Sistema",
+      "description": "Indicadores de performance do sistema",
+      "color": "#7b1fa2"
+    },
+    "customer": {
+      "name": "Cliente",
+      "description": "Indicadores de satisfação e relacionamento",
+      "color": "#c2185b"
+    }
+  },
+  "dataConnectors": {
+    "legal_processes": {
+      "name": "Processos Jurídicos",
+      "description": "Dados de processos, prazos e movimentações",
+      "tables": ["processos", "processo_prazos", "processo_movimentacoes"],
+      "refreshInterval": 180000
+    },
+    "financial": {
+      "name": "Dados Financeiros",
+      "description": "Receitas, despesas e análises financeiras",
+      "tables": ["transacoes", "contas", "categorias"],
+      "refreshInterval": 600000
+    },
+    "system_performance": {
+      "name": "Performance do Sistema",
+      "description": "Métricas de performance e uso do sistema",
+      "tables": ["system_metrics", "user_sessions", "error_logs"],
+      "refreshInterval": 120000
+    },
+    "user_activity": {
+      "name": "Atividade de Usuários",
+      "description": "Dados de uso e atividade dos usuários",
+      "tables": ["users", "user_sessions", "user_actions"],
+      "refreshInterval": 300000
+    }
+  },
+  "events": {
+    "emits": [
+      "dashboard:created",
+      "dashboard:updated",
+      "dashboard:deleted",
+      "widget:added",
+      "widget:updated",
+      "widget:removed",
+      "kpi:calculated",
+      "alert:triggered",
+      "alert:critical",
+      "data:refreshed",
+      "connector:initialized",
+      "connector:error",
+      "export:completed",
+      "export:failed"
+    ],
+    "listens": [
+      "data:updated",
+      "system:performance",
+      "user:activity",
+      "process:updated",
+      "financial:transaction",
+      "config:changed",
+      "system:shutdown"
+    ]
+  },
+  "api": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/bi/dashboards",
+        "description": "Listar todos os dashboards disponíveis"
+      },
+      {
+        "method": "POST",
+        "path": "/bi/dashboards",
+        "description": "Criar novo dashboard",
+        "parameters": {
+          "name": "string (required)",
+          "description": "string (optional)",
+          "category": "string (optional)",
+          "widgets": "array (optional)"
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/bi/dashboards/:id",
+        "description": "Obter dashboard específico com dados"
+      },
+      {
+        "method": "PUT",
+        "path": "/bi/dashboards/:id",
+        "description": "Atualizar dashboard existente"
+      },
+      {
+        "method": "DELETE",
+        "path": "/bi/dashboards/:id",
+        "description": "Excluir dashboard"
+      },
+      {
+        "method": "GET",
+        "path": "/bi/dashboards/:id/data",
+        "description": "Obter dados atualizados do dashboard",
+        "parameters": {
+          "filters": "object (optional)",
+          "refresh": "boolean (optional)"
+        }
+      },
+      {
+        "method": "POST",
+        "path": "/bi/dashboards/:id/export",
+        "description": "Exportar dashboard em formato específico",
+        "parameters": {
+          "format": "string (required)",
+          "options": "object (optional)"
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/bi/kpis",
+        "description": "Listar definições de KPIs disponíveis"
+      },
+      {
+        "method": "POST",
+        "path": "/bi/kpis/calculate",
+        "description": "Calcular KPIs específicos",
+        "parameters": {
+          "kpis": "array (required)",
+          "filters": "object (optional)"
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/bi/widgets/types",
+        "description": "Listar tipos de widgets disponíveis"
+      },
+      {
+        "method": "GET",
+        "path": "/bi/connectors",
+        "description": "Listar conectores de dados disponíveis"
+      },
+      {
+        "method": "GET",
+        "path": "/bi/stats",
+        "description": "Obter estatísticas do módulo de BI"
+      },
+      {
+        "method": "POST",
+        "path": "/bi/alerts/configure",
+        "description": "Configurar regras de alertas",
+        "parameters": {
+          "kpi": "string (required)",
+          "threshold": "number (required)",
+          "condition": "string (required)"
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/bi/alerts",
+        "description": "Listar alertas ativos"
+      },
+      {
+        "method": "POST",
+        "path": "/bi/data/refresh",
+        "description": "Forçar atualização de dados"
+      }
+    ]
+  },
+  "features": [
+    "Dashboards interativos e personalizáveis",
+    "KPIs em tempo real com alertas automáticos",
+    "Múltiplos tipos de gráficos e visualizações",
+    "Sistema de cache inteligente para performance",
+    "Conectores de dados flexíveis",
+    "Exportação em múltiplos formatos",
+    "Sistema de alertas baseado em thresholds",
+    "Interface drag-and-drop para criação de dashboards",
+    "Filtros dinâmicos e drill-down",
+    "Atualizações em tempo real via WebSocket",
+    "Análise preditiva integrada com IA",
+    "Relatórios executivos automatizados",
+    "Monitoramento de performance do sistema",
+    "Análise de tendências e forecasting",
+    "Integração com módulos existentes"
+  ],
+  "security": {
+    "dataAccess": {
+      "encryption": true,
+      "anonymization": false,
+      "auditLog": true,
+      "roleBasedAccess": true
+    },
+    "dashboardAccess": {
+      "userPermissions": true,
+      "shareControls": true,
+      "exportRestrictions": true
+    }
+  },
+  "performance": {
+    "caching": {
+      "enabled": true,
+      "strategy": "lru",
+      "maxSize": 200,
+      "ttl": 600
+    },
+    "optimization": {
+      "lazyLoading": true,
+      "dataCompression": true,
+      "queryOptimization": true,
+      "realTimeThrottling": true
+    }
+  },
+  "monitoring": {
+    "metrics": [
+      "dashboards_created_total",
+      "dashboards_viewed_total",
+      "widgets_rendered_total",
+      "kpis_calculated_total",
+      "data_queries_executed",
+      "cache_hit_rate",
+      "average_query_time",
+      "alerts_triggered_total",
+      "exports_completed_total",
+      "real_time_connections"
+    ],
+    "healthChecks": [
+      "data_connectors_status",
+      "cache_performance",
+      "query_response_time",
+      "alert_system_status"
+    ]
+  },
+  "requirements": {
+    "node_version": ">=16.0.0",
+    "dependencies": {
+      "express": "^4.18.0",
+      "socket.io": "^4.7.0",
+      "chart.js": "^4.3.0",
+      "d3": "^7.8.0",
+      "lodash": "^4.17.21",
+      "moment": "^2.29.4",
+      "uuid": "^9.0.0",
+      "canvas": "^2.11.0",
+      "puppeteer": "^20.0.0"
+    },
+    "optional_dependencies": {
+      
+      "elasticsearch": "^16.7.3"
+    }
+  }
+}

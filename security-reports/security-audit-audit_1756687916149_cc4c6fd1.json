@@ -1,0 +1,145 @@
+{
+  "auditId": "audit_1756687916149_cc4c6fd1",
+  "timestamp": "2025-09-01T00:51:56.150Z",
+  "startTime": 1756687916149,
+  "endTime": 1756687916153,
+  "duration": 4,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:51:56.150Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:56.150Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:56.150Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:56.150Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:56.150Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: X-Content-Type-Options",
+            "recommendation": "Configurar header X-Content-Type-Options no servidor web"
+          }
+        ],
+        "timestamp": "2025-09-01T00:51:56.151Z"
+      }
+    ],
+    "vulnerabilitiesFound": 1,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:51:56.151Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:56.151Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "configuration_issue",
+            "severity": "high",
+            "description": "Problema de configuração detectado: insecure_protocols",
+            "recommendation": "Revisar e corrigir configurações de segurança"
+          }
+        ],
+        "timestamp": "2025-09-01T00:51:56.151Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:56.151Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "configuration_issue",
+        "severity": "high",
+        "description": "Problema de configuração detectado: insecure_protocols",
+        "recommendation": "Revisar e corrigir configurações de segurança"
+      }
+    ],
+    "riskScore": 7,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:51:56.152Z",
+    "events": [
+      {
+        "id": "event_1756687916152_f25005ab",
+        "type": "access_denied",
+        "severity": "low",
+        "timestamp": "2025-08-31T14:50:38.961Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687916152_33f7fa32",
+        "type": "suspicious_activity",
+        "severity": "medium",
+        "timestamp": "2025-08-31T05:28:38.520Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687916152_589a95f6",
+        "type": "access_denied",
+        "severity": "low",
+        "timestamp": "2025-09-01T00:09:52.035Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687916152_4cf0371c",
+        "type": "suspicious_activity",
+        "severity": "low",
+        "timestamp": "2025-08-31T09:43:09.155Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 56,
+      "failedLoginAttempts": 1,
+      "blockedRequests": 38,
+      "activeThreats": 4,
+      "securityScore": 55,
+      "lastSecurityUpdate": "2025-09-01T00:51:56.152Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "low",
+  "recommendations": []
+}

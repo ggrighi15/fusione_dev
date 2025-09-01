@@ -1,0 +1,48 @@
+FROM node:18-alpine
+
+# Install system dependencies
+RUN apk add --no-cache \
+    curl \
+    ca-certificates
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install Node.js dependencies with dashboard-specific packages
+RUN npm install && \
+    npm install --save-dev \
+    express \
+    socket.io \
+    cors \
+    helmet \
+    compression \
+    morgan \
+    winston \
+    axios \
+    lodash \
+    moment
+
+# Copy application code
+COPY . .
+
+# Create directories for dashboard
+RUN mkdir -p /app/src/dashboard \
+             /app/data/dashboard \
+             /app/logs
+
+# Set permissions
+RUN chown -R node:node /app
+USER node
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
+
+# Start command
+CMD ["npm", "run", "dev:dashboard"]

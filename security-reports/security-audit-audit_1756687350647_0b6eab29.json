@@ -1,0 +1,192 @@
+{
+  "auditId": "audit_1756687350647_0b6eab29",
+  "timestamp": "2025-09-01T00:42:30.647Z",
+  "startTime": 1756687350647,
+  "endTime": 1756687350650,
+  "duration": 3,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:42:30.648Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:42:30.648Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:42:30.648Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:42:30.648Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:42:30.648Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: X-Frame-Options",
+            "recommendation": "Configurar header X-Frame-Options no servidor web"
+          },
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: Strict-Transport-Security",
+            "recommendation": "Configurar header Strict-Transport-Security no servidor web"
+          }
+        ],
+        "timestamp": "2025-09-01T00:42:30.648Z"
+      }
+    ],
+    "vulnerabilitiesFound": 2,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:42:30.648Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "dependency_vulnerability",
+            "severity": "high",
+            "description": "Vulnerabilidade encontrada em lodash@4.17.20: CVE-2021-23337",
+            "recommendation": "Atualizar lodash para versão mais recente"
+          }
+        ],
+        "timestamp": "2025-09-01T00:42:30.649Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "configuration_issue",
+            "severity": "high",
+            "description": "Problema de configuração detectado: insecure_protocols",
+            "recommendation": "Revisar e corrigir configurações de segurança"
+          }
+        ],
+        "timestamp": "2025-09-01T00:42:30.649Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "command_injection",
+            "severity": "critical",
+            "description": "Problema de código detectado: command_injection",
+            "recommendation": "Revisar e corrigir código fonte"
+          }
+        ],
+        "timestamp": "2025-09-01T00:42:30.649Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "dependency_vulnerability",
+        "severity": "high",
+        "description": "Vulnerabilidade encontrada em lodash@4.17.20: CVE-2021-23337",
+        "recommendation": "Atualizar lodash para versão mais recente"
+      },
+      {
+        "type": "configuration_issue",
+        "severity": "high",
+        "description": "Problema de configuração detectado: insecure_protocols",
+        "recommendation": "Revisar e corrigir configurações de segurança"
+      },
+      {
+        "type": "command_injection",
+        "severity": "critical",
+        "description": "Problema de código detectado: command_injection",
+        "recommendation": "Revisar e corrigir código fonte"
+      }
+    ],
+    "riskScore": 24,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:42:30.649Z",
+    "events": [
+      {
+        "id": "event_1756687350649_2f94e859",
+        "type": "login_attempt",
+        "severity": "low",
+        "timestamp": "2025-08-31T01:39:35.985Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687350649_271c6358",
+        "type": "login_attempt",
+        "severity": "medium",
+        "timestamp": "2025-08-31T13:26:18.899Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687350649_5838727b",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-08-31T21:57:26.916Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687350649_b90dfce2",
+        "type": "suspicious_activity",
+        "severity": "high",
+        "timestamp": "2025-08-31T15:32:10.057Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [
+      {
+        "id": "alert_1756687350650_de702750",
+        "type": "multiple_failed_logins",
+        "severity": "high",
+        "timestamp": "2025-09-01T00:42:30.650Z",
+        "description": "Múltiplas tentativas de login falharam para o mesmo usuário",
+        "recommendation": "Investigar possível ataque de força bruta"
+      }
+    ],
+    "metrics": {
+      "totalSecurityEvents": 72,
+      "failedLoginAttempts": 18,
+      "blockedRequests": 46,
+      "activeThreats": 4,
+      "securityScore": 95,
+      "lastSecurityUpdate": "2025-09-01T00:42:30.650Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "high",
+  "recommendations": [
+    {
+      "priority": "high",
+      "category": "security_review",
+      "message": "Revisão de segurança urgente recomendada"
+    }
+  ]
+}

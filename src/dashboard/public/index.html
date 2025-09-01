@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fusione Core System - Dashboard de Módulos</title>
+    <link rel="icon" type="image/svg+xml" href="/logo-fusione.svg">
+    
+    <!-- CSS Libraries -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="components/real-time-table.css">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --info-color: #06b6d4;
+            --dark-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --border-color: #334155;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --gradient-error: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: var(--gradient-primary);
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .system-status {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .status-item {
+            text-align: center;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-value {
+            font-size: 24px;
+            font-weight: 700;
+            display: block;
+        }
+
+        .status-label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .metric-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            background: var(--gradient-primary);
+        }
+
+        .metric-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .modules-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .module-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .module-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .module-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .module-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-online {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .status-offline {
+            background: var(--gradient-error);
+            color: white;
+        }
+
+        .status-unknown {
+            background: var(--gradient-warning);
+            color: white;
+        }
+
+        .module-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .module-metric {
+            text-align: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .module-metric-value {
+            font-size: 18px;
+            font-weight: 600;
+            display: block;
+        }
+
+        .module-metric-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-success);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .module-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .real-time-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--gradient-success);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .system-status {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .module-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="real-time-indicator">
+        <i class="fas fa-circle" style="color: #10b981;"></i>
+        <span>Tempo Real</span>
+    </div>
+
+    <div class="container">
+        <header class="header animate__animated animate__fadeInDown">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <i class="fas fa-cube"></i>
+                    </div>
+                    <div>
+                        <h1 class="title">Fusione Core System</h1>
+                        <p class="subtitle">Dashboard de Módulos de Desenvolvimento</p>
+                    </div>
+                </div>
+                <div class="system-status">
+                    <div class="status-item">
+                        <span class="status-value" id="totalModules">-</span>
+                        <span class="status-label">Módulos</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-value" id="activeModules">-</span>
+                        <span class="status-label">Ativos</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-value" id="systemUptime">-</span>
+                        <span class="status-label">Uptime</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="metrics-grid animate__animated animate__fadeInUp">
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                </div>
+                <div class="metric-value" id="totalRequests">0</div>
+                <div class="metric-label">Total de Requisições</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon" style="background: var(--gradient-success);">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+                <div class="metric-value" id="avgResponseTime">0ms</div>
+                <div class="metric-label">Tempo Médio de Resposta</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon" style="background: var(--gradient-warning);">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="metric-value" id="systemLoad">0%</div>
+                <div class="metric-label">Carga do Sistema</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon" style="background: var(--gradient-error);">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                </div>
+                <div class="metric-value" id="healthScore">100%</div>
+                <div class="metric-label">Score de Saúde</div>
+            </div>
+        </section>
+
+        <section class="modules-section">
+            <h2 class="section-title">
+                <i class="fas fa-cubes"></i>
+                Módulos de Desenvolvimento
+            </h2>
+            
+            <!-- Real-Time Monitoring Table -->
+            <div class="real-time-table-container" id="realTimeTable">
+                <!-- Real-time table will be loaded here -->
+            </div>
+            
+            <div id="modulesContainer" class="modules-grid">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Carregando módulos...
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="components/real-time-table.js"></script>
+    
+    <script>
+        // Initialize Socket.IO connection
+        const socket = io();
+        
+        // Global state
+        let moduleData = {};
+        let systemMetrics = {};
+        
+        // Utility functions
+        function formatUptime(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            return `${hours}h ${minutes}m`;
+        }
+        
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        function getStatusClass(status) {
+            switch (status) {
+                case 'online': return 'status-online';
+                case 'offline': return 'status-offline';
+                default: return 'status-unknown';
+            }
+        }
+        
+        function getStatusIcon(status) {
+            switch (status) {
+                case 'online': return 'fas fa-check-circle';
+                case 'offline': return 'fas fa-times-circle';
+                default: return 'fas fa-question-circle';
+            }
+        }
+        
+        // Update system metrics
+        function updateSystemMetrics(metrics) {
+            systemMetrics = metrics;
+            
+            document.getElementById('totalModules').textContent = metrics.totalModules || 0;
+            document.getElementById('activeModules').textContent = metrics.activeModules || 0;
+            document.getElementById('systemUptime').textContent = formatUptime(metrics.uptime || 0);
+            document.getElementById('totalRequests').textContent = (metrics.totalRequests || 0).toLocaleString();
+            document.getElementById('avgResponseTime').textContent = Math.round(metrics.averageResponseTime || 0) + 'ms';
+            
+            // Use dynamic system load and health score from backend
+            document.getElementById('systemLoad').textContent = Math.round(metrics.systemLoad || 0) + '%';
+            document.getElementById('healthScore').textContent = Math.round(metrics.healthScore || 0) + '%';
+            
+            // Add visual feedback for metrics changes
+            animateMetricUpdate('totalRequests');
+            animateMetricUpdate('systemLoad');
+            animateMetricUpdate('healthScore');
+        }
+        
+        // Animate metric updates
+        function animateMetricUpdate(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.style.transform = 'scale(1.1)';
+                element.style.transition = 'transform 0.3s ease';
+                setTimeout(() => {
+                    element.style.transform = 'scale(1)';
+                }, 300);
+            }
+        }
+        
+        // Create module card HTML
+        function createModuleCard(moduleName, moduleStatus) {
+            const progress = moduleStatus.progress || 0;
+            const responseTime = moduleStatus.responseTime ? `${moduleStatus.responseTime}ms` : 'N/A';
+            const lastCheck = moduleStatus.lastCheck ? 
+                new Date(moduleStatus.lastCheck).toLocaleTimeString() : 'Nunca';
+            
+            return `
+                <div class="module-card fade-in" data-module="${moduleName}">
+                    <div class="module-header">
+                        <div class="module-info">
+                            <h3>${moduleStatus.name}</h3>
+                            <p class="module-description">Porta: ${moduleStatus.port}</p>
+                        </div>
+                        <div class="module-status ${getStatusClass(moduleStatus.status)}">
+                            <i class="${getStatusIcon(moduleStatus.status)}"></i>
+                            ${moduleStatus.status.toUpperCase()}
+                        </div>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${progress}%"></div>
+                    </div>
+                    <div style="text-align: center; margin-bottom: 15px; font-size: 14px; font-weight: 600;">
+                        Progresso: ${progress}%
+                    </div>
+                    
+                    <div class="module-metrics">
+                        <div class="module-metric">
+                            <span class="module-metric-value">${responseTime}</span>
+                            <span class="module-metric-label">Resposta</span>
+                        </div>
+                        <div class="module-metric">
+                            <span class="module-metric-value">${moduleStatus.requests || 0}</span>
+                            <span class="module-metric-label">Requisições</span>
+                        </div>
+                        <div class="module-metric">
+                            <span class="module-metric-value">${formatUptime(moduleStatus.uptime || 0)}</span>
+                            <span class="module-metric-label">Uptime</span>
+                        </div>
+                        <div class="module-metric">
+                            <span class="module-metric-value">${lastCheck}</span>
+                            <span class="module-metric-label">Última Verificação</span>
+                        </div>
+                    </div>
+                    
+                    <div class="module-actions">
+                        <button class="btn btn-primary" onclick="openModule('${moduleName}', ${moduleStatus.port})">
+                            <i class="fas fa-external-link-alt"></i>
+                            Abrir
+                        </button>
+                        <button class="btn btn-secondary" onclick="restartModule('${moduleName}')">
+                            <i class="fas fa-redo"></i>
+                            Reiniciar
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Update modules display
+        function updateModules(modules) {
+            moduleData = modules;
+            const container = document.getElementById('modulesContainer');
+            
+            if (Object.keys(modules).length === 0) {
+                container.innerHTML = '<div class="loading">Nenhum módulo encontrado</div>';
+                return;
+            }
+            
+            const modulesHTML = Object.entries(modules)
+                .map(([name, status]) => createModuleCard(name, status))
+                .join('');
+            
+            container.innerHTML = modulesHTML;
+        }
+        
+        // Module actions
+        function openModule(moduleName, port) {
+            const url = `http://localhost:${port}`;
+            window.open(url, '_blank');
+        }
+        
+        function restartModule(moduleName) {
+            if (confirm(`Tem certeza que deseja reiniciar o módulo ${moduleName}?`)) {
+                fetch(`/api/module/${moduleName}/restart`, {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message || 'Módulo reiniciado com sucesso!');
+                })
+                .catch(error => {
+                    console.error('Erro ao reiniciar módulo:', error);
+                    alert('Erro ao reiniciar módulo');
+                });
+            }
+        }
+        
+        // Socket.IO event handlers
+        socket.on('connect', () => {
+            console.log('Conectado ao dashboard');
+        });
+        
+        socket.on('moduleStatus', (modules) => {
+            updateModules(modules);
+        });
+        
+        socket.on('systemMetrics', (metrics) => {
+            updateSystemMetrics(metrics);
+        });
+        
+        socket.on('metrics:update', (metrics) => {
+            updateSystemMetrics(metrics);
+        });
+        
+        socket.on('systemUpdate', (data) => {
+            updateSystemMetrics(data);
+        });
+        
+        socket.on('disconnect', () => {
+            console.log('Desconectado do dashboard');
+        });
+        
+        // Initial data load
+        fetch('/api/modules')
+            .then(response => response.json())
+            .then(data => {
+                updateModules(data.modules);
+            })
+            .catch(error => {
+                console.error('Erro ao carregar módulos:', error);
+                document.getElementById('modulesContainer').innerHTML = 
+                    '<div class="loading">Erro ao carregar módulos</div>';
+            });
+        
+        fetch('/api/metrics')
+            .then(response => response.json())
+            .then(data => {
+                updateSystemMetrics(data);
+            })
+            .catch(error => {
+                console.error('Erro ao carregar métricas:', error);
+            });
+        
+        // Auto-refresh every 30 seconds as fallback
+        setInterval(() => {
+            fetch('/api/modules')
+                .then(response => response.json())
+                .then(data => updateModules(data.modules))
+                .catch(error => console.error('Erro no auto-refresh:', error));
+        }, 30000);
+    </script>
+</body>
+</html>

@@ -2,8 +2,7 @@ import express from 'express';
 import { authenticateToken } from '../middleware/auth.js';
 import { validateRequest } from '../middleware/validation.js';
 import { query, param } from 'express-validator';
-import ContratoClassificacao from '../models/ContratoClassificacao.js';
-import ContratoMacro from '../models/ContratoMacro.js';
+
 import { createLogger } from '../core/logger.js';
 
 const router = express.Router();
@@ -119,8 +118,8 @@ router.get('/classificacoes/:id',
   authenticateToken,
   [
     param('id')
-      .isMongoId()
-      .withMessage('ID inválido')
+      .notEmpty()
+      .withMessage('ID é obrigatório')
   ],
   validateRequest,
   async (req, res) => {
@@ -313,8 +312,8 @@ router.get('/macros/:id',
   authenticateToken,
   [
     param('id')
-      .isMongoId()
-      .withMessage('ID inválido')
+      .notEmpty()
+      .withMessage('ID é obrigatório')
   ],
   validateRequest,
   async (req, res) => {

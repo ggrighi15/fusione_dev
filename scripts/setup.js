@@ -106,15 +106,7 @@ JWT_EXPIRES_IN=24h
 BCRYPT_ROUNDS=12
 
 # Banco de Dados
-MONGODB_URI=mongodb://localhost:27017/fusione
-MONGO_ROOT_USERNAME=admin
-MONGO_ROOT_PASSWORD=fusione123
-
-# Cache
-REDIS_HOST=localhost
-REDIS_PORT=6379
-REDIS_PASSWORD=fusione123
-REDIS_TTL=3600
+# Database configuration removed - MongoDB and Redis no longer used
 
 # Email (opcional)
 SMTP_HOST=
@@ -173,23 +165,9 @@ METRICS_ENABLED=true
     this.logger.info('🗄️ Configurando banco de dados...');
     
     try {
-      // Verificar se MongoDB está rodando
-      try {
-        execSync('mongosh --eval "db.adminCommand(\'ping\')"', { stdio: 'pipe' });
-        this.logger.success('MongoDB está rodando');
-      } catch (error) {
-        this.logger.warning('MongoDB não está rodando. Inicie o MongoDB antes de continuar.');
-        this.logger.info('Para iniciar com Docker: docker run -d -p 27017:27017 --name fusione-mongo mongo:6');
-      }
-      
-      // Verificar se Redis está rodando
-      try {
-        execSync('redis-cli ping', { stdio: 'pipe' });
-        this.logger.success('Redis está rodando');
-      } catch (error) {
-        this.logger.warning('Redis não está rodando. Inicie o Redis antes de continuar.');
-        this.logger.info('Para iniciar com Docker: docker run -d -p 6379:6379 --name fusione-redis redis:7-alpine');
-      }
+      // Database services no longer required
+    this.logger.info('MongoDB and Redis dependencies have been removed');
+    this.logger.success('System now operates without external database dependencies');
     } catch (error) {
       this.logger.warning(`Aviso na configuração do banco: ${error.message}`);
     }
@@ -243,8 +221,8 @@ METRICS_ENABLED=true
     console.log('\n1. Configure as variáveis de ambiente:');
     console.log('   📝 Edite o arquivo .env com suas configurações');
     console.log('\n2. Inicie os serviços de banco de dados:');
-    console.log('   🐳 Docker: docker-compose up -d mongo redis');
-    console.log('   🔧 Local: inicie MongoDB e Redis manualmente');
+    console.log('   🐳 Docker: docker-compose up -d');
+    console.log('   🔧 Local: sistema não requer bancos externos');
     console.log('\n3. Inicie a aplicação:');
     console.log('   🚀 Desenvolvimento: npm run dev');
     console.log('   🏭 Produção: npm start');

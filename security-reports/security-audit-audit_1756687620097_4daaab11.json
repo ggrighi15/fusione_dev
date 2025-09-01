@@ -1,0 +1,147 @@
+{
+  "auditId": "audit_1756687620097_4daaab11",
+  "timestamp": "2025-09-01T00:47:00.097Z",
+  "startTime": 1756687620097,
+  "endTime": 1756687620100,
+  "duration": 3,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:47:00.097Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:47:00.097Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:47:00.097Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:47:00.097Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:47:00.098Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:47:00.098Z"
+      }
+    ],
+    "vulnerabilitiesFound": 0,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:47:00.098Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:47:00.098Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "configuration_issue",
+            "severity": "critical",
+            "description": "Problema de configuração detectado: default_credentials",
+            "recommendation": "Revisar e corrigir configurações de segurança"
+          }
+        ],
+        "timestamp": "2025-09-01T00:47:00.098Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:47:00.098Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "configuration_issue",
+        "severity": "critical",
+        "description": "Problema de configuração detectado: default_credentials",
+        "recommendation": "Revisar e corrigir configurações de segurança"
+      }
+    ],
+    "riskScore": 10,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:47:00.099Z",
+    "events": [
+      {
+        "id": "event_1756687620099_dd309661",
+        "type": "suspicious_activity",
+        "severity": "high",
+        "timestamp": "2025-08-31T17:23:00.090Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687620099_617fefa0",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-31T20:34:52.385Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687620099_2fcb205e",
+        "type": "login_attempt",
+        "severity": "low",
+        "timestamp": "2025-08-31T13:09:41.231Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687620099_2bfa5b7f",
+        "type": "login_attempt",
+        "severity": "low",
+        "timestamp": "2025-08-31T19:53:01.374Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [
+      {
+        "id": "alert_1756687620099_e079906d",
+        "type": "multiple_failed_logins",
+        "severity": "high",
+        "timestamp": "2025-09-01T00:47:00.099Z",
+        "description": "Múltiplas tentativas de login falharam para o mesmo usuário",
+        "recommendation": "Investigar possível ataque de força bruta"
+      }
+    ],
+    "metrics": {
+      "totalSecurityEvents": 96,
+      "failedLoginAttempts": 2,
+      "blockedRequests": 15,
+      "activeThreats": 4,
+      "securityScore": 56,
+      "lastSecurityUpdate": "2025-09-01T00:47:00.099Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "low",
+  "recommendations": []
+}

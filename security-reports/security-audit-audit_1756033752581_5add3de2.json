@@ -1,0 +1,183 @@
+{
+  "auditId": "audit_1756033752581_5add3de2",
+  "timestamp": "2025-08-24T11:09:12.581Z",
+  "startTime": 1756033752581,
+  "endTime": 1756033752585,
+  "duration": 4,
+  "penetrationTesting": {
+    "timestamp": "2025-08-24T11:09:12.582Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-24T11:09:12.582Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-24T11:09:12.582Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-24T11:09:12.582Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "privilege_escalation",
+            "severity": "high",
+            "description": "Possível vulnerabilidade de escalação de privilégios detectada",
+            "recommendation": "Revisar controles de acesso e implementar princípio do menor privilégio"
+          }
+        ],
+        "timestamp": "2025-08-24T11:09:12.582Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: Strict-Transport-Security",
+            "recommendation": "Configurar header Strict-Transport-Security no servidor web"
+          }
+        ],
+        "timestamp": "2025-08-24T11:09:12.582Z"
+      }
+    ],
+    "vulnerabilitiesFound": 2,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-08-24T11:09:12.583Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "dependency_vulnerability",
+            "severity": "medium",
+            "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+            "recommendation": "Atualizar express para versão mais recente"
+          },
+          {
+            "type": "dependency_vulnerability",
+            "severity": "low",
+            "description": "Vulnerabilidade encontrada em mongoose@5.13.0: CVE-2022-24304",
+            "recommendation": "Atualizar mongoose para versão mais recente"
+          }
+        ],
+        "timestamp": "2025-08-24T11:09:12.583Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "configuration_issue",
+            "severity": "critical",
+            "description": "Problema de configuração detectado: default_credentials",
+            "recommendation": "Revisar e corrigir configurações de segurança"
+          }
+        ],
+        "timestamp": "2025-08-24T11:09:12.583Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-24T11:09:12.583Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "dependency_vulnerability",
+        "severity": "medium",
+        "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+        "recommendation": "Atualizar express para versão mais recente"
+      },
+      {
+        "type": "dependency_vulnerability",
+        "severity": "low",
+        "description": "Vulnerabilidade encontrada em mongoose@5.13.0: CVE-2022-24304",
+        "recommendation": "Atualizar mongoose para versão mais recente"
+      },
+      {
+        "type": "configuration_issue",
+        "severity": "critical",
+        "description": "Problema de configuração detectado: default_credentials",
+        "recommendation": "Revisar e corrigir configurações de segurança"
+      }
+    ],
+    "riskScore": 15,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-08-24T11:09:12.584Z",
+    "events": [
+      {
+        "id": "event_1756033752584_d1781bca",
+        "type": "suspicious_activity",
+        "severity": "medium",
+        "timestamp": "2025-08-23T16:10:04.459Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756033752584_1fe4238c",
+        "type": "access_denied",
+        "severity": "low",
+        "timestamp": "2025-08-24T04:37:31.443Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756033752584_3e16b3ad",
+        "type": "login_attempt",
+        "severity": "medium",
+        "timestamp": "2025-08-24T07:05:41.060Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756033752584_aed4718c",
+        "type": "login_attempt",
+        "severity": "medium",
+        "timestamp": "2025-08-23T15:00:09.454Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 19,
+      "failedLoginAttempts": 10,
+      "blockedRequests": 10,
+      "activeThreats": 0,
+      "securityScore": 19,
+      "lastSecurityUpdate": "2025-08-24T11:09:12.584Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "medium",
+  "recommendations": [
+    {
+      "priority": "medium",
+      "category": "security_improvement",
+      "message": "Melhorias de segurança recomendadas"
+    }
+  ]
+}

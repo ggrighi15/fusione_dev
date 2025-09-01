@@ -93,7 +93,7 @@ const AuthLayout = ({ children, title, subtitle }) => {
             }}
           >
             <img 
-              src="/fusione-logo-transparente.png" 
+              src="/fusione-logo.png" 
               alt="Fusione Logo" 
               style={{ width: '100%', height: '100%', objectFit: 'contain' }}
             />

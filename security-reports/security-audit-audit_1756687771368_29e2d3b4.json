@@ -1,0 +1,131 @@
+{
+  "auditId": "audit_1756687771368_29e2d3b4",
+  "timestamp": "2025-09-01T00:49:31.369Z",
+  "startTime": 1756687771368,
+  "endTime": 1756687771372,
+  "duration": 4,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:49:31.369Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:31.370Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:31.370Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:31.370Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:31.370Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:31.370Z"
+      }
+    ],
+    "vulnerabilitiesFound": 0,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:49:31.370Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "dependency_vulnerability",
+            "severity": "high",
+            "description": "Vulnerabilidade encontrada em lodash@4.17.20: CVE-2021-23337",
+            "recommendation": "Atualizar lodash para versão mais recente"
+          }
+        ],
+        "timestamp": "2025-09-01T00:49:31.370Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:31.370Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:49:31.371Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "dependency_vulnerability",
+        "severity": "high",
+        "description": "Vulnerabilidade encontrada em lodash@4.17.20: CVE-2021-23337",
+        "recommendation": "Atualizar lodash para versão mais recente"
+      }
+    ],
+    "riskScore": 7,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:49:31.371Z",
+    "events": [
+      {
+        "id": "event_1756687771371_a3dbdad5",
+        "type": "login_attempt",
+        "severity": "low",
+        "timestamp": "2025-09-01T00:47:03.085Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687771371_56eff84e",
+        "type": "suspicious_activity",
+        "severity": "medium",
+        "timestamp": "2025-08-31T18:28:38.281Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687771371_34825f24",
+        "type": "access_denied",
+        "severity": "low",
+        "timestamp": "2025-08-31T14:52:34.451Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 64,
+      "failedLoginAttempts": 3,
+      "blockedRequests": 37,
+      "activeThreats": 4,
+      "securityScore": 1,
+      "lastSecurityUpdate": "2025-09-01T00:49:31.372Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "low",
+  "recommendations": []
+}

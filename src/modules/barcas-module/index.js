@@ -13,11 +13,11 @@
  * @version 1.0.0
  */
 
-const moment = require('moment');
-const cron = require('node-cron');
-const { v4: uuidv4 } = require('uuid');
-const fs = require('fs-extra');
-const path = require('path');
+import moment from 'moment';
+import cron from 'node-cron';
+import { v4 as uuidv4 } from 'uuid';
+import fs from 'fs-extra';
+import path from 'path';
 
 class BarcasModule {
   constructor(coreSystem) {
@@ -1083,4 +1083,4 @@ class BarcasModule {
   }
 }
 
-module.exports = BarcasModule;
+export default BarcasModule;

@@ -17,10 +17,12 @@ import { EventBus } from './core/event-bus.js';
 import { HealthCheck } from './core/health-check.js';
 import { DatabaseManager } from './core/database-manager.js';
 import AuthManager from './core/auth-manager.js';
-import CacheManager from './core/cache-manager.js';
+
 import WebSocketManager from './core/websocket-manager.js';
 import { apiRoutes } from './routes/api.js';
 import { setupAuthRoutes } from './routes/auth.js';
+import PerformanceMiddleware from './middleware/performance.js';
+import SecurityMiddleware from './middleware/security.js';
 
 // Configuração do ambiente
 dotenv.config();
@@ -32,9 +34,11 @@ class FusioneCoreSystem {
     this.configManager = new ConfigManager();
     this.eventBus = new EventBus();
     this.databaseManager = null; // Será inicializado se habilitado
-    this.cacheManager = null; // Será inicializado se habilitado
+
     this.websocketManager = null; // Será inicializado se habilitado
     this.authManager = null; // Será inicializado após o configManager e databaseManager
+    this.performanceMiddleware = null; // Será inicializado após cache e database
+    this.securityMiddleware = null; // Será inicializado após configuração
     this.moduleManager = new ModuleManager(this.eventBus, this.logger, this.configManager, this);
     this.healthCheck = new HealthCheck();
     
@@ -65,6 +69,8 @@ class FusioneCoreSystem {
       });
       next();
     });
+    
+    // Performance middleware será adicionado após inicialização
   }
 
   setupRoutes() {
@@ -72,6 +78,54 @@ class FusioneCoreSystem {
     this.app.get('/health', (req, res) => {
       const health = this.healthCheck.getStatus();
       res.status(health.status === 'healthy' ? 200 : 503).json(health);
+    });
+    
+    // Performance routes
+    this.app.get('/api/performance/report', (req, res) => {
+      if (!this.performanceMiddleware) {
+        return res.status(503).json({ error: 'Performance monitoring não disponível' });
+      }
+      
+      const timeRange = parseInt(req.query.timeRange) || 3600000; // 1 hora padrão
+      const report = this.performanceMiddleware.getFullReport(timeRange);
+      res.json(report);
+    });
+    
+    this.app.get('/api/performance/requests', (req, res) => {
+      if (!this.performanceMiddleware) {
+        return res.status(503).json({ error: 'Performance monitoring não disponível' });
+      }
+      
+      const report = this.performanceMiddleware.getRequestReport();
+      res.json(report);
+    });
+    
+    // Rotas de segurança
+    this.app.get('/api/security/report', (req, res) => {
+      if (!this.securityMiddleware) {
+        return res.status(503).json({ error: 'Security monitoring não disponível' });
+      }
+      
+      const report = this.securityMiddleware.getSecurityReport();
+      res.json(report);
+    });
+    
+    this.app.get('/api/security/audit', (req, res) => {
+      if (!this.securityMiddleware) {
+        return res.status(503).json({ error: 'Security auditing não disponível' });
+      }
+      
+      const auditReport = this.securityMiddleware.getAuditReport();
+      res.json(auditReport);
+    });
+    
+    this.app.get('/api/security/threats', (req, res) => {
+      if (!this.securityMiddleware) {
+        return res.status(503).json({ error: 'Threat detection não disponível' });
+      }
+      
+      const threats = this.securityMiddleware.getThreatReport();
+      res.json(threats);
     });
     
     // API routes
@@ -90,10 +144,7 @@ class FusioneCoreSystem {
             enabled: this.configManager.get('database.enabled'),
             connected: this.databaseManager ? this.databaseManager.isHealthy() : false
           },
-          cache: {
-            enabled: this.configManager.get('redis.enabled'),
-            connected: this.cacheManager ? this.cacheManager.isConnected : false
-          },
+
           websocket: {
             enabled: this.configManager.get('websocket.enabled'),
             initialized: this.websocketManager ? this.websocketManager.isInitialized : false
@@ -101,6 +152,15 @@ class FusioneCoreSystem {
           authentication: {
             enabled: this.configManager.get('api.authentication.enabled'),
             available: this.authManager !== null
+          },
+          performance: {
+            enabled: this.configManager.get('performance.enabled', true),
+            monitoring: this.performanceMiddleware !== null
+          },
+          security: {
+            enabled: this.configManager.get('security.enabled', true),
+            monitoring: this.securityMiddleware !== null,
+            auditing: this.securityMiddleware ? this.securityMiddleware.isAuditorRunning() : false
           }
         }
       });
@@ -159,32 +219,70 @@ class FusioneCoreSystem {
         this.logger.info('Database desabilitado na configuração');
       }
       
-      // Inicializar CacheManager se habilitado
-      const cacheEnabled = this.configManager.get('redis.enabled');
-      this.logger.info(`Cache configuração: enabled=${cacheEnabled}`);
+
       
-      if (cacheEnabled) {
+      // Inicializar PerformanceMiddleware
+      if (this.configManager.get('performance.enabled', true)) {
         try {
-          const redisConfig = this.configManager.get('redis');
-          this.cacheManager = new CacheManager(redisConfig, this.logger);
-          const cacheConnected = await this.cacheManager.connect();
-          if (cacheConnected) {
-            this.logger.info('🔄 CacheManager inicializado e conectado');
-            
-            // Registrar health check do cache
-            this.healthCheck.register('cache', async () => {
-              return await this.cacheManager.healthCheck();
-            }, { critical: false, timeout: 5000 });
-          } else {
-            this.logger.warn('⚠️ CacheManager inicializado mas não conectado (modo fallback)');
-            this.cacheManager = null;
-          }
+          const performanceConfig = {
+            monitor: this.configManager.get('performance.monitor', {}),
+            optimizer: this.configManager.get('performance.optimizer', {}),
+            enableRequestTracking: this.configManager.get('performance.enableRequestTracking', true),
+            enableResponseTimeTracking: this.configManager.get('performance.enableResponseTimeTracking', true),
+            enableErrorTracking: this.configManager.get('performance.enableErrorTracking', true),
+            slowRequestThreshold: this.configManager.get('performance.slowRequestThreshold', 1000)
+          };
+          
+          this.performanceMiddleware = new PerformanceMiddleware(
+            this.databaseManager,
+            performanceConfig
+          );
+          
+          await this.performanceMiddleware.initialize();
+          
+          // Adicionar middleware de performance ao Express
+          this.app.use(this.performanceMiddleware.middleware());
+          
+          this.logger.info('⚡ Performance Middleware inicializado');
         } catch (error) {
-          this.logger.error('❌ Falha ao inicializar cache. Sistema continuará sem cache:', error.message);
-          this.cacheManager = null;
+          this.logger.error('❌ Falha ao inicializar Performance Middleware:', error.message);
+          this.performanceMiddleware = null;
         }
-      } else {
-        this.logger.info('Cache desabilitado na configuração');
+      }
+      
+      // Inicializar SecurityMiddleware
+      if (this.configManager.get('security.enabled', true)) {
+        try {
+          const securityConfig = {
+            enableRealTimeMonitoring: this.configManager.get('security.enableRealTimeMonitoring', true),
+            enableRequestAnalysis: this.configManager.get('security.enableRequestAnalysis', true),
+            enableThreatDetection: this.configManager.get('security.enableThreatDetection', true),
+            enableSecurityHeaders: this.configManager.get('security.enableSecurityHeaders', true),
+            rateLimiting: this.configManager.get('security.rateLimiting', {}),
+            securityHeaders: this.configManager.get('security.securityHeaders', {}),
+            threatDetection: this.configManager.get('security.threatDetection', {})
+          };
+          
+          const auditorConfig = {
+            enablePenetrationTesting: this.configManager.get('security.auditor.enablePenetrationTesting', true),
+            enableVulnerabilityScanning: this.configManager.get('security.auditor.enableVulnerabilityScanning', true),
+            enableSecurityMonitoring: this.configManager.get('security.auditor.enableSecurityMonitoring', true),
+            auditInterval: this.configManager.get('security.auditor.auditInterval', 3600000),
+            reportPath: this.configManager.get('security.auditor.reportPath', './security-reports'),
+            alertThresholds: this.configManager.get('security.auditor.alertThresholds', {})
+          };
+          
+          this.securityMiddleware = new SecurityMiddleware(securityConfig);
+          await this.securityMiddleware.initialize(auditorConfig);
+          
+          // Adicionar middleware de segurança ao Express (antes de outras rotas)
+          this.app.use(this.securityMiddleware.middleware());
+          
+          this.logger.info('🔒 Security Middleware inicializado');
+        } catch (error) {
+          this.logger.error('❌ Falha ao inicializar Security Middleware:', error.message);
+          this.securityMiddleware = null;
+        }
       }
       
       // Inicializar AuthManager se autenticação estiver habilitada
@@ -264,6 +362,18 @@ class FusioneCoreSystem {
     
     // Parar módulos
     await this.moduleManager.unloadModules();
+    
+    // Parar Performance Middleware
+    if (this.performanceMiddleware) {
+      await this.performanceMiddleware.stop();
+      this.logger.info('⚡ Performance Middleware parado');
+    }
+    
+    // Parar Security Middleware
+    if (this.securityMiddleware) {
+      await this.securityMiddleware.stop();
+      this.logger.info('🔒 Security Middleware parado');
+    }
     
     // Desconectar WebSocket
     if (this.websocketManager) {

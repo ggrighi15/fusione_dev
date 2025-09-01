@@ -1,0 +1,140 @@
+{
+  "auditId": "audit_1756633801466_974beefe",
+  "timestamp": "2025-08-31T09:50:01.467Z",
+  "startTime": 1756633801467,
+  "endTime": 1756633801469,
+  "duration": 2,
+  "penetrationTesting": {
+    "timestamp": "2025-08-31T09:50:01.467Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "sql_injection",
+            "severity": "high",
+            "description": "Possível vulnerabilidade de SQL Injection detectada com payload: '; DROP TABLE users; --",
+            "recommendation": "Implementar prepared statements e validação de entrada"
+          }
+        ],
+        "timestamp": "2025-08-31T09:50:01.467Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T09:50:01.467Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T09:50:01.467Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "privilege_escalation",
+            "severity": "high",
+            "description": "Possível vulnerabilidade de escalação de privilégios detectada",
+            "recommendation": "Revisar controles de acesso e implementar princípio do menor privilégio"
+          }
+        ],
+        "timestamp": "2025-08-31T09:50:01.467Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T09:50:01.467Z"
+      }
+    ],
+    "vulnerabilitiesFound": 2,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-08-31T09:50:01.468Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T09:50:01.468Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T09:50:01.468Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T09:50:01.468Z"
+      }
+    ],
+    "vulnerabilities": [],
+    "riskScore": 0,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-08-31T09:50:01.468Z",
+    "events": [
+      {
+        "id": "event_1756633801468_ac06a0c5",
+        "type": "login_attempt",
+        "severity": "high",
+        "timestamp": "2025-08-31T07:22:09.888Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756633801468_560a4262",
+        "type": "suspicious_activity",
+        "severity": "high",
+        "timestamp": "2025-08-30T16:09:42.811Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756633801468_42d17658",
+        "type": "suspicious_activity",
+        "severity": "high",
+        "timestamp": "2025-08-30T18:58:48.372Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [
+      {
+        "id": "alert_1756633801468_d4dcf552",
+        "type": "multiple_failed_logins",
+        "severity": "high",
+        "timestamp": "2025-08-31T09:50:01.468Z",
+        "description": "Múltiplas tentativas de login falharam para o mesmo usuário",
+        "recommendation": "Investigar possível ataque de força bruta"
+      }
+    ],
+    "metrics": {
+      "totalSecurityEvents": 91,
+      "failedLoginAttempts": 6,
+      "blockedRequests": 20,
+      "activeThreats": 0,
+      "securityScore": 8,
+      "lastSecurityUpdate": "2025-08-31T09:50:01.468Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "low",
+  "recommendations": []
+}

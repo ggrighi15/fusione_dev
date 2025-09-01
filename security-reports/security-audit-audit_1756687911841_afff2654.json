@@ -1,0 +1,198 @@
+{
+  "auditId": "audit_1756687911841_afff2654",
+  "timestamp": "2025-09-01T00:51:51.842Z",
+  "startTime": 1756687911841,
+  "endTime": 1756687911845,
+  "duration": 4,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:51:51.842Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "sql_injection",
+            "severity": "high",
+            "description": "Possível vulnerabilidade de SQL Injection detectada com payload: '; DROP TABLE users; --",
+            "recommendation": "Implementar prepared statements e validação de entrada"
+          }
+        ],
+        "timestamp": "2025-09-01T00:51:51.842Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:51.842Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:51.842Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:51:51.842Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: X-XSS-Protection",
+            "recommendation": "Configurar header X-XSS-Protection no servidor web"
+          }
+        ],
+        "timestamp": "2025-09-01T00:51:51.842Z"
+      }
+    ],
+    "vulnerabilitiesFound": 2,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:51:51.843Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "dependency_vulnerability",
+            "severity": "high",
+            "description": "Vulnerabilidade encontrada em lodash@4.17.20: CVE-2021-23337",
+            "recommendation": "Atualizar lodash para versão mais recente"
+          }
+        ],
+        "timestamp": "2025-09-01T00:51:51.843Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "configuration_issue",
+            "severity": "high",
+            "description": "Problema de configuração detectado: insecure_protocols",
+            "recommendation": "Revisar e corrigir configurações de segurança"
+          }
+        ],
+        "timestamp": "2025-09-01T00:51:51.843Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "path_traversal",
+            "severity": "high",
+            "description": "Problema de código detectado: path_traversal",
+            "recommendation": "Revisar e corrigir código fonte"
+          }
+        ],
+        "timestamp": "2025-09-01T00:51:51.843Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "dependency_vulnerability",
+        "severity": "high",
+        "description": "Vulnerabilidade encontrada em lodash@4.17.20: CVE-2021-23337",
+        "recommendation": "Atualizar lodash para versão mais recente"
+      },
+      {
+        "type": "configuration_issue",
+        "severity": "high",
+        "description": "Problema de configuração detectado: insecure_protocols",
+        "recommendation": "Revisar e corrigir configurações de segurança"
+      },
+      {
+        "type": "path_traversal",
+        "severity": "high",
+        "description": "Problema de código detectado: path_traversal",
+        "recommendation": "Revisar e corrigir código fonte"
+      }
+    ],
+    "riskScore": 21,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:51:51.844Z",
+    "events": [
+      {
+        "id": "event_1756687911844_bc4eae73",
+        "type": "login_attempt",
+        "severity": "high",
+        "timestamp": "2025-08-31T12:36:42.275Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687911844_4c02bc86",
+        "type": "access_denied",
+        "severity": "low",
+        "timestamp": "2025-08-31T07:29:44.148Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687911844_2ef3f4dc",
+        "type": "suspicious_activity",
+        "severity": "high",
+        "timestamp": "2025-08-31T04:43:01.388Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687911844_81d36a30",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-08-31T09:48:49.480Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687911844_4c6fc1b7",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-31T11:41:51.887Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687911844_6c032f7c",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-31T01:24:52.693Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 44,
+      "failedLoginAttempts": 6,
+      "blockedRequests": 19,
+      "activeThreats": 0,
+      "securityScore": 68,
+      "lastSecurityUpdate": "2025-09-01T00:51:51.844Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "medium",
+  "recommendations": [
+    {
+      "priority": "medium",
+      "category": "security_improvement",
+      "message": "Melhorias de segurança recomendadas"
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "auditId": "audit_1756659001473_80e54c57",
+  "timestamp": "2025-08-31T16:50:01.474Z",
+  "startTime": 1756659001473,
+  "endTime": 1756659001475,
+  "duration": 2,
+  "penetrationTesting": {
+    "timestamp": "2025-08-31T16:50:01.474Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T16:50:01.474Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T16:50:01.474Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T16:50:01.474Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T16:50:01.474Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T16:50:01.474Z"
+      }
+    ],
+    "vulnerabilitiesFound": 0,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-08-31T16:50:01.474Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "dependency_vulnerability",
+            "severity": "high",
+            "description": "Vulnerabilidade encontrada em lodash@4.17.20: CVE-2021-23337",
+            "recommendation": "Atualizar lodash para versão mais recente"
+          }
+        ],
+        "timestamp": "2025-08-31T16:50:01.474Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T16:50:01.474Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-31T16:50:01.474Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "dependency_vulnerability",
+        "severity": "high",
+        "description": "Vulnerabilidade encontrada em lodash@4.17.20: CVE-2021-23337",
+        "recommendation": "Atualizar lodash para versão mais recente"
+      }
+    ],
+    "riskScore": 7,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-08-31T16:50:01.474Z",
+    "events": [
+      {
+        "id": "event_1756659001474_a95e7aad",
+        "type": "suspicious_activity",
+        "severity": "low",
+        "timestamp": "2025-08-30T23:37:15.387Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756659001474_dd084150",
+        "type": "login_attempt",
+        "severity": "high",
+        "timestamp": "2025-08-31T11:58:23.469Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756659001474_dd15a2f2",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-31T06:23:51.931Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756659001474_816e6991",
+        "type": "suspicious_activity",
+        "severity": "low",
+        "timestamp": "2025-08-30T21:54:30.448Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 94,
+      "failedLoginAttempts": 14,
+      "blockedRequests": 22,
+      "activeThreats": 1,
+      "securityScore": 83,
+      "lastSecurityUpdate": "2025-08-31T16:50:01.474Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "low",
+  "recommendations": []
+}

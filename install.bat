@@ -17,21 +17,9 @@ REM Verificar versão do Node.js
 for /f "tokens=1" %%i in ('node --version') do set NODE_VERSION=%%i
 echo [INFO] Node.js detectado: %NODE_VERSION%
 
-REM Verificar se MongoDB está rodando
-echo [INFO] Verificando MongoDB...
-netstat -an | find ":27017" >nul
-if %errorlevel% neq 0 (
-    echo [AVISO] MongoDB não detectado na porta 27017
-    echo Certifique-se de que o MongoDB está instalado e rodando
-)
-
-REM Verificar se Redis está rodando
-echo [INFO] Verificando Redis...
-netstat -an | find ":6379" >nul
-if %errorlevel% neq 0 (
-    echo [AVISO] Redis não detectado na porta 6379
-    echo Certifique-se de que o Redis está instalado e rodando
-)
+REM Database services no longer required
+echo [INFO] MongoDB and Redis dependencies removed
+echo System now operates without external database dependencies
 
 echo.
 echo [INFO] Iniciando instalação do Fusione Core System...

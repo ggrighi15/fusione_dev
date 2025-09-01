@@ -1,0 +1,203 @@
+# Docker Compose configuration for Fusione Core System with Oracle JDK 24
+version: '3.8'
+
+services:
+  # Main Fusione Core System with Oracle JDK 24
+  fusione-core:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - JAVA_VERSION=24.0.2
+        - JDK_VENDOR=Oracle Corporation
+    image: fusione-core:java24
+    container_name: fusione-core-java24
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+      - "8080:8080"
+      - "9090:9090"
+    environment:
+      - NODE_ENV=production
+      - JAVA_HOME=/opt/java/openjdk
+      - JAVA_VERSION=24.0.2
+      - JDK_VENDOR=Oracle Corporation
+      - PATH=/opt/java/openjdk/bin:$PATH
+      - JAVA_OPTS=-Xmx2g -Xms512m -XX:+UseG1GC -XX:+UseStringDeduplication
+      - LOG_LEVEL=info
+      - LOG_DIR=/app/logs
+      - DATA_DIR=/app/data
+    volumes:
+      - fusione-logs:/app/logs
+      - fusione-data:/app/data
+      - fusione-temp:/app/temp
+    networks:
+      - fusione-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # AI Module with Java Support
+  ai-module:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.ai-module
+    image: fusione-ai:java24
+    container_name: fusione-ai-java24
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - JAVA_HOME=/opt/java/openjdk
+      - JAVA_VERSION=24.0.2
+      - MODULE_NAME=ai-module
+      - JAVA_OPTS=-Xmx1g -Xms256m -XX:+UseG1GC
+    volumes:
+      - fusione-ai-data:/app/data
+    networks:
+      - fusione-network
+    depends_on:
+      - fusione-core
+
+  # Data Analysis Module with Java Support
+  data-analysis-module:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.data-analysis-module
+    image: fusione-data-analysis:java24
+    container_name: fusione-data-analysis-java24
+    restart: unless-stopped
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=production
+      - JAVA_HOME=/opt/java/openjdk
+      - JAVA_VERSION=24.0.2
+      - MODULE_NAME=data-analysis-module
+      - JAVA_OPTS=-Xmx2g -Xms512m -XX:+UseG1GC
+    volumes:
+      - fusione-analysis-data:/app/data
+    networks:
+      - fusione-network
+    depends_on:
+      - fusione-core
+
+  # Reports Module with Java Support
+  reports-module:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.reports-module
+    image: fusione-reports:java24
+    container_name: fusione-reports-java24
+    restart: unless-stopped
+    ports:
+      - "3003:3003"
+    environment:
+      - NODE_ENV=production
+      - JAVA_HOME=/opt/java/openjdk
+      - JAVA_VERSION=24.0.2
+      - MODULE_NAME=reports-module
+      - JAVA_OPTS=-Xmx1g -Xms256m -XX:+UseG1GC
+    volumes:
+      - fusione-reports-data:/app/data
+    networks:
+      - fusione-network
+    depends_on:
+      - fusione-core
+
+  # Auth Module
+  auth-module:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.auth-module
+    image: fusione-auth:java24
+    container_name: fusione-auth-java24
+    restart: unless-stopped
+    ports:
+      - "3004:3004"
+    environment:
+      - NODE_ENV=production
+      - JAVA_HOME=/opt/java/openjdk
+      - JAVA_VERSION=24.0.2
+      - MODULE_NAME=auth-module
+    volumes:
+      - fusione-auth-data:/app/data
+    networks:
+      - fusione-network
+    depends_on:
+      - fusione-core
+
+  # Notification Module
+  notification-module:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.notification-module
+    image: fusione-notification:java24
+    container_name: fusione-notification-java24
+    restart: unless-stopped
+    ports:
+      - "3005:3005"
+    environment:
+      - NODE_ENV=production
+      - JAVA_HOME=/opt/java/openjdk
+      - JAVA_VERSION=24.0.2
+      - MODULE_NAME=notification-module
+    volumes:
+      - fusione-notification-data:/app/data
+    networks:
+      - fusione-network
+    depends_on:
+      - fusione-core
+
+  # Dashboard Module
+  dashboard:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.module-dashboard
+    image: fusione-dashboard:java24
+    container_name: fusione-dashboard-java24
+    restart: unless-stopped
+    ports:
+      - "3006:3006"
+    environment:
+      - NODE_ENV=production
+      - JAVA_HOME=/opt/java/openjdk
+      - JAVA_VERSION=24.0.2
+      - MODULE_NAME=dashboard
+    volumes:
+      - fusione-dashboard-data:/app/data
+    networks:
+      - fusione-network
+    depends_on:
+      - fusione-core
+
+volumes:
+  fusione-logs:
+    driver: local
+  fusione-data:
+    driver: local
+  fusione-temp:
+    driver: local
+  fusione-ai-data:
+    driver: local
+  fusione-analysis-data:
+    driver: local
+  fusione-reports-data:
+    driver: local
+  fusione-auth-data:
+    driver: local
+  fusione-notification-data:
+    driver: local
+  fusione-dashboard-data:
+    driver: local
+
+networks:
+  fusione-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

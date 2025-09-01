@@ -1,0 +1,147 @@
+{
+  "auditId": "audit_1756687546394_94d4182c",
+  "timestamp": "2025-09-01T00:45:46.395Z",
+  "startTime": 1756687546394,
+  "endTime": 1756687546397,
+  "duration": 3,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:45:46.395Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "sql_injection",
+            "severity": "high",
+            "description": "Possível vulnerabilidade de SQL Injection detectada com payload: ' UNION SELECT * FROM users --",
+            "recommendation": "Implementar prepared statements e validação de entrada"
+          }
+        ],
+        "timestamp": "2025-09-01T00:45:46.395Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:45:46.395Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:45:46.395Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:45:46.395Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: Strict-Transport-Security",
+            "recommendation": "Configurar header Strict-Transport-Security no servidor web"
+          }
+        ],
+        "timestamp": "2025-09-01T00:45:46.395Z"
+      }
+    ],
+    "vulnerabilitiesFound": 2,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:45:46.395Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:45:46.396Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:45:46.396Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:45:46.396Z"
+      }
+    ],
+    "vulnerabilities": [],
+    "riskScore": 0,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:45:46.396Z",
+    "events": [
+      {
+        "id": "event_1756687546396_75fefd13",
+        "type": "login_attempt",
+        "severity": "high",
+        "timestamp": "2025-08-31T07:29:59.016Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687546396_c41f2fe7",
+        "type": "login_attempt",
+        "severity": "low",
+        "timestamp": "2025-08-31T11:01:35.250Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687546396_bd7ebce1",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-08-31T19:39:27.015Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687546396_5272bcd8",
+        "type": "suspicious_activity",
+        "severity": "low",
+        "timestamp": "2025-08-31T11:09:35.798Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [
+      {
+        "id": "alert_1756687546396_d06e0a44",
+        "type": "multiple_failed_logins",
+        "severity": "high",
+        "timestamp": "2025-09-01T00:45:46.396Z",
+        "description": "Múltiplas tentativas de login falharam para o mesmo usuário",
+        "recommendation": "Investigar possível ataque de força bruta"
+      }
+    ],
+    "metrics": {
+      "totalSecurityEvents": 35,
+      "failedLoginAttempts": 2,
+      "blockedRequests": 0,
+      "activeThreats": 0,
+      "securityScore": 98,
+      "lastSecurityUpdate": "2025-09-01T00:45:46.397Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "low",
+  "recommendations": []
+}

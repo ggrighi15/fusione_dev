@@ -13,6 +13,8 @@ import reportsRoutes from './reports.js';
 import notificationsRoutes from './notifications.js';
 import xmlLoaderRoutes from './xml-loader.js';
 import contratosRoutes from './contratos.js';
+import aiRoutes from './ai.js';
+import biRoutes from './bi.js';
 
 const router = express.Router();
 const logger = createLogger('API');
@@ -307,6 +309,8 @@ router.use('/reports', reportsRoutes);
 router.use('/notifications', notificationsRoutes);
 router.use('/xml-loader', xmlLoaderRoutes);
 router.use('/contratos', contratosRoutes);
+router.use('/ai', aiRoutes);
+router.use('/bi', biRoutes);
 
 // Middleware de tratamento de erros para rotas da API
 router.use((error, req, res, next) => {

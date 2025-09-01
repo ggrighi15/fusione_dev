@@ -1,0 +1,67 @@
+FROM node:18-alpine
+
+# Install system dependencies for AI/ML libraries
+RUN apk add --no-cache \
+    python3 \
+    py3-pip \
+    build-base \
+    cairo-dev \
+    jpeg-dev \
+    pango-dev \
+    musl-dev \
+    giflib-dev \
+    pixman-dev \
+    pangomm-dev \
+    libjpeg-turbo-dev \
+    freetype-dev
+
+# Install Python ML libraries
+RUN pip3 install --no-cache-dir \
+    numpy \
+    pandas \
+    scikit-learn \
+    tensorflow-cpu \
+    nltk \
+    spacy
+
+# Download NLTK data
+RUN python3 -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('vader_lexicon')"
+
+# Download spaCy model
+RUN python3 -m spacy download pt_core_news_sm
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install Node.js dependencies with AI-specific packages
+RUN npm install && \
+    npm install --save-dev \
+    @tensorflow/tfjs-node \
+    natural \
+    compromise \
+    ml-matrix \
+    brain.js \
+    synaptic
+
+# Copy application code
+COPY . .
+
+# Create directories for AI models and data
+RUN mkdir -p /app/data/ai-models /app/data/training /app/logs
+
+# Set permissions
+RUN chown -R node:node /app
+USER node
+
+# Expose port
+EXPOSE 3000 9229
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
+
+# Start command
+CMD ["npm", "run", "dev:ai"]

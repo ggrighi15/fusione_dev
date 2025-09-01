@@ -1,0 +1,138 @@
+{
+  "auditId": "audit_1756688008717_51635f0f",
+  "timestamp": "2025-09-01T00:53:28.717Z",
+  "startTime": 1756688008717,
+  "endTime": 1756688008720,
+  "duration": 3,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:53:28.718Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "sql_injection",
+            "severity": "high",
+            "description": "Possível vulnerabilidade de SQL Injection detectada com payload: ' OR '1'='1",
+            "recommendation": "Implementar prepared statements e validação de entrada"
+          }
+        ],
+        "timestamp": "2025-09-01T00:53:28.718Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:53:28.718Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:53:28.718Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:53:28.718Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:53:28.718Z"
+      }
+    ],
+    "vulnerabilitiesFound": 1,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:53:28.718Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:53:28.719Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:53:28.719Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:53:28.719Z"
+      }
+    ],
+    "vulnerabilities": [],
+    "riskScore": 0,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:53:28.719Z",
+    "events": [
+      {
+        "id": "event_1756688008719_be5910b3",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-31T08:38:06.456Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688008719_28453854",
+        "type": "suspicious_activity",
+        "severity": "high",
+        "timestamp": "2025-08-31T05:36:29.551Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688008719_825d2356",
+        "type": "suspicious_activity",
+        "severity": "medium",
+        "timestamp": "2025-08-31T18:04:46.072Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688008719_918b5a9a",
+        "type": "login_attempt",
+        "severity": "low",
+        "timestamp": "2025-08-31T13:57:47.213Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688008719_2ecb4bf1",
+        "type": "suspicious_activity",
+        "severity": "high",
+        "timestamp": "2025-08-31T20:06:04.475Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 76,
+      "failedLoginAttempts": 4,
+      "blockedRequests": 23,
+      "activeThreats": 1,
+      "securityScore": 20,
+      "lastSecurityUpdate": "2025-09-01T00:53:28.720Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "minimal",
+  "recommendations": []
+}

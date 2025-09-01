@@ -278,7 +278,14 @@ export class ConfigManager {
       'LOG_LEVEL': 'logging.level',
       'NODE_ENV': 'environment',
       'DATABASE_ENABLED': 'database.enabled',
-      'REDIS_ENABLED': 'redis.enabled',
+      'MARIADB_HOST': 'database.host',
+      'MARIADB_PORT': 'database.port',
+      'MARIADB_DATABASE': 'database.database',
+      'MARIADB_USERNAME': 'database.username',
+      'MARIADB_PASSWORD': 'database.password',
+      'MARIADB_CONNECTION_LIMIT': 'database.connectionLimit',
+      'MARIADB_TIMEOUT': 'database.timeout',
+
       'WEBSOCKET_ENABLED': 'websocket.enabled',
       'AUTH_ENABLED': 'api.authentication.enabled'
     };
@@ -288,7 +295,8 @@ export class ConfigManager {
       if (value !== undefined) {
         // Converter tipos quando necessário
         let convertedValue = value;
-        if (configKey === 'server.port') {
+        if (configKey === 'server.port' || configKey === 'database.port' || 
+            configKey === 'database.connectionLimit' || configKey === 'database.timeout') {
           convertedValue = parseInt(value, 10);
         } else if (configKey.includes('.enabled')) {
           convertedValue = value.toLowerCase() === 'true';

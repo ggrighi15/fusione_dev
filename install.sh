@@ -34,19 +34,9 @@ if ! command_exists npm; then
     exit 1
 fi
 
-# Verificar se MongoDB está rodando
-echo -e "${BLUE}[INFO] Verificando MongoDB...${NC}"
-if ! netstat -an 2>/dev/null | grep -q ":27017"; then
-    echo -e "${YELLOW}[AVISO] MongoDB não detectado na porta 27017${NC}"
-    echo "Certifique-se de que o MongoDB está instalado e rodando"
-fi
-
-# Verificar se Redis está rodando
-echo -e "${BLUE}[INFO] Verificando Redis...${NC}"
-if ! netstat -an 2>/dev/null | grep -q ":6379"; then
-    echo -e "${YELLOW}[AVISO] Redis não detectado na porta 6379${NC}"
-    echo "Certifique-se de que o Redis está instalado e rodando"
-fi
+# Database services no longer required
+echo -e "${BLUE}[INFO] MongoDB and Redis dependencies removed${NC}"
+echo "System now operates without external database dependencies"
 
 echo
 echo -e "${BLUE}[INFO] Iniciando instalação do Fusione Core System...${NC}"

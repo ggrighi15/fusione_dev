@@ -1,0 +1,48 @@
+FROM node:18-alpine
+
+# Install system dependencies for authentication
+RUN apk add --no-cache \
+    curl \
+    openssl \
+    ca-certificates
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install Node.js dependencies with auth-specific packages
+RUN npm install && \
+    npm install --save-dev \
+    jsonwebtoken \
+    bcryptjs \
+    speakeasy \
+    qrcode \
+    passport \
+    passport-local \
+    passport-jwt \
+    express-rate-limit \
+    helmet
+
+# Copy application code
+COPY . .
+
+# Create directories for auth data
+RUN mkdir -p /app/data/auth/sessions \
+             /app/data/auth/tokens \
+             /app/logs
+
+# Set permissions
+RUN chown -R node:node /app
+USER node
+
+# Expose port
+EXPOSE 3000 9229
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
+
+# Start command
+CMD ["npm", "run", "dev:auth"]

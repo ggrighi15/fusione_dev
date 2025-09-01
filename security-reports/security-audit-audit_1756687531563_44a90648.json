@@ -1,0 +1,138 @@
+{
+  "auditId": "audit_1756687531563_44a90648",
+  "timestamp": "2025-09-01T00:45:31.564Z",
+  "startTime": 1756687531564,
+  "endTime": 1756687531567,
+  "duration": 3,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:45:31.564Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "sql_injection",
+            "severity": "high",
+            "description": "Possível vulnerabilidade de SQL Injection detectada com payload: ' OR '1'='1",
+            "recommendation": "Implementar prepared statements e validação de entrada"
+          }
+        ],
+        "timestamp": "2025-09-01T00:45:31.564Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:45:31.564Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:45:31.564Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:45:31.564Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:45:31.564Z"
+      }
+    ],
+    "vulnerabilitiesFound": 1,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:45:31.565Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:45:31.565Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:45:31.565Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:45:31.565Z"
+      }
+    ],
+    "vulnerabilities": [],
+    "riskScore": 0,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:45:31.566Z",
+    "events": [
+      {
+        "id": "event_1756687531566_6db7fe8d",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-08-31T06:37:22.095Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687531566_5554e38a",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-08-31T09:07:34.825Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687531566_09e37c67",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-31T03:29:23.701Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687531566_565ce066",
+        "type": "suspicious_activity",
+        "severity": "medium",
+        "timestamp": "2025-08-31T08:48:25.130Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687531566_5b251450",
+        "type": "login_attempt",
+        "severity": "high",
+        "timestamp": "2025-08-31T14:32:44.111Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 75,
+      "failedLoginAttempts": 14,
+      "blockedRequests": 23,
+      "activeThreats": 2,
+      "securityScore": 48,
+      "lastSecurityUpdate": "2025-09-01T00:45:31.566Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "minimal",
+  "recommendations": []
+}

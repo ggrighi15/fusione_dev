@@ -2,11 +2,7 @@ import crypto from 'crypto';
 import { promises as fs } from 'fs';
 import path from 'path';
 import xml2js from 'xml2js';
-import mongoose from 'mongoose';
-import IngestFile from '../../models/IngestFile.js';
-import ReportDefinition from '../../models/ReportDefinition.js';
-import ContratoClassificacao from '../../models/ContratoClassificacao.js';
-import ContratoMacro from '../../models/ContratoMacro.js';
+
 import config from './config.js';
 import * as utils from './utils.js';
 import { createLogger } from '../../core/logger.js';

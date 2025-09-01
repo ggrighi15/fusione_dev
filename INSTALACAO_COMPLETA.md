@@ -24,8 +24,7 @@ O **Fusione Core System** é uma plataforma modular completa para gestão empres
 ### Requisitos Obrigatórios
 - **Node.js** 18.0.0 ou superior
 - **npm** 8.0.0 ou superior
-- **MongoDB** 6.0 ou superior
-- **Redis** 7.0 ou superior
+- **Elasticsearch** 8.0 ou superior
 
 ### Requisitos Opcionais
 - **Docker** 20.0.0 ou superior (para containerização)
@@ -109,15 +108,7 @@ JWT_EXPIRES_IN=24h
 BCRYPT_ROUNDS=12
 
 # Banco de Dados
-MONGODB_URI=mongodb://localhost:27017/fusione
-MONGO_ROOT_USERNAME=admin
-MONGO_ROOT_PASSWORD=sua-senha-mongo
-
-# Cache
-REDIS_HOST=localhost
-REDIS_PORT=6379
-REDIS_PASSWORD=sua-senha-redis
-REDIS_TTL=3600
+# Database configuration removed - MongoDB and Redis no longer used
 
 # Email (opcional)
 SMTP_HOST=seu-smtp-host
@@ -141,34 +132,18 @@ cd ..
 
 ### Passo 4: Configuração do Banco de Dados
 
-#### MongoDB
+#### Database Services
 
 ```bash
-# Opção 1: Instalação local
-# Siga as instruções em: https://docs.mongodb.com/manual/installation/
+# MongoDB and Redis are no longer required
+# The system now operates without these dependencies
 
-# Opção 2: Docker
-docker run -d \
-  --name fusione-mongo \
-  -p 27017:27017 \
-  -e MONGO_INITDB_ROOT_USERNAME=admin \
-  -e MONGO_INITDB_ROOT_PASSWORD=fusione123 \
-  -v mongo-data:/data/db \
-  mongo:6
-```
-
-#### Redis
-
-```bash
-# Opção 1: Instalação local
-# Siga as instruções em: https://redis.io/download
-
-# Opção 2: Docker
-docker run -d \
-  --name fusione-redis \
-  -p 6379:6379 \
-  redis:7-alpine \
-  redis-server --requirepass fusione123
+# If you need Elasticsearch for search functionality:
+# docker run -d \
+#   --name fusione-elasticsearch \
+#   -p 9200:9200 \
+#   -e "discovery.type=single-node" \
+#   elasticsearch:8.0.0
 ```
 
 ### Passo 5: Migração do Banco de Dados
@@ -347,24 +322,14 @@ npm run build            # Build para produção
 
 ### Problemas Comuns
 
-#### 1. Erro de Conexão com MongoDB
+#### 1. Application Connection Issues
 
 ```bash
-# Verificar se MongoDB está rodando
-mongosh --eval "db.adminCommand('ping')"
+# Check if application is running
+ps aux | grep node
 
-# Reiniciar MongoDB
-sudo systemctl restart mongod
-```
-
-#### 2. Erro de Conexão com Redis
-
-```bash
-# Verificar se Redis está rodando
-redis-cli ping
-
-# Reiniciar Redis
-sudo systemctl restart redis
+# Restart application
+npm restart
 ```
 
 #### 3. Porta já em uso
@@ -400,8 +365,7 @@ npm run dev
 - **API Documentation**: `API-DOCUMENTATION.md`
 - **Módulos**: `MODULOS_COMPLEMENTARES_FUSIONE.md`
 - **Especificações Técnicas**: `PROPULSOR_TECHNICAL_SPECS.md`
-- **Setup MongoDB**: `SETUP-MONGODB.md`
-- **Setup Redis**: `SETUP-REDIS.md`
+- **Migration Guide**: `BACKUP_MIGRACAO_MARIADB.md`
 
 ---
 

@@ -13,8 +13,8 @@ Todos os módulos seguem o padrão arquitetural do Fusione Core System:
 - **Event-Driven Architecture**: Comunicação via Event Bus
 - **Modular Design**: Independência e reutilização
 - **RESTful APIs**: Endpoints padronizados
-- **Database Integration**: MongoDB com schemas validados
-- **Cache Layer**: Redis para performance
+- **Database Integration**: Removed MongoDB dependencies
+- **Cache Layer**: Removed Redis dependencies
 - **Authentication**: JWT com controle de permissões
 
 ---

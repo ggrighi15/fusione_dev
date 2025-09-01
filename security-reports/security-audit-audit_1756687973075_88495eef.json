@@ -1,0 +1,145 @@
+{
+  "auditId": "audit_1756687973075_88495eef",
+  "timestamp": "2025-09-01T00:52:53.075Z",
+  "startTime": 1756687973075,
+  "endTime": 1756687973078,
+  "duration": 3,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:52:53.075Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:53.076Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:53.076Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:53.076Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:53.076Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:53.076Z"
+      }
+    ],
+    "vulnerabilitiesFound": 0,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:52:53.076Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "dependency_vulnerability",
+            "severity": "medium",
+            "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+            "recommendation": "Atualizar express para versão mais recente"
+          }
+        ],
+        "timestamp": "2025-09-01T00:52:53.076Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:53.076Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:53.077Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "dependency_vulnerability",
+        "severity": "medium",
+        "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+        "recommendation": "Atualizar express para versão mais recente"
+      }
+    ],
+    "riskScore": 4,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:52:53.077Z",
+    "events": [
+      {
+        "id": "event_1756687973077_63cbabed",
+        "type": "suspicious_activity",
+        "severity": "medium",
+        "timestamp": "2025-08-31T16:36:17.886Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687973077_032894ba",
+        "type": "login_attempt",
+        "severity": "high",
+        "timestamp": "2025-08-31T22:51:17.743Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687973077_9797d65b",
+        "type": "suspicious_activity",
+        "severity": "medium",
+        "timestamp": "2025-08-31T19:09:31.302Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687973077_a6565234",
+        "type": "suspicious_activity",
+        "severity": "medium",
+        "timestamp": "2025-08-31T19:07:33.004Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687973077_b94250a8",
+        "type": "suspicious_activity",
+        "severity": "low",
+        "timestamp": "2025-08-31T21:15:27.829Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 73,
+      "failedLoginAttempts": 8,
+      "blockedRequests": 42,
+      "activeThreats": 1,
+      "securityScore": 8,
+      "lastSecurityUpdate": "2025-09-01T00:52:53.077Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "minimal",
+  "recommendations": []
+}

@@ -1,0 +1,61 @@
+FROM node:18-alpine
+
+# Install system dependencies for data analysis
+RUN apk add --no-cache \
+    curl \
+    python3 \
+    py3-pip \
+    build-base \
+    cairo-dev \
+    jpeg-dev \
+    pango-dev
+
+# Install Python data analysis libraries
+RUN pip3 install --no-cache-dir \
+    pandas \
+    numpy \
+    openpyxl \
+    xlsxwriter \
+    matplotlib \
+    seaborn \
+    plotly
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install Node.js dependencies with data analysis packages
+RUN npm install && \
+    npm install --save-dev \
+    xlsx \
+    csv-parser \
+    json2csv \
+    lodash \
+    moment \
+    chart.js \
+    d3
+
+# Copy application code
+COPY . .
+
+# Create directories for data analysis
+RUN mkdir -p /app/uploads \
+             /app/output/analysis \
+             /app/data/reports \
+             /app/logs
+
+# Set permissions
+RUN chown -R node:node /app
+USER node
+
+# Expose port
+EXPOSE 3000 9229
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
+
+# Start command
+CMD ["npm", "run", "dev:data-analysis"]

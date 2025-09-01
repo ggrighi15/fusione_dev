@@ -1,0 +1,47 @@
+FROM node:18-alpine
+
+# Install system dependencies for notifications
+RUN apk add --no-cache \
+    curl \
+    ca-certificates
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install Node.js dependencies with notification-specific packages
+RUN npm install && \
+    npm install --save-dev \
+    nodemailer \
+    socket.io \
+    twilio \
+    firebase-admin \
+    web-push \
+    bull \
+    agenda \
+    cron
+
+# Copy application code
+COPY . .
+
+# Create directories for notifications
+RUN mkdir -p /app/data/notifications/queue \
+             /app/data/notifications/templates \
+             /app/data/notifications/logs \
+             /app/logs
+
+# Set permissions
+RUN chown -R node:node /app
+USER node
+
+# Expose port
+EXPOSE 3000 9229
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
+
+# Start command
+CMD ["npm", "run", "dev:notification"]

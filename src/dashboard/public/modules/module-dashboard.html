@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Dashboard - Fusione Core System</title>
+    <link rel="icon" type="image/svg+xml" href="../logo-fusione.svg">
+    
+    <!-- CSS Libraries -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+    
+    <style>
+        .dashboard-specific {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        }
+        
+        .dashboard-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(79, 70, 229, 0.1) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        
+        .system-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .overview-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .overview-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        
+        .overview-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+        
+        .overview-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 24px;
+            color: white;
+        }
+        
+        .overview-icon.system {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+        
+        .overview-icon.performance {
+            background: linear-gradient(135deg, #10b981, #047857);
+        }
+        
+        .overview-icon.security {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .overview-icon.modules {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+        
+        .overview-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+        
+        .overview-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+        
+        .overview-trend {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        .trend-up {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+        
+        .trend-down {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        
+        .trend-stable {
+            background: rgba(156, 163, 175, 0.2);
+            color: #9ca3af;
+        }
+        
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .module-status-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .module-status-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .module-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .module-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+        
+        .module-icon.ai {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+        
+        .module-icon.contencioso {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        .module-icon.data {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+        
+        .module-icon.auth {
+            background: linear-gradient(135deg, #10b981, #047857);
+        }
+        
+        .module-icon.reports {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .module-icon.notification {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .module-details h3 {
+            margin: 0 0 5px 0;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+        
+        .module-details p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .module-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-online {
+            background: var(--gradient-success);
+            color: white;
+        }
+        
+        .status-offline {
+            background: var(--gradient-error);
+            color: white;
+        }
+        
+        .status-warning {
+            background: var(--gradient-warning);
+            color: white;
+        }
+        
+        .status-maintenance {
+            background: var(--gradient-info);
+            color: white;
+        }
+        
+        .module-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .metric-item {
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+        
+        .metric-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+        
+        .module-progress {
+            margin-bottom: 20px;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .module-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .action-btn.primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+        
+        .action-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .chart-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+        }
+        
+        .chart-period {
+            font-size: 12px;
+            color: var(--text-secondary);
+            padding: 4px 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        
+        .activity-feed {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: white;
+        }
+        
+        .activity-icon.info {
+            background: var(--gradient-info);
+        }
+        
+        .activity-icon.success {
+            background: var(--gradient-success);
+        }
+        
+        .activity-icon.warning {
+            background: var(--gradient-warning);
+        }
+        
+        .activity-icon.error {
+            background: var(--gradient-error);
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0 0 4px 0;
+        }
+        
+        .activity-description {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        .activity-time {
+            font-size: 11px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        
+        .system-alerts {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .alert-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid;
+        }
+        
+        .alert-item.critical {
+            background: rgba(239, 68, 68, 0.1);
+            border-left-color: #ef4444;
+        }
+        
+        .alert-item.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-left-color: #f59e0b;
+        }
+        
+        .alert-item.info {
+            background: rgba(59, 130, 246, 0.1);
+            border-left-color: #3b82f6;
+        }
+        
+        .alert-content {
+            flex: 1;
+        }
+        
+        .alert-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0 0 4px 0;
+        }
+        
+        .alert-message {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        .alert-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .quick-action {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+        
+        .quick-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary-color);
+        }
+        
+        .quick-action-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 20px;
+            color: white;
+            background: var(--gradient-primary);
+        }
+        
+        .quick-action-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+        }
+        
+        .quick-action-description {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        .resource-usage {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .resource-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .resource-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 18px;
+            color: white;
+        }
+        
+        .resource-icon.cpu {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+        
+        .resource-icon.memory {
+            background: linear-gradient(135deg, #10b981, #047857);
+        }
+        
+        .resource-icon.disk {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .resource-icon.network {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+        
+        .resource-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .resource-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+        
+        .resource-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .resource-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        
+        .resource-fill.cpu {
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+        }
+        
+        .resource-fill.memory {
+            background: linear-gradient(90deg, #10b981, #047857);
+        }
+        
+        .resource-fill.disk {
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+        }
+        
+        .resource-fill.network {
+            background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header dashboard-specific animate__animated animate__fadeInDown">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div>
+                        <h1 class="title">Module Dashboard</h1>
+                        <p class="subtitle">Central de Controle e Monitoramento</p>
+                    </div>
+                </div>
+                <div class="system-status">
+                    <div class="status-item">
+                        <span class="status-value" id="activeModules">-</span>
+                        <span class="status-label">Módulos Ativos</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-value" id="systemLoad">-</span>
+                        <span class="status-label">Carga do Sistema</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-value" id="uptime">-</span>
+                        <span class="status-label">Uptime</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- System Overview -->
+        <section class="system-overview animate__animated animate__fadeInUp">
+            <div class="overview-card">
+                <div class="overview-icon system">
+                    <i class="fas fa-server"></i>
+                </div>
+                <div class="overview-value" id="systemHealth">98%</div>
+                <div class="overview-label">Saúde do Sistema</div>
+                <div class="overview-trend trend-up">
+                    <i class="fas fa-arrow-up"></i> +2.1%
+                </div>
+            </div>
+            
+            <div class="overview-card">
+                <div class="overview-icon performance">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="overview-value" id="avgResponseTime">245ms</div>
+                <div class="overview-label">Tempo de Resposta</div>
+                <div class="overview-trend trend-down">
+                    <i class="fas fa-arrow-down"></i> -15ms
+                </div>
+            </div>
+            
+            <div class="overview-card">
+                <div class="overview-icon security">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="overview-value" id="securityScore">95</div>
+                <div class="overview-label">Pontuação de Segurança</div>
+                <div class="overview-trend trend-stable">
+                    <i class="fas fa-minus"></i> Estável
+                </div>
+            </div>
+            
+            <div class="overview-card">
+                <div class="overview-icon modules">
+                    <i class="fas fa-cubes"></i>
+                </div>
+                <div class="overview-value" id="totalRequests">12.4K</div>
+                <div class="overview-label">Requisições Hoje</div>
+                <div class="overview-trend trend-up">
+                    <i class="fas fa-arrow-up"></i> +8.3%
+                </div>
+            </div>
+        </section>
+
+        <!-- System Alerts -->
+        <section class="system-alerts animate__animated animate__fadeInUp">
+            <h2 class="section-title">
+                <i class="fas fa-exclamation-triangle"></i>
+                Alertas do Sistema
+            </h2>
+            <div id="alertsList">
+                <!-- Alerts will be loaded here -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Carregando alertas...
+                </div>
+            </div>
+        </section>
+
+        <!-- Resource Usage -->
+        <section class="resource-usage animate__animated animate__fadeInUp">
+            <div class="resource-card">
+                <div class="resource-icon cpu">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <div class="resource-value" id="cpuUsage">45%</div>
+                <div class="resource-label">Uso de CPU</div>
+                <div class="resource-bar">
+                    <div class="resource-fill cpu" style="width: 45%"></div>
+                </div>
+            </div>
+            
+            <div class="resource-card">
+                <div class="resource-icon memory">
+                    <i class="fas fa-memory"></i>
+                </div>
+                <div class="resource-value" id="memoryUsage">62%</div>
+                <div class="resource-label">Uso de Memória</div>
+                <div class="resource-bar">
+                    <div class="resource-fill memory" style="width: 62%"></div>
+                </div>
+            </div>
+            
+            <div class="resource-card">
+                <div class="resource-icon disk">
+                    <i class="fas fa-hdd"></i>
+                </div>
+                <div class="resource-value" id="diskUsage">38%</div>
+                <div class="resource-label">Uso de Disco</div>
+                <div class="resource-bar">
+                    <div class="resource-fill disk" style="width: 38%"></div>
+                </div>
+            </div>
+            
+            <div class="resource-card">
+                <div class="resource-icon network">
+                    <i class="fas fa-network-wired"></i>
+                </div>
+                <div class="resource-value" id="networkUsage">23%</div>
+                <div class="resource-label">Uso de Rede</div>
+                <div class="resource-bar">
+                    <div class="resource-fill network" style="width: 23%"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modules Status -->
+        <section class="dashboard-card animate__animated animate__fadeInUp">
+            <h2 class="section-title">
+                <i class="fas fa-cubes"></i>
+                Status dos Módulos
+            </h2>
+            <div class="modules-grid" id="modulesList">
+                <!-- Modules will be loaded here -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Carregando módulos...
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section animate__animated animate__fadeInUp">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">Performance dos Módulos</h3>
+                    <span class="chart-period">Últimas 24h</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">Uso de Recursos</h3>
+                    <span class="chart-period">Tempo Real</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="resourceChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions animate__animated animate__fadeInUp">
+            <a href="../modules/ai-module.html" class="quick-action">
+                <div class="quick-action-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="quick-action-title">Módulo AI</div>
+                <div class="quick-action-description">Inteligência Artificial</div>
+            </a>
+            
+            <a href="../modules/contencioso-module.html" class="quick-action">
+                <div class="quick-action-icon">
+                    <i class="fas fa-gavel"></i>
+                </div>
+                <div class="quick-action-title">Contencioso</div>
+                <div class="quick-action-description">Gestão Jurídica</div>
+            </a>
+            
+            <a href="../modules/data-analysis-module.html" class="quick-action">
+                <div class="quick-action-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="quick-action-title">Análise de Dados</div>
+                <div class="quick-action-description">Business Intelligence</div>
+            </a>
+            
+            <a href="../modules/auth-module.html" class="quick-action">
+                <div class="quick-action-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="quick-action-title">Autenticação</div>
+                <div class="quick-action-description">Segurança e Acesso</div>
+            </a>
+            
+            <a href="../modules/reports-module.html" class="quick-action">
+                <div class="quick-action-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="quick-action-title">Relatórios</div>
+                <div class="quick-action-description">Geração de Reports</div>
+            </a>
+            
+            <a href="../modules/notification-module.html" class="quick-action">
+                <div class="quick-action-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div class="quick-action-title">Notificações</div>
+                <div class="quick-action-description">Sistema de Comunicação</div>
+            </a>
+        </section>
+
+        <!-- Activity Feed -->
+        <section class="activity-feed animate__animated animate__fadeInUp">
+            <div class="activity-header">
+                <h2 class="section-title">
+                    <i class="fas fa-history"></i>
+                    Atividade Recente
+                </h2>
+                <button class="btn btn-secondary" onclick="refreshActivity()">
+                    <i class="fas fa-sync-alt"></i>
+                    Atualizar
+                </button>
+            </div>
+            <div id="activityList">
+                <!-- Activity items will be loaded here -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Carregando atividades...
+                </div>
+            </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <section class="module-actions" style="display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="restartAllModules()">
+                <i class="fas fa-redo"></i>
+                Reiniciar Todos os Módulos
+            </button>
+            <button class="btn btn-secondary" onclick="exportSystemLogs()">
+                <i class="fas fa-download"></i>
+                Exportar Logs
+            </button>
+            <button class="btn btn-secondary" onclick="systemMaintenance()">
+                <i class="fas fa-tools"></i>
+                Modo Manutenção
+            </button>
+            <button class="btn btn-secondary" onclick="systemSettings()">
+                <i class="fas fa-cog"></i>
+                Configurações
+            </button>
+            <button class="btn btn-secondary" onclick="systemBackup()">
+                <i class="fas fa-save"></i>
+                Backup do Sistema
+            </button>
+            <button class="btn btn-secondary" onclick="window.location.href='../index.html'">
+                <i class="fas fa-arrow-left"></i>
+                Voltar ao Dashboard Principal
+            </button>
+        </section>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+        // Module Dashboard specific functionality
+        class ModuleDashboardInterface {
+            constructor() {
+                this.socket = io();
+                this.modules = [];
+                this.alerts = [];
+                this.activities = [];
+                this.performanceChart = null;
+                this.resourceChart = null;
+                
+                this.init();
+            }
+            
+            init() {
+                this.setupSocketListeners();
+                this.loadDashboardData();
+                this.initializeCharts();
+                this.startRealTimeUpdates();
+            }
+            
+            setupSocketListeners() {
+                this.socket.on('system-metrics', (data) => {
+                    this.updateSystemMetrics(data);
+                });
+                
+                this.socket.on('module-status-change', (data) => {
+                    this.handleModuleStatusChange(data);
+                });
+                
+                this.socket.on('new-alert', (data) => {
+                    this.handleNewAlert(data);
+                });
+                
+                this.socket.on('new-activity', (data) => {
+                    this.handleNewActivity(data);
+                });
+                
+                this.socket.on('resource-update', (data) => {
+                    this.updateResourceUsage(data);
+                });
+            }
+            
+            async loadDashboardData() {
+                try {
+                    const [modulesResponse, alertsResponse, activitiesResponse, metricsResponse] = await Promise.all([
+                        fetch('/api/dashboard/modules'),
+                        fetch('/api/dashboard/alerts'),
+                        fetch('/api/dashboard/activities'),
+                        fetch('/api/dashboard/metrics')
+                    ]);
+                    
+                    const modulesData = await modulesResponse.json();
+                    const alertsData = await alertsResponse.json();
+                    const activitiesData = await activitiesResponse.json();
+                    const metricsData = await metricsResponse.json();
+                    
+                    this.modules = modulesData.modules || [];
+                    this.alerts = alertsData.alerts || [];
+                    this.activities = activitiesData.activities || [];
+                    
+                    this.updateSystemMetrics(metricsData);
+                    this.renderModules();
+                    this.renderAlerts();
+                    this.renderActivities();
+                    this.updateCharts(metricsData);
+                } catch (error) {
+                    console.error('Erro ao carregar dados do dashboard:', error);
+                    this.showError('Erro ao carregar dados do dashboard');
+                }
+            }
+            
+            updateSystemMetrics(metrics) {
+                document.getElementById('activeModules').textContent = metrics.activeModules || 0;
+                document.getElementById('systemLoad').textContent = (metrics.systemLoad || 0) + '%';
+                document.getElementById('uptime').textContent = this.formatUptime(metrics.uptime || 0);
+                
+                document.getElementById('systemHealth').textContent = (metrics.systemHealth || 0) + '%';
+                document.getElementById('avgResponseTime').textContent = (metrics.avgResponseTime || 0) + 'ms';
+                document.getElementById('securityScore').textContent = metrics.securityScore || 0;
+                document.getElementById('totalRequests').textContent = this.formatNumber(metrics.totalRequests || 0);
+            }
+            
+            updateResourceUsage(resources) {
+                const cpuUsage = resources.cpu || 0;
+                const memoryUsage = resources.memory || 0;
+                const diskUsage = resources.disk || 0;
+                const networkUsage = resources.network || 0;
+                
+                document.getElementById('cpuUsage').textContent = cpuUsage + '%';
+                document.getElementById('memoryUsage').textContent = memoryUsage + '%';
+                document.getElementById('diskUsage').textContent = diskUsage + '%';
+                document.getElementById('networkUsage').textContent = networkUsage + '%';
+                
+                // Update progress bars
+                document.querySelector('.resource-fill.cpu').style.width = cpuUsage + '%';
+                document.querySelector('.resource-fill.memory').style.width = memoryUsage + '%';
+                document.querySelector('.resource-fill.disk').style.width = diskUsage + '%';
+                document.querySelector('.resource-fill.network').style.width = networkUsage + '%';
+            }
+            
+            renderModules() {
+                const container = document.getElementById('modulesList');
+                
+                if (this.modules.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--text-secondary); grid-column: 1 / -1;">
+                            <i class="fas fa-cubes" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                            <h3>Nenhum módulo encontrado</h3>
+                            <p>Configure e inicie os módulos do sistema.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const modulesHTML = this.modules.map(module => this.createModuleHTML(module)).join('');
+                container.innerHTML = modulesHTML;
+            }
+            
+            createModuleHTML(module) {
+                const statusClass = this.getModuleStatusClass(module.status);
+                const iconClass = this.getModuleIconClass(module.type);
+                
+                return `
+                    <div class="module-status-card" data-module-id="${module.id}">
+                        <div class="module-header">
+                            <div class="module-info">
+                                <div class="module-icon ${module.type}">
+                                    <i class="${iconClass}"></i>
+                                </div>
+                                <div class="module-details">
+                                    <h3>${module.name}</h3>
+                                    <p>${module.description}</p>
+                                </div>
+                            </div>
+                            <div class="module-status ${statusClass}">${module.status}</div>
+                        </div>
+                        
+                        <div class="module-metrics">
+                            <div class="metric-item">
+                                <span class="metric-value">${module.requests || 0}</span>
+                                <div class="metric-label">Requisições</div>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">${module.responseTime || 0}ms</span>
+                                <div class="metric-label">Resposta</div>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">${module.errors || 0}</span>
+                                <div class="metric-label">Erros</div>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">${module.uptime || 0}%</span>
+                                <div class="metric-label">Uptime</div>
+                            </div>
+                        </div>
+                        
+                        <div class="module-progress">
+                            <div class="progress-label">
+                                <span>Progresso</span>
+                                <span>${module.progress || 0}%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${module.progress || 0}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="module-actions">
+                            <a href="../modules/${module.type}-module.html" class="action-btn primary">
+                                <i class="fas fa-external-link-alt"></i>
+                                Abrir
+                            </a>
+                            <button class="action-btn secondary" onclick="restartModule('${module.id}')">
+                                <i class="fas fa-redo"></i>
+                                Reiniciar
+                            </button>
+                            <button class="action-btn secondary" onclick="viewModuleLogs('${module.id}')">
+                                <i class="fas fa-file-alt"></i>
+                                Logs
+                            </button>
+                            <button class="action-btn secondary" onclick="moduleSettings('${module.id}')">
+                                <i class="fas fa-cog"></i>
+                                Config
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            renderAlerts() {
+                const container = document.getElementById('alertsList');
+                
+                if (this.alerts.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            <i class="fas fa-check-circle" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5; color: var(--success-color);"></i>
+                            <h3>Nenhum alerta ativo</h3>
+                            <p>Todos os sistemas estão funcionando normalmente.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const alertsHTML = this.alerts.map(alert => this.createAlertHTML(alert)).join('');
+                container.innerHTML = alertsHTML;
+            }
+            
+            createAlertHTML(alert) {
+                const severityClass = alert.severity.toLowerCase();
+                
+                return `
+                    <div class="alert-item ${severityClass}" data-alert-id="${alert.id}">
+                        <div class="alert-content">
+                            <div class="alert-title">${alert.title}</div>
+                            <div class="alert-message">${alert.message}</div>
+                        </div>
+                        <div class="alert-actions">
+                            <button class="action-btn primary" onclick="resolveAlert('${alert.id}')">
+                                <i class="fas fa-check"></i>
+                                Resolver
+                            </button>
+                            <button class="action-btn secondary" onclick="viewAlertDetails('${alert.id}')">
+                                <i class="fas fa-info"></i>
+                                Detalhes
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            renderActivities() {
+                const container = document.getElementById('activityList');
+                
+                if (this.activities.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            <i class="fas fa-history" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                            <h3>Nenhuma atividade recente</h3>
+                            <p>As atividades do sistema aparecerão aqui.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const activitiesHTML = this.activities.slice(0, 10).map(activity => this.createActivityHTML(activity)).join('');
+                container.innerHTML = activitiesHTML;
+            }
+            
+            createActivityHTML(activity) {
+                const iconClass = this.getActivityIconClass(activity.type);
+                const timeAgo = this.getTimeAgo(activity.timestamp);
+                
+                return `
+                    <div class="activity-item">
+                        <div class="activity-icon ${activity.type}">
+                            <i class="${iconClass}"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">${activity.title}</div>
+                            <div class="activity-description">${activity.description}</div>
+                        </div>
+                        <div class="activity-time">${timeAgo}</div>
+                    </div>
+                `;
+            }
+            
+            initializeCharts() {
+                // Performance Chart
+                const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+                this.performanceChart = new Chart(performanceCtx, {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Tempo de Resposta (ms)',
+                            data: [],
+                            borderColor: '#7c3aed',
+                            backgroundColor: 'rgba(124, 58, 237, 0.1)',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#e5e7eb'
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: '#9ca3af'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    color: '#9ca3af'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            }
+                        }
+                    }
+                });
+                
+                // Resource Chart
+                const resourceCtx = document.getElementById('resourceChart').getContext('2d');
+                this.resourceChart = new Chart(resourceCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['CPU', 'Memória', 'Disco', 'Rede'],
+                        datasets: [{
+                            data: [45, 62, 38, 23],
+                            backgroundColor: [
+                                '#3b82f6',
+                                '#10b981',
+                                '#f59e0b',
+                                '#8b5cf6'
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: '#e5e7eb',
+                                    padding: 20
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            updateCharts(data) {
+                if (this.performanceChart && data.performanceHistory) {
+                    this.performanceChart.data.labels = data.performanceHistory.labels;
+                    this.performanceChart.data.datasets[0].data = data.performanceHistory.data;
+                    this.performanceChart.update();
+                }
+                
+                if (this.resourceChart && data.resourceUsage) {
+                    this.resourceChart.data.datasets[0].data = [
+                        data.resourceUsage.cpu,
+                        data.resourceUsage.memory,
+                        data.resourceUsage.disk,
+                        data.resourceUsage.network
+                    ];
+                    this.resourceChart.update();
+                }
+            }
+            
+            // Utility methods
+            getModuleStatusClass(status) {
+                switch (status.toLowerCase()) {
+                    case 'online': return 'status-online';
+                    case 'offline': return 'status-offline';
+                    case 'warning': return 'status-warning';
+                    case 'maintenance': return 'status-maintenance';
+                    default: return 'status-offline';
+                }
+            }
+            
+            getModuleIconClass(type) {
+                switch (type.toLowerCase()) {
+                    case 'ai': return 'fas fa-brain';
+                    case 'contencioso': return 'fas fa-gavel';
+                    case 'data': return 'fas fa-chart-bar';
+                    case 'auth': return 'fas fa-lock';
+                    case 'reports': return 'fas fa-file-alt';
+                    case 'notification': return 'fas fa-bell';
+                    default: return 'fas fa-cube';
+                }
+            }
+            
+            getActivityIconClass(type) {
+                switch (type.toLowerCase()) {
+                    case 'info': return 'fas fa-info';
+                    case 'success': return 'fas fa-check';
+                    case 'warning': return 'fas fa-exclamation-triangle';
+                    case 'error': return 'fas fa-times';
+                    default: return 'fas fa-info';
+                }
+            }
+            
+            formatUptime(seconds) {
+                const days = Math.floor(seconds / 86400);
+                const hours = Math.floor((seconds % 86400) / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+                
+                if (days > 0) return `${days}d ${hours}h`;
+                if (hours > 0) return `${hours}h ${minutes}m`;
+                return `${minutes}m`;
+            }
+            
+            formatNumber(num) {
+                if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+                if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+                return num.toString();
+            }
+            
+            getTimeAgo(timestamp) {
+                const now = new Date();
+                const time = new Date(timestamp);
+                const diffInSeconds = Math.floor((now - time) / 1000);
+                
+                if (diffInSeconds < 60) return 'Agora';
+                if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m atrás`;
+                if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h atrás`;
+                return `${Math.floor(diffInSeconds / 86400)}d atrás`;
+            }
+            
+            showError(message) {
+                console.error(message);
+            }
+            
+            startRealTimeUpdates() {
+                setInterval(() => {
+                    if (!document.hidden) {
+                        this.loadDashboardData();
+                    }
+                }, 30000); // Update every 30 seconds
+            }
+        }
+        
+        // Global functions
+        function restartModule(moduleId) {
+            if (confirm('Tem certeza que deseja reiniciar este módulo?')) {
+                alert(`Reiniciando módulo: ${moduleId}`);
+            }
+        }
+        
+        function viewModuleLogs(moduleId) {
+            alert(`Visualizar logs do módulo: ${moduleId}`);
+        }
+        
+        function moduleSettings(moduleId) {
+            alert(`Configurações do módulo: ${moduleId}`);
+        }
+        
+        function resolveAlert(alertId) {
+            if (confirm('Tem certeza que deseja marcar este alerta como resolvido?')) {
+                alert(`Resolvendo alerta: ${alertId}`);
+            }
+        }
+        
+        function viewAlertDetails(alertId) {
+            alert(`Detalhes do alerta: ${alertId}`);
+        }
+        
+        function refreshActivity() {
+            dashboardModule.loadDashboardData();
+        }
+        
+        function restartAllModules() {
+            if (confirm('Tem certeza que deseja reiniciar todos os módulos? Esta ação pode causar indisponibilidade temporária.')) {
+                alert('Reiniciando todos os módulos...');
+            }
+        }
+        
+        function exportSystemLogs() {
+            window.open('/api/dashboard/export-logs', '_blank');
+        }
+        
+        function systemMaintenance() {
+            if (confirm('Tem certeza que deseja ativar o modo de manutenção?')) {
+                alert('Ativando modo de manutenção...');
+            }
+        }
+        
+        function systemSettings() {
+            alert('Funcionalidade de configurações do sistema será implementada');
+        }
+        
+        function systemBackup() {
+            if (confirm('Tem certeza que deseja iniciar um backup completo do sistema?')) {
+                alert('Iniciando backup do sistema...');
+            }
+        }
+        
+        // Initialize Module Dashboard Interface
+        let dashboardModule;
+        document.addEventListener('DOMContentLoaded', () => {
+            dashboardModule = new ModuleDashboardInterface();
+        });
+    </script>
+</body>
+</html>

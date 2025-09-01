@@ -1,0 +1,186 @@
+{
+  "modules": {
+    "ai-module": {
+      "name": "AI Module",
+      "description": "Módulo de Inteligência Artificial",
+      "port": 3010,
+      "debugPort": 9230,
+      "environment": {
+        "NODE_ENV": "development",
+        "DEBUG_MODE": "true",
+        "AI_MODEL_CACHE_SIZE": "500",
+        "AI_CONFIDENCE_THRESHOLD": "0.8",
+        "ENABLE_ML_TRAINING": "true",
+        "ENABLE_NLP": "true",
+        "PYTHON_PATH": "/usr/bin/python3"
+      },
+      "dependencies": {
+        "database": "ai-module-db",
+        "cache": "redis-ai",
+        "required_modules": []
+      },
+      "resources": {
+        "cpu_limit": "2",
+        "memory_limit": "2g",
+        "storage": "10g"
+      }
+    },
+    "contencioso-module": {
+      "name": "Contencioso Module",
+      "description": "Módulo de Gestão de Processos Judiciais",
+      "port": 3011,
+      "debugPort": 9231,
+      "environment": {
+        "NODE_ENV": "development",
+        "DEBUG_MODE": "true",
+        "ENABLE_TRIBUNAL_INTEGRATION": "true",
+        "ENABLE_PJE_INTEGRATION": "true",
+        "MAX_PROCESS_SIZE": "100MB",
+        "NOTIFICATION_ENABLED": "true",
+        "OCR_ENABLED": "true"
+      },
+      "dependencies": {
+        "database": "contencioso-module-db",
+        "cache": "redis-contencioso",
+        "required_modules": ["auth-module", "notification-module"]
+      },
+      "resources": {
+        "cpu_limit": "1.5",
+        "memory_limit": "1.5g",
+        "storage": "20g"
+      }
+    },
+    "data-analysis-module": {
+      "name": "Data Analysis Module",
+      "description": "Módulo de Análise de Dados",
+      "port": 3012,
+      "debugPort": 9232,
+      "environment": {
+        "NODE_ENV": "development",
+        "DEBUG_MODE": "true",
+        "MAX_FILE_SIZE": "50MB",
+        "UPLOAD_PATH": "/app/uploads",
+        "OUTPUT_PATH": "/app/output/analysis",
+        "SUPPORTED_FORMATS": "xlsx,json,csv",
+        "PYTHON_PATH": "/usr/bin/python3"
+      },
+      "dependencies": {
+        "database": "data-analysis-module-db",
+        "cache": "redis-data-analysis",
+        "required_modules": ["api-module"]
+      },
+      "resources": {
+        "cpu_limit": "2",
+        "memory_limit": "3g",
+        "storage": "50g"
+      }
+    },
+    "auth-module": {
+      "name": "Authentication Module",
+      "description": "Módulo de Autenticação e Autorização",
+      "port": 3013,
+      "debugPort": 9233,
+      "environment": {
+        "NODE_ENV": "development",
+        "DEBUG_MODE": "true",
+        "JWT_SECRET": "dev-secret-key-auth",
+        "JWT_EXPIRES_IN": "24h",
+        "BCRYPT_ROUNDS": "10",
+        "ENABLE_2FA": "true",
+        "SESSION_TIMEOUT": "30m",
+        "MAX_LOGIN_ATTEMPTS": "5"
+      },
+      "dependencies": {
+        "database": "auth-module-db",
+        "cache": "redis-auth",
+        "required_modules": []
+      },
+      "resources": {
+        "cpu_limit": "1",
+        "memory_limit": "512m",
+        "storage": "5g"
+      }
+    },
+    "reports-module": {
+      "name": "Reports Module",
+      "description": "Módulo de Geração de Relatórios",
+      "port": 3014,
+      "debugPort": 9234,
+      "environment": {
+        "NODE_ENV": "development",
+        "DEBUG_MODE": "true",
+        "REPORT_CACHE_TTL": "3600",
+        "MAX_REPORT_SIZE": "200MB",
+        "ENABLE_PDF_GENERATION": "true",
+        "ENABLE_EXCEL_EXPORT": "true",
+        "PYTHON_PATH": "/usr/bin/python3",
+        "WKHTMLTOPDF_PATH": "/usr/bin/wkhtmltopdf"
+      },
+      "dependencies": {
+        "database": "reports-module-db",
+        "cache": "redis-reports",
+        "required_modules": ["auth-module"]
+      },
+      "resources": {
+        "cpu_limit": "2",
+        "memory_limit": "2g",
+        "storage": "30g"
+      }
+    },
+    "notification-module": {
+      "name": "Notification Module",
+      "description": "Módulo de Notificações",
+      "port": 3015,
+      "debugPort": 9235,
+      "environment": {
+        "NODE_ENV": "development",
+        "DEBUG_MODE": "true",
+        "SMTP_HOST": "mailhog",
+        "SMTP_PORT": "1025",
+        "ENABLE_EMAIL": "true",
+        "ENABLE_SMS": "false",
+        "ENABLE_PUSH": "true",
+        "QUEUE_CONCURRENCY": "5"
+      },
+      "dependencies": {
+        "database": "notification-module-db",
+        "cache": "redis-notification",
+        "required_modules": ["auth-module"],
+        "external_services": ["mailhog"]
+      },
+      "resources": {
+        "cpu_limit": "1",
+        "memory_limit": "1g",
+        "storage": "10g"
+      }
+    }
+  },
+  "global_settings": {
+    "network_prefix": "172.20.0.0/12",
+    "volume_driver": "local",
+    "restart_policy": "unless-stopped",
+    "logging": {
+      "driver": "json-file",
+      "options": {
+        "max-size": "10m",
+        "max-file": "3"
+      }
+    },
+    "health_check": {
+      "interval": "30s",
+      "timeout": "10s",
+      "retries": 3,
+      "start_period": "5s"
+    }
+  },
+  "development_tools": {
+    "mailhog": {
+      "image": "mailhog/mailhog:latest",
+      "ports": ["1025:1025", "8025:8025"]
+    },
+    "module_dashboard": {
+      "port": 3000,
+      "enabled": true
+    }
+  }
+}

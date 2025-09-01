@@ -1,0 +1,162 @@
+{
+  "auditId": "audit_1756047536655_500a734f",
+  "timestamp": "2025-08-24T14:58:56.656Z",
+  "startTime": 1756047536655,
+  "endTime": 1756047536660,
+  "duration": 5,
+  "penetrationTesting": {
+    "timestamp": "2025-08-24T14:58:56.656Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-24T14:58:56.657Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-24T14:58:56.657Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-24T14:58:56.657Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-24T14:58:56.657Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: Strict-Transport-Security",
+            "recommendation": "Configurar header Strict-Transport-Security no servidor web"
+          }
+        ],
+        "timestamp": "2025-08-24T14:58:56.657Z"
+      }
+    ],
+    "vulnerabilitiesFound": 1,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-08-24T14:58:56.658Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "dependency_vulnerability",
+            "severity": "medium",
+            "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+            "recommendation": "Atualizar express para versão mais recente"
+          }
+        ],
+        "timestamp": "2025-08-24T14:58:56.658Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-24T14:58:56.658Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-08-24T14:58:56.658Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "dependency_vulnerability",
+        "severity": "medium",
+        "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+        "recommendation": "Atualizar express para versão mais recente"
+      }
+    ],
+    "riskScore": 4,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-08-24T14:58:56.659Z",
+    "events": [
+      {
+        "id": "event_1756047536659_9b4ad1cd",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-08-24T11:30:16.342Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756047536659_a18598fc",
+        "type": "access_denied",
+        "severity": "low",
+        "timestamp": "2025-08-24T01:16:03.994Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756047536659_b36a7de5",
+        "type": "suspicious_activity",
+        "severity": "medium",
+        "timestamp": "2025-08-23T22:51:52.951Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756047536659_e3a1d843",
+        "type": "suspicious_activity",
+        "severity": "high",
+        "timestamp": "2025-08-24T05:05:38.623Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [
+      {
+        "id": "alert_1756047536659_f103008c",
+        "type": "multiple_failed_logins",
+        "severity": "high",
+        "timestamp": "2025-08-24T14:58:56.660Z",
+        "description": "Múltiplas tentativas de login falharam para o mesmo usuário",
+        "recommendation": "Investigar possível ataque de força bruta"
+      },
+      {
+        "id": "alert_1756047536660_ef78191f",
+        "type": "unusual_access_pattern",
+        "severity": "medium",
+        "timestamp": "2025-08-24T14:58:56.660Z",
+        "description": "Padrão de acesso incomum detectado",
+        "recommendation": "Verificar legitimidade do acesso"
+      }
+    ],
+    "metrics": {
+      "totalSecurityEvents": 86,
+      "failedLoginAttempts": 5,
+      "blockedRequests": 11,
+      "activeThreats": 0,
+      "securityScore": 17,
+      "lastSecurityUpdate": "2025-08-24T14:58:56.660Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "low",
+  "recommendations": []
+}

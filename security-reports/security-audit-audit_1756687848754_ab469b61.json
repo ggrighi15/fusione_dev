@@ -1,0 +1,137 @@
+{
+  "auditId": "audit_1756687848754_ab469b61",
+  "timestamp": "2025-09-01T00:50:48.754Z",
+  "startTime": 1756687848754,
+  "endTime": 1756687848756,
+  "duration": 2,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:50:48.754Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:50:48.754Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "xss",
+            "severity": "medium",
+            "description": "Possível vulnerabilidade XSS detectada com payload: javascript:alert(\"XSS\")",
+            "recommendation": "Implementar sanitização de entrada e Content Security Policy"
+          }
+        ],
+        "timestamp": "2025-09-01T00:50:48.754Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:50:48.754Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:50:48.754Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: X-XSS-Protection",
+            "recommendation": "Configurar header X-XSS-Protection no servidor web"
+          },
+          {
+            "type": "missing_security_header",
+            "severity": "medium",
+            "description": "Header de segurança ausente: Strict-Transport-Security",
+            "recommendation": "Configurar header Strict-Transport-Security no servidor web"
+          }
+        ],
+        "timestamp": "2025-09-01T00:50:48.754Z"
+      }
+    ],
+    "vulnerabilitiesFound": 3,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:50:48.755Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:50:48.755Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:50:48.755Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:50:48.755Z"
+      }
+    ],
+    "vulnerabilities": [],
+    "riskScore": 0,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:50:48.755Z",
+    "events": [
+      {
+        "id": "event_1756687848755_1025f1af",
+        "type": "access_denied",
+        "severity": "low",
+        "timestamp": "2025-08-31T01:08:38.897Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687848755_af61b7a3",
+        "type": "login_attempt",
+        "severity": "high",
+        "timestamp": "2025-08-31T02:59:05.818Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687848756_d764eac3",
+        "type": "login_attempt",
+        "severity": "medium",
+        "timestamp": "2025-09-01T00:37:12.811Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 13,
+      "failedLoginAttempts": 17,
+      "blockedRequests": 29,
+      "activeThreats": 2,
+      "securityScore": 37,
+      "lastSecurityUpdate": "2025-09-01T00:50:48.756Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "low",
+  "recommendations": []
+}

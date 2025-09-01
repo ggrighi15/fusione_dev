@@ -1,0 +1,131 @@
+{
+  "auditId": "audit_1756687929078_6b67eb6d",
+  "timestamp": "2025-09-01T00:52:09.079Z",
+  "startTime": 1756687929078,
+  "endTime": 1756687929082,
+  "duration": 4,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:52:09.079Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:09.079Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:09.079Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:09.079Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:09.079Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:09.079Z"
+      }
+    ],
+    "vulnerabilitiesFound": 0,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:52:09.080Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:09.080Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:09.080Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:52:09.080Z"
+      }
+    ],
+    "vulnerabilities": [],
+    "riskScore": 0,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:52:09.081Z",
+    "events": [
+      {
+        "id": "event_1756687929081_148260d7",
+        "type": "suspicious_activity",
+        "severity": "high",
+        "timestamp": "2025-08-31T08:16:02.632Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687929081_c72d2780",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-31T18:43:29.545Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687929081_43463382",
+        "type": "suspicious_activity",
+        "severity": "medium",
+        "timestamp": "2025-08-31T15:02:18.286Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687929081_55ac2925",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-08-31T19:13:18.279Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687929081_a5803c5f",
+        "type": "login_attempt",
+        "severity": "medium",
+        "timestamp": "2025-08-31T12:46:38.728Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 71,
+      "failedLoginAttempts": 5,
+      "blockedRequests": 24,
+      "activeThreats": 1,
+      "securityScore": 3,
+      "lastSecurityUpdate": "2025-09-01T00:52:09.081Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "minimal",
+  "recommendations": []
+}

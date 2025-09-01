@@ -18,17 +18,12 @@ services:
       - LOG_LEVEL=info
       - API_PORT=3000
       - API_HOST=0.0.0.0
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - MONGODB_URI=mongodb://mongo:27017/fusione
       - JWT_SECRET=${JWT_SECRET:-fusione-default-secret-change-in-production}
     volumes:
       - ./logs:/app/logs
       - ./data:/app/data
       - ./config:/app/config
-    depends_on:
-      - redis
-      - mongo
+    depends_on: []
     networks:
       - fusione-network
     healthcheck:
@@ -38,47 +33,7 @@ services:
       retries: 3
       start_period: 40s
 
-  # Redis para cache
-  redis:
-    image: redis:7-alpine
-    container_name: fusione-redis
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
-    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-fusione123}
-    volumes:
-      - redis-data:/data
-      - ./config/redis.conf:/usr/local/etc/redis/redis.conf:ro
-    networks:
-      - fusione-network
-    healthcheck:
-      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
-  # MongoDB para persistência
-  mongo:
-    image: mongo:6
-    container_name: fusione-mongo
-    restart: unless-stopped
-    ports:
-      - "27017:27017"
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME:-admin}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD:-fusione123}
-      - MONGO_INITDB_DATABASE=fusione
-    volumes:
-      - mongo-data:/data/db
-      - mongo-config:/data/configdb
-      - ./scripts/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-    networks:
-      - fusione-network
-    healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
   # Nginx como proxy reverso (opcional)
   nginx:
@@ -142,50 +97,55 @@ services:
     profiles:
       - monitoring
 
-  # Redis Commander para administração do Redis (desenvolvimento)
-  redis-commander:
-    image: rediscommander/redis-commander:latest
-    container_name: fusione-redis-commander
+  # Container de desenvolvimento do módulo contencioso
+  contencioso-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: development
+    container_name: fusione-contencioso-dev
     restart: unless-stopped
     ports:
-      - "8081:8081"
+      - "3002:3000"
+      - "9229:9229"  # Debug port
     environment:
-      - REDIS_HOSTS=local:redis:6379:0:${REDIS_PASSWORD:-fusione123}
+      - NODE_ENV=development
+      - LOG_LEVEL=debug
+      - API_PORT=3000
+      - API_HOST=0.0.0.0
+      - JWT_SECRET=${JWT_SECRET:-fusione-dev-secret}
+      - MODULE_FOCUS=contencioso
+      - HOT_RELOAD=true
+      - DEBUG_MODE=true
+    volumes:
+      - ./src/modules/contencioso-module:/app/src/modules/contencioso-module
+      - ./src/core:/app/src/core
+      - ./src/middleware:/app/src/middleware
+      - ./src/models:/app/src/models
+      - ./config:/app/config
+      - ./data:/app/data
+      - ./logs/contencioso:/app/logs
+      - /app/node_modules  # Evita conflitos de dependências
     depends_on:
-      - redis
+      - fusione-app
     networks:
       - fusione-network
     profiles:
       - development
+    command: [
+      "npm", "run", "dev:contencioso"
+    ]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/v1/contencioso/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
 
-  # Mongo Express para administração do MongoDB (desenvolvimento)
-  mongo-express:
-    image: mongo-express:latest
-    container_name: fusione-mongo-express
-    restart: unless-stopped
-    ports:
-      - "8082:8081"
-    environment:
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_ROOT_USERNAME:-admin}
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_ROOT_PASSWORD:-fusione123}
-      - ME_CONFIG_MONGODB_URL=mongodb://admin:fusione123@mongo:27017/
-      - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_EXPRESS_USER:-admin}
-      - ME_CONFIG_BASICAUTH_PASSWORD=${MONGO_EXPRESS_PASSWORD:-fusione123}
-    depends_on:
-      - mongo
-    networks:
-      - fusione-network
-    profiles:
-      - development
+
 
 # Volumes persistentes
 volumes:
-  redis-data:
-    driver: local
-  mongo-data:
-    driver: local
-  mongo-config:
-    driver: local
   prometheus-data:
     driver: local
   grafana-data:

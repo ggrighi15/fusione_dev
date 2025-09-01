@@ -1,0 +1,259 @@
+{
+  "name": "ai-module",
+  "version": "1.0.0",
+  "description": "Módulo de Inteligência Artificial para análise preditiva e classificação automática de documentos",
+  "author": "Fusione Core System",
+  "main": "index.js",
+  "enabled": true,
+  "autoStart": true,
+  "priority": 2,
+  "dependencies": [],
+  "permissions": [
+    "events:listen",
+    "events:emit",
+    "config:read",
+    "config:write",
+    "cache:read",
+    "cache:write",
+    "api:register",
+    "database:read",
+    "database:write",
+    "files:read",
+    "files:write"
+  ],
+  "settings": {
+    "enablePredictiveAnalysis": true,
+    "enableDocumentClassification": true,
+    "enableNLP": true,
+    "enableMLTraining": true,
+    "modelCacheSize": 500,
+    "maxTrainingDataSize": 10000,
+    "autoRetraining": true,
+    "retrainingInterval": "7d",
+    "confidenceThreshold": 0.8
+  },
+  "events": {
+    "listen": [
+      "document:uploaded",
+      "document:processed",
+      "process:created",
+      "process:updated",
+      "data:analyzed",
+      "system:startup",
+      "ai:train:request",
+      "ai:predict:request"
+    ],
+    "emit": [
+      "ai:prediction:ready",
+      "ai:classification:complete",
+      "ai:model:trained",
+      "ai:model:updated",
+      "ai:analysis:complete",
+      "ai:error",
+      "ai:warning"
+    ]
+  },
+  "api": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/ai/predict",
+        "description": "Realizar análise preditiva baseada em dados históricos"
+      },
+      {
+        "method": "POST",
+        "path": "/ai/classify",
+        "description": "Classificar documentos automaticamente"
+      },
+      {
+        "method": "POST",
+        "path": "/ai/train",
+        "description": "Treinar modelos de machine learning"
+      },
+      {
+        "method": "GET",
+        "path": "/ai/models",
+        "description": "Listar modelos disponíveis"
+      },
+      {
+        "method": "GET",
+        "path": "/ai/models/:id",
+        "description": "Obter detalhes de um modelo específico"
+      },
+      {
+        "method": "POST",
+        "path": "/ai/models/:id/retrain",
+        "description": "Retreinar um modelo específico"
+      },
+      {
+        "method": "GET",
+        "path": "/ai/analytics",
+        "description": "Obter análises e métricas dos modelos"
+      },
+      {
+        "method": "POST",
+        "path": "/ai/nlp/extract",
+        "description": "Extrair informações de texto usando NLP"
+      }
+    ]
+  },
+  "models": {
+    "predictive": {
+      "processOutcome": {
+        "type": "classification",
+        "algorithm": "random_forest",
+        "features": [
+          "process_type",
+          "complexity_score",
+          "historical_duration",
+          "involved_parties",
+          "document_count"
+        ],
+        "target": "outcome_probability",
+        "accuracy": 0.85
+      },
+      "timeEstimation": {
+        "type": "regression",
+        "algorithm": "gradient_boosting",
+        "features": [
+          "process_complexity",
+          "historical_data",
+          "resource_availability",
+          "external_factors"
+        ],
+        "target": "estimated_duration",
+        "accuracy": 0.78
+      },
+      "riskAssessment": {
+        "type": "classification",
+        "algorithm": "neural_network",
+        "features": [
+          "financial_exposure",
+          "legal_precedents",
+          "case_complexity",
+          "opposing_party_profile"
+        ],
+        "target": "risk_level",
+        "accuracy": 0.82
+      }
+    },
+    "classification": {
+      "documentType": {
+        "algorithm": "naive_bayes",
+        "features": [
+          "text_content",
+          "document_structure",
+          "metadata",
+          "file_properties"
+        ],
+        "categories": [
+          "contrato",
+          "processo_judicial",
+          "documento_societario",
+          "marca_patente",
+          "procuracao",
+          "outros"
+        ],
+        "accuracy": 0.91
+      },
+      "urgencyLevel": {
+        "algorithm": "svm",
+        "features": [
+          "deadline_proximity",
+          "legal_implications",
+          "financial_impact",
+          "stakeholder_priority"
+        ],
+        "categories": [
+          "critico",
+          "alto",
+          "medio",
+          "baixo"
+        ],
+        "accuracy": 0.87
+      }
+    },
+    "nlp": {
+      "entityExtraction": {
+        "entities": [
+          "PERSON",
+          "ORGANIZATION",
+          "DATE",
+          "MONEY",
+          "LOCATION",
+          "CPF",
+          "CNPJ",
+          "PROCESS_NUMBER"
+        ]
+      },
+      "sentimentAnalysis": {
+        "categories": [
+          "positive",
+          "negative",
+          "neutral"
+        ]
+      },
+      "keywordExtraction": {
+        "maxKeywords": 20,
+        "minRelevance": 0.3
+      }
+    }
+  },
+  "training": {
+    "dataSource": {
+      "historical_processes": "src/data/processes",
+      "classified_documents": "src/data/documents",
+      "user_feedback": "src/data/feedback"
+    },
+    "validation": {
+      "method": "cross_validation",
+      "folds": 5,
+      "testSize": 0.2
+    },
+    "optimization": {
+      "hyperparameterTuning": true,
+      "featureSelection": true,
+      "ensembleMethods": true
+    }
+  },
+  "performance": {
+    "cache": {
+      "models": "24_hours",
+      "predictions": "1_hour",
+      "classifications": "6_hours",
+      "training_data": "disabled"
+    },
+    "optimization": {
+      "modelCompression": true,
+      "batchPrediction": true,
+      "asyncTraining": true,
+      "gpuAcceleration": false
+    },
+    "limits": {
+      "maxConcurrentPredictions": 100,
+      "maxTrainingTime": 3600,
+      "maxModelSize": "100MB",
+      "maxBatchSize": 1000
+    }
+  },
+  "monitoring": {
+    "metrics": [
+      "prediction_accuracy",
+      "classification_accuracy",
+      "model_performance",
+      "training_time",
+      "prediction_time",
+      "error_rate"
+    ],
+    "alerts": {
+      "accuracyDrop": 0.1,
+      "errorRateIncrease": 0.05,
+      "performanceDegradation": 0.2
+    },
+    "reporting": {
+      "daily": true,
+      "weekly": true,
+      "monthly": true
+    }
+  }
+}

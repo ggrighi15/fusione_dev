@@ -27,6 +27,7 @@ import {
   Dashboard as DashboardIcon,
   Analytics as AnalyticsIcon,
   Assessment as ReportsIcon,
+  BarChart as BusinessIntelligenceIcon,
   NotificationsActive as NotificationActiveIcon,
   Storage as DataIcon,
   Compare as DataAnalysisIcon,
@@ -66,6 +67,13 @@ const navigationItems = [
     icon: ReportsIcon,
     path: '/reports',
     description: 'Report generation',
+  },
+  {
+    id: 'business-intelligence',
+    label: 'Business Intelligence',
+    icon: BusinessIntelligenceIcon,
+    path: '/business-intelligence',
+    description: 'BI dashboards and analytics',
   },
   {
     id: 'notifications',
@@ -191,7 +199,7 @@ const MainLayout = ({ children }) => {
             }}
           >
             <img 
-              src="/fusione-logo-transparente.png" 
+              src="/fusione-logo.png" 
               alt="Fusione Logo" 
               style={{ width: '100%', height: '100%', objectFit: 'contain' }}
             />

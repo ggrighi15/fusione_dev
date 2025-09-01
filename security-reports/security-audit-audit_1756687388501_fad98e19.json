@@ -1,0 +1,138 @@
+{
+  "auditId": "audit_1756687388501_fad98e19",
+  "timestamp": "2025-09-01T00:43:08.502Z",
+  "startTime": 1756687388501,
+  "endTime": 1756687388506,
+  "duration": 5,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:43:08.502Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:43:08.502Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:43:08.502Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:43:08.502Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:43:08.502Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:43:08.502Z"
+      }
+    ],
+    "vulnerabilitiesFound": 0,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:43:08.503Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "dependency_vulnerability",
+            "severity": "medium",
+            "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+            "recommendation": "Atualizar express para versão mais recente"
+          }
+        ],
+        "timestamp": "2025-09-01T00:43:08.503Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:43:08.504Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:43:08.504Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "dependency_vulnerability",
+        "severity": "medium",
+        "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+        "recommendation": "Atualizar express para versão mais recente"
+      }
+    ],
+    "riskScore": 4,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:43:08.505Z",
+    "events": [
+      {
+        "id": "event_1756687388505_0587d29a",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-31T07:58:02.759Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687388505_6600141a",
+        "type": "login_attempt",
+        "severity": "low",
+        "timestamp": "2025-08-31T07:56:48.225Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687388505_d61d93b5",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-31T12:46:12.714Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687388505_8a23468f",
+        "type": "login_attempt",
+        "severity": "medium",
+        "timestamp": "2025-08-31T18:44:06.920Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 42,
+      "failedLoginAttempts": 17,
+      "blockedRequests": 19,
+      "activeThreats": 2,
+      "securityScore": 96,
+      "lastSecurityUpdate": "2025-09-01T00:43:08.506Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "minimal",
+  "recommendations": []
+}

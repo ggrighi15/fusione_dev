@@ -1,0 +1,159 @@
+{
+  "auditId": "audit_1756687649729_00dfc585",
+  "timestamp": "2025-09-01T00:47:29.730Z",
+  "startTime": 1756687649729,
+  "endTime": 1756687649733,
+  "duration": 4,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:47:29.730Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:47:29.730Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "xss",
+            "severity": "medium",
+            "description": "Possível vulnerabilidade XSS detectada com payload: <script>alert(\"XSS\")</script>",
+            "recommendation": "Implementar sanitização de entrada e Content Security Policy"
+          }
+        ],
+        "timestamp": "2025-09-01T00:47:29.730Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:47:29.731Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:47:29.731Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:47:29.731Z"
+      }
+    ],
+    "vulnerabilitiesFound": 1,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:47:29.731Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [
+          {
+            "type": "dependency_vulnerability",
+            "severity": "medium",
+            "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+            "recommendation": "Atualizar express para versão mais recente"
+          }
+        ],
+        "timestamp": "2025-09-01T00:47:29.731Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:47:29.731Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:47:29.732Z"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "type": "dependency_vulnerability",
+        "severity": "medium",
+        "description": "Vulnerabilidade encontrada em express@4.17.1: CVE-2022-24999",
+        "recommendation": "Atualizar express para versão mais recente"
+      }
+    ],
+    "riskScore": 4,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:47:29.732Z",
+    "events": [
+      {
+        "id": "event_1756687649732_c56a7d2f",
+        "type": "suspicious_activity",
+        "severity": "medium",
+        "timestamp": "2025-08-31T14:51:35.175Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687649732_db6fd6e8",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-08-31T06:53:52.515Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687649732_6012044a",
+        "type": "suspicious_activity",
+        "severity": "low",
+        "timestamp": "2025-08-31T06:21:08.575Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687649732_720f21dd",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-08-31T07:33:41.476Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687649732_7f3f08a8",
+        "type": "access_denied",
+        "severity": "low",
+        "timestamp": "2025-08-31T07:35:05.763Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756687649732_2a9ac9e8",
+        "type": "login_attempt",
+        "severity": "low",
+        "timestamp": "2025-08-31T08:40:42.386Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [],
+    "metrics": {
+      "totalSecurityEvents": 51,
+      "failedLoginAttempts": 18,
+      "blockedRequests": 26,
+      "activeThreats": 4,
+      "securityScore": 10,
+      "lastSecurityUpdate": "2025-09-01T00:47:29.733Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "low",
+  "recommendations": []
+}

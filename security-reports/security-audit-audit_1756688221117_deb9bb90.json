@@ -1,0 +1,140 @@
+{
+  "auditId": "audit_1756688221117_deb9bb90",
+  "timestamp": "2025-09-01T00:57:01.117Z",
+  "startTime": 1756688221117,
+  "endTime": 1756688221121,
+  "duration": 4,
+  "penetrationTesting": {
+    "timestamp": "2025-09-01T00:57:01.118Z",
+    "tests": [
+      {
+        "name": "SQL Injection Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:57:01.118Z"
+      },
+      {
+        "name": "XSS Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:57:01.118Z"
+      },
+      {
+        "name": "Authentication Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:57:01.118Z"
+      },
+      {
+        "name": "Authorization Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:57:01.118Z"
+      },
+      {
+        "name": "Security Configuration Test",
+        "type": "penetration",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:57:01.118Z"
+      }
+    ],
+    "vulnerabilitiesFound": 0,
+    "criticalIssues": 0,
+    "status": "completed"
+  },
+  "vulnerabilityScanning": {
+    "timestamp": "2025-09-01T00:57:01.119Z",
+    "scans": [
+      {
+        "name": "Dependency Vulnerability Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:57:01.119Z"
+      },
+      {
+        "name": "Configuration Security Scan",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:57:01.119Z"
+      },
+      {
+        "name": "Static Code Analysis",
+        "type": "vulnerability",
+        "status": "completed",
+        "vulnerabilities": [],
+        "timestamp": "2025-09-01T00:57:01.119Z"
+      }
+    ],
+    "vulnerabilities": [],
+    "riskScore": 0,
+    "status": "completed"
+  },
+  "securityMonitoring": {
+    "timestamp": "2025-09-01T00:57:01.119Z",
+    "events": [
+      {
+        "id": "event_1756688221120_8f76699b",
+        "type": "login_attempt",
+        "severity": "low",
+        "timestamp": "2025-09-01T00:56:53.338Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688221120_379a139a",
+        "type": "suspicious_activity",
+        "severity": "high",
+        "timestamp": "2025-09-01T00:30:27.939Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688221120_e8603b81",
+        "type": "login_attempt",
+        "severity": "high",
+        "timestamp": "2025-08-31T08:12:35.882Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688221120_0bebf6c0",
+        "type": "access_denied",
+        "severity": "medium",
+        "timestamp": "2025-08-31T22:18:22.266Z",
+        "description": "Evento de segurança detectado"
+      },
+      {
+        "id": "event_1756688221120_9d02a11d",
+        "type": "access_denied",
+        "severity": "high",
+        "timestamp": "2025-08-31T07:00:27.732Z",
+        "description": "Evento de segurança detectado"
+      }
+    ],
+    "alerts": [
+      {
+        "id": "alert_1756688221120_ced4ec98",
+        "type": "multiple_failed_logins",
+        "severity": "high",
+        "timestamp": "2025-09-01T00:57:01.120Z",
+        "description": "Múltiplas tentativas de login falharam para o mesmo usuário",
+        "recommendation": "Investigar possível ataque de força bruta"
+      }
+    ],
+    "metrics": {
+      "totalSecurityEvents": 38,
+      "failedLoginAttempts": 11,
+      "blockedRequests": 33,
+      "activeThreats": 3,
+      "securityScore": 30,
+      "lastSecurityUpdate": "2025-09-01T00:57:01.120Z"
+    },
+    "status": "completed"
+  },
+  "overallRisk": "minimal",
+  "recommendations": []
+}

@@ -1,8 +1,9 @@
-const path = require('path');
-const fs = require('fs').promises;
-const express = require('express');
-const multer = require('multer');
-const crypto = require('crypto');
+import path from 'path';
+import { promises as fs } from 'fs';
+import express from 'express';
+import multer from 'multer';
+import crypto from 'crypto';
+import { spawn } from 'child_process';
 
 class FusioneUIModule {
     constructor(core) {
@@ -1892,7 +1893,7 @@ root.render(<App />);`;
             console.log(`[${this.name}] Iniciando build de produção...`);
             
             // Executar build do React
-            const { spawn } = require('child_process');
+            // spawn já importado no topo
             
             return new Promise((resolve, reject) => {
                 const buildProcess = spawn('npm', ['run', 'build'], {
@@ -1919,7 +1920,7 @@ root.render(<App />);`;
         try {
             console.log(`[${this.name}] Iniciando servidor de desenvolvimento...`);
             
-            const { spawn } = require('child_process');
+            // spawn já importado no topo
             
             const devProcess = spawn('npm', ['start'], {
                 cwd: __dirname,
@@ -1968,4 +1969,4 @@ root.render(<App />);`;
     }
 }
 
-module.exports = FusioneUIModule;
+export default FusioneUIModule;

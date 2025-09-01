@@ -45,12 +45,12 @@ Este documento apresenta a proposta de migração completa do **Fusione Core Sys
    - Validação de configurações
 
 4. **Database Manager** (`src/core/database-manager.js`)
-   - Conexão com MongoDB
+   - Database connections removed
    - Pool de conexões
    - Health checks automáticos
 
 5. **Cache Manager** (`src/core/cache-manager.js`)
-   - Integração com Redis
+   - Cache layer removed
    - TTL configurável
    - Estratégias de cache
 
@@ -439,8 +439,7 @@ Este documento apresenta a proposta de migração completa do **Fusione Core Sys
 {
   "bcrypt": "^6.0.0",
   "express": "^4.18.2",
-  "mongoose": "^6.12.8",
-  "redis": "^4.6.13",
+  // MongoDB and Redis dependencies removed
   "socket.io": "^4.8.1",
   "jsonwebtoken": "^9.0.2",
   "winston": "^3.17.0",
@@ -462,8 +461,7 @@ Este documento apresenta a proposta de migração completa do **Fusione Core Sys
 
 ### Infraestrutura Necessária (Robusta)
 - **Node.js**: 18.0.0+ LTS
-- **MongoDB**: 7.0+ (Cluster para alta disponibilidade)
-- **Redis**: 7.0+ (Cluster para cache distribuído)
+- **Elasticsearch**: 8.0+ (Search and analytics)
 - **Docker**: 20.0.0+ (Containerização de todos os módulos)
 - **Kubernetes**: Orquestração de containers
 - **Nginx**: Proxy reverso com load balancing
@@ -485,7 +483,7 @@ Este documento apresenta a proposta de migração completa do **Fusione Core Sys
 ### Health Checks Automáticos
 - Status de memória e CPU
 - Conectividade com banco de dados
-- Status do cache Redis
+- Application status monitoring
 - Uptime do sistema
 - Status dos módulos carregados
 
@@ -561,7 +559,7 @@ Este documento apresenta a proposta de migração completa do **Fusione Core Sys
 #### **Infraestrutura (Mensal)**
 - **Servidores (Cluster)**: $6,500
 - **Banco de Dados (HA)**: $2,200
-- **Cache/Redis (Cluster)**: $1,200
+- **Search/Elasticsearch**: $800
 - **Storage (MinIO)**: $800
 - **Monitoramento (ELK)**: $700
 - **Backup/DR**: $600
