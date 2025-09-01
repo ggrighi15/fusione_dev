@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Fusione Core System
 
 ![Fusione Logo](https://img.shields.io/badge/Fusione-Core%20System-blue?style=for-the-badge)
@@ -377,6 +378,26 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICE
 
 ---
 
-**Fusione Core System** - Sistema modular para o futuro 🚀#   f u s i o n e - c o r e - s y s t e m 
- 
- 
+**Fusione Core System** - Sistema modular para o futuro 🚀
+
+## 🔧 Oracle JDK 24 Integration
+
+O sistema agora inclui suporte completo ao Oracle JDK 24:
+
+- **Configuração Automática**: Variáveis de ambiente Java configuradas automaticamente
+- **Containers Java**: Suporte a containers com Oracle JDK 24
+- **Build Scripts**: Scripts de build integrados com Java
+- **Módulos Java**: Capacidade de executar módulos baseados em Java
+
+### Configuração Java
+
+```bash
+# Verificar instalação do Java
+java -version
+
+# Configurar ambiente Java
+node config/java-env.js
+
+# Build com suporte Java
+node scripts/build.js
+```

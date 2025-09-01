@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: fusione
+    env: python
+    plan: starter
+    autoDeploy: true
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: MYSQL_URI
+        sync: false
+    preview:
+      previewEnv: python
+      autoDeploy: true
