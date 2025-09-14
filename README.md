@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Fusione Core System
 
 ![Fusione Logo](https://img.shields.io/badge/Fusione-Core%20System-blue?style=for-the-badge)
