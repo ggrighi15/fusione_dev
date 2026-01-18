@@ -1,0 +1,930 @@
+[
+    {
+        "#Clientes": "ABR - Associação Brasileira do Segmento de Reforma de Pneus",
+        "CPF_CNPJ": null,
+        "CPF_CNPJ_Conv": null,
+        "Clientes": "ABR - Associação Brasileira do Segmento de Reforma de Pneus",
+        "Clientes_Maiusc": "ABR - ASSOCIAÇÃO BRASILEIRA DO SEGMENTO DE REFORMA DE PNEUS",
+        "Índice": 1
+    },
+    {
+        "#Clientes": "Alpar Participações Ltda.",
+        "CPF_CNPJ": "12.697.012/0001-04",
+        "CPF_CNPJ_Conv": "12697012000104",
+        "Clientes": "Alpar Participações Ltda.",
+        "Clientes_Maiusc": "ALPAR PARTICIPAÇÕES LTDA.",
+        "Índice": 2
+    },
+    {
+        "#Clientes": "Angelita Borges Paludo",
+        "CPF_CNPJ": null,
+        "CPF_CNPJ_Conv": null,
+        "Clientes": "Angelita Borges Paludo",
+        "Clientes_Maiusc": "ANGELITA BORGES PALUDO",
+        "Índice": 3
+    },
+    {
+        "#Clientes": "Angilucca Participações S.A.",
+        "CPF_CNPJ": "09.204.861/0001-66",
+        "CPF_CNPJ_Conv": "9204861000166.0",
+        "Clientes": "Angilucca Participações S.A.",
+        "Clientes_Maiusc": "ANGILUCCA PARTICIPAÇÕES S.A.",
+        "Índice": 4
+    },
+    {
+        "#Clientes": "APFPAR Participações S.A.",
+        "CPF_CNPJ": "16.749.597/0001-01",
+        "CPF_CNPJ_Conv": "16749597000101.0",
+        "Clientes": "Ardan Participações S.A.",
+        "Clientes_Maiusc": "APFPAR PARTICIPAÇÕES S.A.",
+        "Índice": 5
+    },
+    {
+        "#Clientes": "Arlindo Paludo",
+        "CPF_CNPJ": "026.462.180-87",
+        "CPF_CNPJ_Conv": "2646218087.0",
+        "Clientes": "Arlindo Paludo",
+        "Clientes_Maiusc": "ARLINDO PALUDO",
+        "Índice": 6
+    },
+    {
+        "#Clientes": "APFPAR Participações S.A.",
+        "CPF_CNPJ": "00.279.226/0001-73",
+        "CPF_CNPJ_Conv": "279226000173.0",
+        "Clientes": "Arpal Participações S.A.",
+        "Clientes_Maiusc": "APFPAR PARTICIPAÇÕES S.A.",
+        "Índice": 7
+    },
+    {
+        "#Clientes": "Associação Esportiva, Recreativa, Cultural e Assistencial dos Funcionários do Grupo Vipal - AFUVI",
+        "CPF_CNPJ": "89.986.186/0001-03",
+        "CPF_CNPJ_Conv": "89986186000103.0",
+        "Clientes": "Associação Esportiva, Recreativa, Cultural e Assistencial dos Funcionários do Grupo Vipal - AFUVI",
+        "Clientes_Maiusc": "ASSOCIAÇÃO ESPORTIVA, RECREATIVA, CULTURAL E ASSISTENCIAL DOS FUNCIONÁRIOS DO GRUPO VIPAL - AFUVI",
+        "Índice": 8
+    },
+    {
+        "#Clientes": "Asuncor Negócios Imobiliários Ltda.",
+        "CPF_CNPJ": "11.401.157/0001-45",
+        "CPF_CNPJ_Conv": "11401157000145.0",
+        "Clientes": "Asuncor Negócios Imobiliários Ltda.",
+        "Clientes_Maiusc": "ASUNCOR NEGÓCIOS IMOBILIÁRIOS LTDA.",
+        "Índice": 9
+    },
+    {
+        "#Clientes": "Asuncor Negócios Imobiliários Ltda.",
+        "CPF_CNPJ": "11.401.157/0001-45",
+        "CPF_CNPJ_Conv": "11401157000145.0",
+        "Clientes": "Asuncor Negócios Imobiliários Ltda.",
+        "Clientes_Maiusc": "ASUNCOR NEGÓCIOS IMOBILIÁRIOS LTDA.",
+        "Índice": 10
+    },
+    {
+        "#Clientes": "Br Plásticos Indústria Ltda.",
+        "CPF_CNPJ": "05.491.005/0001-88",
+        "CPF_CNPJ_Conv": "5491005000188",
+        "Clientes": "BRP Compostos Ltda.",
+        "Clientes_Maiusc": "BR PLÁSTICOS INDÚSTRIA LTDA.",
+        "Índice": 11
+    },
+    {
+        "#Clientes": "Br Plásticos Indústria Ltda.",
+        "CPF_CNPJ": "17.124.043/0001-81",
+        "CPF_CNPJ_Conv": "17124043000181.0",
+        "Clientes": "BRP Log Ltda.",
+        "Clientes_Maiusc": "BR PLÁSTICOS INDÚSTRIA LTDA.",
+        "Índice": 12
+    },
+    {
+        "#Clientes": "Paludo Participações S.A.",
+        "CPF_CNPJ": "09.526.594/0001-43",
+        "CPF_CNPJ_Conv": "9526594000143.0",
+        "Clientes": "Banco Vipal S.A.",
+        "Clientes_Maiusc": "PALUDO PARTICIPAÇÕES S.A.",
+        "Índice": 13
+    },
+    {
+        "#Clientes": "Borrachas Vipal Nordeste S.A.",
+        "CPF_CNPJ": "07.857.217/0001-61",
+        "CPF_CNPJ_Conv": "7857217000161.0",
+        "Clientes": "Borrachas Vipal Nordeste S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL NORDESTE S.A.",
+        "Índice": 14
+    },
+    {
+        "#Clientes": "Borrachas Vipal Nordeste S.A.",
+        "CPF_CNPJ": "07.857.217/0002-42",
+        "CPF_CNPJ_Conv": "7857217000242.0",
+        "Clientes": "Borrachas Vipal Nordeste S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL NORDESTE S.A.",
+        "Índice": 15
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0037-55",
+        "CPF_CNPJ_Conv": "87870952003755.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 16
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0014-69",
+        "CPF_CNPJ_Conv": "87870952001469.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 17
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0001-44",
+        "CPF_CNPJ_Conv": "87870952000144.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 18
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0028-64",
+        "CPF_CNPJ_Conv": "87870952002864.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 19
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0008-10",
+        "CPF_CNPJ_Conv": "87870952000810.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 20
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0016-20",
+        "CPF_CNPJ_Conv": "87870952001620.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 21
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0006-59",
+        "CPF_CNPJ_Conv": "87870952000659.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 22
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0029-45",
+        "CPF_CNPJ_Conv": "87870952002945.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 23
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0022-79",
+        "CPF_CNPJ_Conv": "87870952002279.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 24
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0011-16",
+        "CPF_CNPJ_Conv": "87870952001116.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 25
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0013-88",
+        "CPF_CNPJ_Conv": "87870952001388.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 26
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0033-21",
+        "CPF_CNPJ_Conv": "87870952003321.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 27
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0015-40",
+        "CPF_CNPJ_Conv": "87870952001540.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 28
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0017-01",
+        "CPF_CNPJ_Conv": "87870952001701.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 29
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0032-40",
+        "CPF_CNPJ_Conv": "87870952003240.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 30
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0023-50",
+        "CPF_CNPJ_Conv": "87870952002350.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 31
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0002-25",
+        "CPF_CNPJ_Conv": "87870952000225.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 32
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0024-30",
+        "CPF_CNPJ_Conv": "87870952002430.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 33
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0025-11",
+        "CPF_CNPJ_Conv": "87870952002511.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 34
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0026-00",
+        "CPF_CNPJ_Conv": "87870952002600.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 35
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0027-83",
+        "CPF_CNPJ_Conv": "87870952002783.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 36
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0030-89",
+        "CPF_CNPJ_Conv": "87870952003089.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 37
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0031-60",
+        "CPF_CNPJ_Conv": "87870952003160.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 38
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0035-93",
+        "CPF_CNPJ_Conv": "87870952003593.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 39
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0034-02",
+        "CPF_CNPJ_Conv": "87870952003402.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 40
+    },
+    {
+        "#Clientes": "Borrachas Vipal S.A.",
+        "CPF_CNPJ": "87.870.952/0004-97",
+        "CPF_CNPJ_Conv": "87870952000497.0",
+        "Clientes": "Borrachas Vipal S.A.",
+        "Clientes_Maiusc": "BORRACHAS VIPAL S.A.",
+        "Índice": 41
+    },
+    {
+        "#Clientes": "Br Plásticos Indústria Ltda.",
+        "CPF_CNPJ": "87.963.815/0001-54",
+        "CPF_CNPJ_Conv": "87963815000154.0",
+        "Clientes": "Br Plásticos Indústria Ltda.",
+        "Clientes_Maiusc": "BR PLÁSTICOS INDÚSTRIA LTDA.",
+        "Índice": 42
+    },
+    {
+        "#Clientes": "Caravagio Empreendimentos e Incorporações Ltda.",
+        "CPF_CNPJ": "07.405.213/0001-42",
+        "CPF_CNPJ_Conv": "7405213000142.0",
+        "Clientes": "Caravagio Empreendimentos e Incorporações Ltda.",
+        "Clientes_Maiusc": "CARAVAGIO EMPREENDIMENTOS E INCORPORAÇÕES LTDA.",
+        "Índice": 43
+    },
+    {
+        "#Clientes": "Cauchos Vipal, S.A. de C.V",
+        "CPF_CNPJ": null,
+        "CPF_CNPJ_Conv": null,
+        "Clientes": "Cauchos Vipal, S.A. de C.V",
+        "Clientes_Maiusc": "CAUCHOS VIPAL, S.A. DE C.V",
+        "Índice": 44
+    },
+    {
+        "#Clientes": "Br Plásticos Indústria Ltda.",
+        "CPF_CNPJ": "09.305.097/0001-15",
+        "CPF_CNPJ_Conv": "9305097000115.0",
+        "Clientes": "Conforme Indústria Plástica Ltda.",
+        "Clientes_Maiusc": "BR PLÁSTICOS INDÚSTRIA LTDA.",
+        "Índice": 45
+    },
+    {
+        "#Clientes": "Br Plásticos Indústria Ltda.",
+        "CPF_CNPJ": "09.305.097/0002-04",
+        "CPF_CNPJ_Conv": "9305097000204.0",
+        "Clientes": "Conforme Indústria Plástica Ltda.",
+        "Clientes_Maiusc": "BR PLÁSTICOS INDÚSTRIA LTDA.",
+        "Índice": 46
+    },
+    {
+        "#Clientes": "Cya Rubber Distribuidora Ltda.",
+        "CPF_CNPJ": "04.435.399/0001-94",
+        "CPF_CNPJ_Conv": "4435399000194.0",
+        "Clientes": "Cya Rubber Distribuidora Ltda.",
+        "Clientes_Maiusc": "CYA RUBBER DISTRIBUIDORA LTDA.",
+        "Índice": 47
+    },
+    {
+        "#Clientes": "Cya Rubber Distribuidora Ltda.",
+        "CPF_CNPJ": "04.435.399/0003-56",
+        "CPF_CNPJ_Conv": "4435399000356.0",
+        "Clientes": "Cya Rubber Distribuidora Ltda.",
+        "Clientes_Maiusc": "CYA RUBBER DISTRIBUIDORA LTDA.",
+        "Índice": 48
+    },
+    {
+        "#Clientes": "Cya Rubber Distribuidora Ltda.",
+        "CPF_CNPJ": "04.435.399/0005-18",
+        "CPF_CNPJ_Conv": "4435399000518.0",
+        "Clientes": "Cya Rubber Distribuidora Ltda.",
+        "Clientes_Maiusc": "CYA RUBBER DISTRIBUIDORA LTDA.",
+        "Índice": 49
+    },
+    {
+        "#Clientes": "Cya Rubber Distribuidora Ltda.",
+        "CPF_CNPJ": "04.435.399/0006-07",
+        "CPF_CNPJ_Conv": "4435399000607.0",
+        "Clientes": "Cya Rubber Distribuidora Ltda.",
+        "Clientes_Maiusc": "CYA RUBBER DISTRIBUIDORA LTDA.",
+        "Índice": 50
+    },
+    {
+        "#Clientes": "Datami - Desenvolvimento Imobiliário Ltda.",
+        "CPF_CNPJ": "12.298.241/0001-48",
+        "CPF_CNPJ_Conv": "12298241000148.0",
+        "Clientes": "Datami - Desenvolvimento Imobiliário Ltda.",
+        "Clientes_Maiusc": "DATAMI - DESENVOLVIMENTO IMOBILIÁRIO LTDA.",
+        "Índice": 51
+    },
+    {
+        "#Clientes": "Emppal Holding de Participações Ltda.",
+        "CPF_CNPJ": "12.697.021/0001-97",
+        "CPF_CNPJ_Conv": "12697021000197.0",
+        "Clientes": "Emppal Holding de Participações Ltda.",
+        "Clientes_Maiusc": "EMPPAL HOLDING DE PARTICIPAÇÕES LTDA.",
+        "Índice": 52
+    },
+    {
+        "#Clientes": "Erval do Prata Indústria e ComÉrcio de Erva Mate Ltda.",
+        "CPF_CNPJ": "90.998.568/0001-36",
+        "CPF_CNPJ_Conv": "90998568000136.0",
+        "Clientes": "Erval do Prata Indústria e Comércio de Erva Mate Ltda.",
+        "Clientes_Maiusc": "ERVAL DO PRATA INDÚSTRIA E COMÉRCIO DE ERVA MATE LTDA.",
+        "Índice": 53
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0001-19",
+        "CPF_CNPJ_Conv": "12357041000119.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 54
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0001-19",
+        "CPF_CNPJ_Conv": "12357041000119.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 55
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0001-19",
+        "CPF_CNPJ_Conv": "12357041000119.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 56
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0001-19",
+        "CPF_CNPJ_Conv": "12357041000119.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 57
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0001-19",
+        "CPF_CNPJ_Conv": "12357041000119.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 58
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0004-61",
+        "CPF_CNPJ_Conv": "12357041000461.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 59
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0004-61",
+        "CPF_CNPJ_Conv": "12357041000461.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 60
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0004-61",
+        "CPF_CNPJ_Conv": "12357041000461.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 61
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0004-61",
+        "CPF_CNPJ_Conv": "12357041000461.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 62
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0004-61",
+        "CPF_CNPJ_Conv": "12357041000461.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 63
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0003-80",
+        "CPF_CNPJ_Conv": "12357041000380.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 64
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0003-80",
+        "CPF_CNPJ_Conv": "12357041000380.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 65
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0003-80",
+        "CPF_CNPJ_Conv": "12357041000380.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 66
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0003-80",
+        "CPF_CNPJ_Conv": "12357041000380.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 67
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0003-80",
+        "CPF_CNPJ_Conv": "12357041000380.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 68
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0002-08",
+        "CPF_CNPJ_Conv": "12357041000208.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 69
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0002-08",
+        "CPF_CNPJ_Conv": "12357041000208.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 70
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0002-08",
+        "CPF_CNPJ_Conv": "12357041000208.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 71
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0002-08",
+        "CPF_CNPJ_Conv": "12357041000208.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 72
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0002-08",
+        "CPF_CNPJ_Conv": "12357041000208.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 73
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0005-42",
+        "CPF_CNPJ_Conv": "12357041000542.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 74
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0005-42",
+        "CPF_CNPJ_Conv": "12357041000542.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 75
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0005-42",
+        "CPF_CNPJ_Conv": "12357041000542.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 76
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0005-42",
+        "CPF_CNPJ_Conv": "12357041000542.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 77
+    },
+    {
+        "#Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "CPF_CNPJ": "12.357.041/0005-42",
+        "CPF_CNPJ_Conv": "12357041000542.0",
+        "Clientes": "Fate Pneus do Brasil S.A. - Indústria, Comércio, Importação e Exportação",
+        "Clientes_Maiusc": "FATE PNEUS DO BRASIL S.A. - INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO E EXPORTAÇÃO",
+        "Índice": 78
+    },
+    {
+        "#Clientes": "Idir Paludo",
+        "CPF_CNPJ": "134.408.880-53",
+        "CPF_CNPJ_Conv": "13440888053.0",
+        "Clientes": "Idir Paludo",
+        "Clientes_Maiusc": "IDIR PALUDO",
+        "Índice": 79
+    },
+    {
+        "#Clientes": "Idirpar Participações S.A.",
+        "CPF_CNPJ": "09.157.401/0001-24",
+        "CPF_CNPJ_Conv": "9157401000124.0",
+        "Clientes": "Idirpar Participações S.A.",
+        "Clientes_Maiusc": "IDIRPAR PARTICIPAÇÕES S.A.",
+        "Índice": 80
+    },
+    {
+        "#Clientes": "Inpal Participações Ltda.",
+        "CPF_CNPJ": "12.696.976/0001-20",
+        "CPF_CNPJ_Conv": "12696976000120.0",
+        "Clientes": "Inpal Participações Ltda.",
+        "Clientes_Maiusc": "INPAL PARTICIPAÇÕES LTDA.",
+        "Índice": 81
+    },
+    {
+        "#Clientes": "Jpar Empreendimentos Ltda. - EPP",
+        "CPF_CNPJ": null,
+        "CPF_CNPJ_Conv": null,
+        "Clientes": "Jpar Empreendimentos Ltda. - EPP",
+        "Clientes_Maiusc": "JPAR EMPREENDIMENTOS LTDA. - EPP",
+        "Índice": 82
+    },
+    {
+        "#Clientes": "Marpal Administração e Participações Ltda.",
+        "CPF_CNPJ": "05.962.751/0001-02",
+        "CPF_CNPJ_Conv": "5962751000102.0",
+        "Clientes": "Marpal Administração e Participações Ltda.",
+        "Clientes_Maiusc": "MARPAL ADMINISTRAÇÃO E PARTICIPAÇÕES LTDA.",
+        "Índice": 83
+    },
+    {
+        "#Clientes": "Br Plásticos Indústria Ltda.",
+        "CPF_CNPJ": "12.637.710/0001-06",
+        "CPF_CNPJ_Conv": "12637710000106.0",
+        "Clientes": "Neoforma Soluções Construtivas Ltda.",
+        "Clientes_Maiusc": "BR PLÁSTICOS INDÚSTRIA LTDA.",
+        "Índice": 84
+    },
+    {
+        "#Clientes": "Paludo Participações S.A.",
+        "CPF_CNPJ": "02.519.469/0001-67",
+        "CPF_CNPJ_Conv": "2519469000167.0",
+        "Clientes": "Paludo Agropecuária Ltda.",
+        "Clientes_Maiusc": "PALUDO PARTICIPAÇÕES S.A.",
+        "Índice": 85
+    },
+    {
+        "#Clientes": "Paludo Participações S.A.",
+        "CPF_CNPJ": "93.169.340/0001-21",
+        "CPF_CNPJ_Conv": "93169340000121.0",
+        "Clientes": "Paludo Participações S.A.",
+        "Clientes_Maiusc": "PALUDO PARTICIPAÇÕES S.A.",
+        "Índice": 86
+    },
+    {
+        "#Clientes": "Parpal Participações Ltda.",
+        "CPF_CNPJ": "12.697.030/0001-88",
+        "CPF_CNPJ_Conv": "12697030000188.0",
+        "Clientes": "Parpal Participações Ltda.",
+        "Clientes_Maiusc": "PARPAL PARTICIPAÇÕES LTDA.",
+        "Índice": 87
+    },
+    {
+        "#Clientes": "Precon Indústria Plástica Ltda.",
+        "CPF_CNPJ": "02.246.955/0001-59",
+        "CPF_CNPJ_Conv": "2246955000159.0",
+        "Clientes": "Precon Indústria Plástica Ltda.",
+        "Clientes_Maiusc": "PRECON INDÚSTRIA PLÁSTICA LTDA.",
+        "Índice": 88
+    },
+    {
+        "#Clientes": "Precon Indústria Plástica Ltda.",
+        "CPF_CNPJ": "02.246.955/0002-30",
+        "CPF_CNPJ_Conv": "2246955000230.0",
+        "Clientes": "Precon Indústria Plástica Ltda.",
+        "Clientes_Maiusc": "PRECON INDÚSTRIA PLÁSTICA LTDA.",
+        "Índice": 89
+    },
+    {
+        "#Clientes": "Precon Indústria Plástica Ltda.",
+        "CPF_CNPJ": "02.246.955/0003-10",
+        "CPF_CNPJ_Conv": "2246955000310.0",
+        "Clientes": "Precon Indústria Plástica Ltda.",
+        "Clientes_Maiusc": "PRECON INDÚSTRIA PLÁSTICA LTDA.",
+        "Índice": 90
+    },
+    {
+        "#Clientes": "Renan Batista Patrício Lima",
+        "CPF_CNPJ": "473.481.350-72",
+        "CPF_CNPJ_Conv": "47348135072.0",
+        "Clientes": "Renan Batista Patrício Lima",
+        "Clientes_Maiusc": "RENAN BATISTA PATRÍCIO LIMA",
+        "Índice": 91
+    },
+    {
+        "#Clientes": "Ridi Participações Ltda.",
+        "CPF_CNPJ": "09.451.149/0001-61",
+        "CPF_CNPJ_Conv": "9451149000161.0",
+        "Clientes": "Ridi Participações Ltda.",
+        "Clientes_Maiusc": "RIDI PARTICIPAÇÕES LTDA.",
+        "Índice": 92
+    },
+    {
+        "#Clientes": "Paludo Participações S.A.",
+        "CPF_CNPJ": "05.950.679/0001-01",
+        "CPF_CNPJ_Conv": "5950679000101.0",
+        "Clientes": "Risorse Fomento Mercantil Ltda.",
+        "Clientes_Maiusc": "PALUDO PARTICIPAÇÕES S.A.",
+        "Índice": 93
+    },
+    {
+        "#Clientes": "Paludo Participações S.A.",
+        "CPF_CNPJ": "05.950.679/0003-65",
+        "CPF_CNPJ_Conv": "5950679000365.0",
+        "Clientes": "Risorse Fomento Mercantil Ltda.",
+        "Clientes_Maiusc": "PALUDO PARTICIPAÇÕES S.A.",
+        "Índice": 94
+    },
+    {
+        "#Clientes": "Sifra Pneumáticos Ltda.",
+        "CPF_CNPJ": "06.003.652/0001-66",
+        "CPF_CNPJ_Conv": "6003652000166.0",
+        "Clientes": "Sifra Pneumáticos Ltda.",
+        "Clientes_Maiusc": "SIFRA PNEUMÁTICOS LTDA.",
+        "Índice": 95
+    },
+    {
+        "#Clientes": "Silver Participações Ltda.",
+        "CPF_CNPJ": "09.286.565/0001-51",
+        "CPF_CNPJ_Conv": "9286565000151.0",
+        "Clientes": "Silver Participações Ltda.",
+        "Clientes_Maiusc": "SILVER PARTICIPAÇÕES LTDA.",
+        "Índice": 96
+    },
+    {
+        "#Clientes": "Taiana Paludo",
+        "CPF_CNPJ": "721.530.910-04",
+        "CPF_CNPJ_Conv": "72153091004.0",
+        "Clientes": "Taiana Paludo",
+        "Clientes_Maiusc": "TAIANA PALUDO",
+        "Índice": 97
+    },
+    {
+        "#Clientes": "Titopar Participações Ltda.",
+        "CPF_CNPJ": "09.025.269/0001-05",
+        "CPF_CNPJ_Conv": "9025269000105.0",
+        "Clientes": "Titopar Participações Ltda.",
+        "Clientes_Maiusc": "TITOPAR PARTICIPAÇÕES LTDA.",
+        "Índice": 98
+    },
+    {
+        "#Clientes": "Br Plásticos Indústria Ltda.",
+        "CPF_CNPJ": "81.522.690/0001-40",
+        "CPF_CNPJ_Conv": "81522690000140.0",
+        "Clientes": "Tubozan Indústria Plástica Ltda.",
+        "Clientes_Maiusc": "BR PLÁSTICOS INDÚSTRIA LTDA.",
+        "Índice": 99
+    },
+    {
+        "#Clientes": "Br Plásticos Indústria Ltda.",
+        "CPF_CNPJ": "81.522.690/0003-02",
+        "CPF_CNPJ_Conv": "81522690000302.0",
+        "Clientes": "Tubozan Indústria Plástica Ltda.",
+        "Clientes_Maiusc": "BR PLÁSTICOS INDÚSTRIA LTDA.",
+        "Índice": 100
+    },
+    {
+        "#Clientes": "Br Plásticos Indústria Ltda.",
+        "CPF_CNPJ": "81.522.690/0002-21",
+        "CPF_CNPJ_Conv": "81522690000221.0",
+        "Clientes": "Tubozan Indústria Plástica Ltda.",
+        "Clientes_Maiusc": "BR PLÁSTICOS INDÚSTRIA LTDA.",
+        "Índice": 101
+    },
+    {
+        "#Clientes": "VAP Participações S.A.",
+        "CPF_CNPJ": "93.196.020/0001-60",
+        "CPF_CNPJ_Conv": "93196020000160.0",
+        "Clientes": "VAP Participações S.A.",
+        "Clientes_Maiusc": "VAP PARTICIPAÇÕES S.A.",
+        "Índice": 102
+    },
+    {
+        "#Clientes": "Vicêncio Paludo",
+        "CPF_CNPJ": "026.462.260-04",
+        "CPF_CNPJ_Conv": "2646226004.0",
+        "Clientes": "Vicêncio Paludo",
+        "Clientes_Maiusc": "VICÊNCIO PALUDO",
+        "Índice": 103
+    },
+    {
+        "#Clientes": "Vicêncio Paludo, Filhos & Cia Ltda.",
+        "CPF_CNPJ": "91.615.039/0001-79",
+        "CPF_CNPJ_Conv": "91615039000179.0",
+        "Clientes": "Vicêncio Paludo, Filhos & Cia Ltda.",
+        "Clientes_Maiusc": "VICÊNCIO PALUDO, FILHOS & CIA LTDA.",
+        "Índice": 104
+    },
+    {
+        "#Clientes": "Vipal Indústria de Máquinas Ltda.",
+        "CPF_CNPJ": "05.957.233/0001-09",
+        "CPF_CNPJ_Conv": "5957233000109.0",
+        "Clientes": "Vipal Indústria de Máquinas Ltda.",
+        "Clientes_Maiusc": "VIPAL INDÚSTRIA DE MÁQUINAS LTDA.",
+        "Índice": 105
+    },
+    {
+        "#Clientes": "Vipal Indústria de Máquinas Ltda.",
+        "CPF_CNPJ": "05.957.233/0002-81",
+        "CPF_CNPJ_Conv": "5957233000281.0",
+        "Clientes": "Vipal Indústria de Máquinas Ltda.",
+        "Clientes_Maiusc": "VIPAL INDÚSTRIA DE MÁQUINAS LTDA.",
+        "Índice": 106
+    },
+    {
+        "#Clientes": "Vipal Participadas España S.L.",
+        "CPF_CNPJ": null,
+        "CPF_CNPJ_Conv": null,
+        "Clientes": "Vipal Participadas España S.L.",
+        "Clientes_Maiusc": "VIPAL PARTICIPADAS ESPAÑA S.L.",
+        "Índice": 107
+    },
+    {
+        "#Clientes": "Vipal S.A.",
+        "CPF_CNPJ": null,
+        "CPF_CNPJ_Conv": null,
+        "Clientes": "Vipal S.A.",
+        "Clientes_Maiusc": "VIPAL S.A.",
+        "Índice": 108
+    },
+    {
+        "#Clientes": "Vipaltec - Pesquisa e Desenvolvimento Tecnológico Ltda.",
+        "CPF_CNPJ": "08.295.540/0001-51",
+        "CPF_CNPJ_Conv": "8295540000151.0",
+        "Clientes": "Vipaltec - Pesquisa e Desenvolvimento Tecnológico Ltda.",
+        "Clientes_Maiusc": "VIPALTEC - PESQUISA E DESENVOLVIMENTO TECNOLÓGICO LTDA.",
+        "Índice": 109
+    },
+    {
+        "#Clientes": "Paludo Participações S.A.",
+        "CPF_CNPJ": "08.779.422/0001-19",
+        "CPF_CNPJ_Conv": "8779422000119.0",
+        "Clientes": "Vipar Participações Ltda.",
+        "Clientes_Maiusc": "PALUDO PARTICIPAÇÕES S.A.",
+        "Índice": 110
+    },
+    {
+        "#Clientes": "Vitapar Participações Ltda.",
+        "CPF_CNPJ": "06.964.289/0001-45",
+        "CPF_CNPJ_Conv": "6964289000145.0",
+        "Clientes": "Vitapar Participações Ltda.",
+        "Clientes_Maiusc": "VITAPAR PARTICIPAÇÕES LTDA.",
+        "Índice": 111
+    },
+    {
+        "#Clientes": "Marangoni Tread Latino América S.A. Indústria e Comércio de Artefatos de Borracha",
+        "CPF_CNPJ": "02.551.474/0001-57",
+        "CPF_CNPJ_Conv": "2551474000157.0",
+        "Clientes": "Marangoni Tread Latino América S.A. Indústria e Comércio de Artefatos de Borracha",
+        "Clientes_Maiusc": "MARANGONI TREAD LATINO AMÉRICA S.A. INDÚSTRIA E COMÉRCIO DE ARTEFATOS DE BORRACHA",
+        "Índice": 112
+    },
+    {
+        "#Clientes": "Marangoni Tread Latino América S.A. Indústria e Comércio de Artefatos de Borracha",
+        "CPF_CNPJ": "67.479.931/0001-95",
+        "CPF_CNPJ_Conv": "67479931000195.0",
+        "Clientes": "RT Rio Preto Reformas de Pneus Ltda.",
+        "Clientes_Maiusc": "MARANGONI TREAD LATINO AMÉRICA S.A. INDÚSTRIA E COMÉRCIO DE ARTEFATOS DE BORRACHA",
+        "Índice": 113
+    },
+    {
+        "#Clientes": "Marangoni Tread Latino América S.A. Indústria e Comércio de Artefatos de Borracha",
+        "CPF_CNPJ": "06.211.192/0001-61",
+        "CPF_CNPJ_Conv": "6211192000161.0",
+        "Clientes": "RT Canoas Reformas de Pneus Ltda.",
+        "Clientes_Maiusc": "MARANGONI TREAD LATINO AMÉRICA S.A. INDÚSTRIA E COMÉRCIO DE ARTEFATOS DE BORRACHA",
+        "Índice": 114
+    },
+    {
+        "#Clientes": "Marangoni Tread Latino América S.A. Indústria e Comércio de Artefatos de Borracha",
+        "CPF_CNPJ": "09.523.553/0001-01",
+        "CPF_CNPJ_Conv": "9523553000101.0",
+        "Clientes": "JF Recap Reformadora de Pneus Ltda.",
+        "Clientes_Maiusc": "MARANGONI TREAD LATINO AMÉRICA S.A. INDÚSTRIA E COMÉRCIO DE ARTEFATOS DE BORRACHA",
+        "Índice": 115
+    },
+    {
+        "#Clientes": "Marangoni Tread Latino América S.A. Indústria e Comércio de Artefatos de Borracha",
+        "CPF_CNPJ": null,
+        "CPF_CNPJ_Conv": null,
+        "Clientes": "RT Bicas Reforma de Pneus Ltda.",
+        "Clientes_Maiusc": "MARANGONI TREAD LATINO AMÉRICA S.A. INDÚSTRIA E COMÉRCIO DE ARTEFATOS DE BORRACHA",
+        "Índice": 116
+    }
+]
