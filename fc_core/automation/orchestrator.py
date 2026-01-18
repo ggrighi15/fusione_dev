@@ -22,8 +22,10 @@ class DataSource(str, Enum):
     TJMG = "tjmg"
     TRT3 = "trt3"
     JUSBRASIL = "jusbrasil"
-    # Adicionando suporte genérico
-    GENERIC_COURT = "court" 
+    GENERIC_COURT = "court"
+    DOMICILIO = "dje"
+    ANTT = "antt"
+    RIDIGITAL = "ridigital"
 
 
 class ClientCode(str, Enum):
