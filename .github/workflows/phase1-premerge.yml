@@ -1,0 +1,64 @@
+name: Phase 1 SQL Server Gate
+
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - "db/**"
+      - "migrations/**"
+      - "scripts/sql/**"
+      - "FusioneCore/**"
+      - "Fusione.DataMap.Api/**"
+      - "tools/premerge-check.ps1"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phase1-premerge:
+    name: Phase 1 pre-merge guard
+    if: startsWith(github.head_ref, 'feature/fase1-sqlserver')
+    runs-on: windows-latest
+    timeout-minutes: 10
+    env:
+      DOTNET_VERSION: '9.0.x'
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__AuthConnection: 'Server=(localdb)\\mssqllocaldb;Database=FusioneCorePhase1;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=False'
+      ConnectionStrings__ApplicationConnection: 'Server=(localdb)\\mssqllocaldb;Database=FusioneCorePhase1;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=False'
+      ConnectionStrings__DefaultConnection: 'Server=(localdb)\\mssqllocaldb;Database=FusioneCorePhase1;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=False'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install dotnet-ef
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Add dotnet tools to PATH
+        shell: pwsh
+        run: echo "$Env:USERPROFILE\\.dotnet\\tools" >> $Env:GITHUB_PATH
+
+      - name: Run premerge-check (skip tests)
+        shell: pwsh
+        run: ./tools/premerge-check.ps1 -Configuration Release -SkipTests
+
+      - name: dotnet ef migrations list (all contexts)
+        shell: pwsh
+        run: |
+          $contexts = @(
+            @{ Name = "AuthDbContext"; Project = "FusioneCore/API/FusioneCore.csproj"; Startup = "FusioneCore/API/FusioneCore.csproj" },
+            @{ Name = "ApplicationDbContext"; Project = "FusioneCore/API/FusioneCore.csproj"; Startup = "FusioneCore/API/FusioneCore.csproj" },
+            @{ Name = "FusioneContext"; Project = "FusioneCore/API/FusioneCore.csproj"; Startup = "FusioneCore/API/FusioneCore.csproj" },
+            @{ Name = "FusioneDataMapDbContext"; Project = "Fusione.DataMap.Api/Fusione.DataMap.Api.csproj"; Startup = "Fusione.DataMap.Api/Fusione.DataMap.Api.csproj" }
+          )
+
+          foreach ($ctx in $contexts) {
+            Write-Host "\n=== dotnet ef migrations list :: $($ctx.Name) ===" -ForegroundColor Cyan
+            dotnet ef migrations list --project $ctx.Project --startup-project $ctx.Startup --context $ctx.Name --no-build --no-connect
+          }
