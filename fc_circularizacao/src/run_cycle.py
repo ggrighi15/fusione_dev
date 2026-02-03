@@ -1,0 +1,216 @@
+﻿from __future__ import annotations
+import csv
+import os
+import uuid
+from pathlib import Path
+from fc_circularize.settings import load_settings
+from fc_circularize.db import db_session
+from fc_circularize.util import new_id, now_iso
+from fc_circularize.mailer import build_message, send_email_smtp, save_eml_before_smtp, save_eml_outbox, body_hash
+
+SUBJECT_TEMPLATE = "[FCID:{fcid}] Carta de Circularizacao - {sigla_cliente} - {escritorio_sigla} - {auditoria} - Data-Base {exercicio}"
+
+BODY_TEMPLATE_MP = """Prezado(a)s Senhore(a)s,
+
+Em conexao com a auditoria de nossas demonstracoes financeiras preparadas de acordo com as praticas contabeis adotadas no Brasil, solicitamos a V.Sas. o especial favor de informarem diretamente aos nossos auditores, atraves de resposta eletronica (e-mail), acompanhada do arquivo digital (Excel), para o dominio: {auditor_email}, com copia para {cc_email}, impreterivelmente ate o dia {due_date} as informacoes solicitadas abaixo.
+
+Informar a posicao na data de {exercicio} dos processos civeis, trabalhistas e/ou tributarios sob seus cuidados e que envolvam esta sociedade, a favor ou contra, bem como os eventuais desfechos ou as novas questoes surgidas entre essa data-base e a data da elaboracao das informacoes a serem prestadas.
+
+Solicitamos que, para cada processo, sejam fornecidas as seguintes informacoes:
+(a) Identificacao do processo (numero, natureza da acao, assunto em litigio, data do ajuizamento do processo, descricao resumida do objeto);
+(b) Identificacao das partes (autor e reu);
+(c) Situacao atual do processo (incluindo eventual concessao de liminar);
+(d) Valor original do litigio e estimado de perda/ganho atualizado (incluindo correcao monetaria, juros e multa), na data base da confeccao da carta;
+(e) Valor do deposito na data-base (se houver);
+(f) Valor atualizado dos honorarios advocaticios, incluindo os condicionados a obtencao de solucao favoravel.
+
+Com relacao aos processos acima, solicitamos avaliar a probabilidade, cada um deles, de perda para empresa, classificando no conceito de provavel perda, possivel perda ou perda remota. Caso haja probabilidades distintas em um mesmo processo, favor identificar.
+
+As informacoes solicitadas deverao ser encaminhadas, preferencialmente, estruturadas em tabela de dados, constando nome do advogado responsavel e OAB.
+
+Caso haja envio fisico, faz-se necessario papel timbrado com as devidas assinaturas e carimbos, enderecar resposta para:
+MULLER & PREI AUDITORES INDEPENDENTES PORTO ALEGRE S/S
+Rua Padre Chagas, 147, Sala 1001
+Moinhos de Vento
+CEP: 90.570-080
+Porto Alegre (RS)
+
+Inicio da auditoria Q1/2026 em {audit_start_date}.
+
+Aguardamos e agradecemos suas providencias e colocamo-nos a disposicao para esclarecimentos julgados necessarios.
+"""
+
+BODY_TEMPLATE_EY = """Prezado(s)(as) Senhor(es)(as),
+Em conexao com a auditoria de nossas demonstracoes financeiras (consolidadas) na data-base de {exercicio} (a "Data-Base"). Solicitamos, que forneca aos nossos auditores, ERNST & YOUNG AUDITORES INDEPENDENTES S.S. (a "EY"), uma breve descricao de qualquer litigio envolvendo {cliente} (a "Companhia") (ou qualquer uma de suas subsidiarias ou entidades afiliadas) como autor ou reu, que:
+• Estavam pendentes ou iminentes em 30 de novembro de 2025; ou,
+• Posteriormente iniciados e com relacao ao qual voce dedicou atencao substantiva ou representou ou aconselhou a Companhia (ou qualquer uma de suas subsidiarias ou entidades afiliadas).
+Adicionalmente, por favor, forneca uma descricao de quaisquer outros assuntos com relacao aos quais voce tenha dedicado atencao substantiva, ou representado ou aconselhado a Companhia (ou qualquer uma de suas subsidiarias ou entidades afiliadas) envolvendo um litigio ou potencial litigio ou passivo contingente por ou contra a Empresa (ou qualquer uma de suas subsidiarias ou entidades afiliadas) em 01 de janeiro de 2025 ou que tenha surgido posteriormente.
+Ao descrever os assuntos relatados, por favor, informe os valores envolvidos e sua opiniao sobre o resultado provavel.
+Sem limitar as disposicoes acima, os itens a seguir sao exemplos de "quaisquer outros assuntos", mencionados no paragrafo anterior:
+1) Se voce tem conhecimento de qualquer litigio que nao esteja sendo contestado pela Companhia (ou qualquer de suas subsidiarias ou entidades afiliadas) ou litigio no qual a Companhia (ou qualquer de suas subsidiarias ou entidades afiliadas) tenha admitido responsabilidade.
+2) Se voce tem conhecimento de qualquer processo sobre a Companhia que foi ou esta sendo conduzida por qualquer agencia governamental com jurisdicao regulatoria sobre a Companhia (por exemplo, o Banco Central ou a Receita Federal).
+3) Se voce tem conhecimento de uma falha da Companhia em agir de acordo com a legislacao local aplicavel, na qual possa resultar em uma autuacao material.
+Outros assuntos
+Por favor, forneca diretamente a EY tal explicacao, se houver, que considere necessaria para complementar as informacoes anteriores, incluindo uma explicacao dessas questoes com relacao as quais suas opinioes podem diferir das declaradas e identificacao da omissao de qualquer litigio e autuacoes relacionadas a Companhia (e suas subsidiarias e entidades afiliadas referidas acima), e uma declaracao de que a lista de tais assuntos esta completa.
+Resposta
+Sua resposta deve incluir assuntos que existiam a partir de 01 de janeiro de 2025 e informacoes adicionais sobre esses assuntos ou novos assuntos que surgiram durante o periodo de 2025 para a data efetiva de sua resposta, descrevendo:
+1) A natureza [e numero do processo] do litigio, processo ou autuacao;
+2) O andamento da questao ate o momento;
+3) A resposta da Companhia ou sua intencao de resposta;
+4) A avaliacao da probabilidade do desfecho (classificar entre remota, possivel e provavel);
+5) O valor da causa e uma estimativa de perda (ou ganho).
+Por favor, identifique as razoes para qualquer limitacao em sua resposta a esta carta.
+Apreciariamos receber sua resposta ate {due_date}.
+Sua resposta nao sera citada ou referida em nossas demonstracoes financeiras sem consulta previa com voce.
+Por favor, envie sua resposta diretamente para a EY via e-mail para enderecos no dominio {auditor_emails} com copia para {cc_email}.
+Atenciosamente,
+"""
+
+def infer_quarter(month: int) -> str:
+    if month <= 3: return "Q1"
+    if month <= 6: return "Q2"
+    if month <= 9: return "Q3"
+    return "Q4"
+
+def parse_recipient_key(recipient_key: str) -> tuple[str, str]:
+    if not recipient_key:
+        return ("", "")
+    parts = recipient_key.split("_", 1)
+    sigla_cliente = parts[0] if parts else ""
+    escritorio_sigla = parts[1] if len(parts) > 1 else ""
+    return (sigla_cliente, escritorio_sigla)
+
+def is_ey_recipient(row: dict) -> bool:
+    email = (row.get("email") or "").lower()
+    escritorio = (row.get("escritorio") or "").lower()
+    recipient_key = (row.get("recipient_key") or "").lower()
+    return "ey" in escritorio or "ey" in recipient_key or email.endswith("@br.ey.com")
+
+def main():
+    s = load_settings()
+
+    # Parametros simples (edite aqui se quiser)
+    from datetime import datetime
+    now = datetime.now()
+    forced_year = os.getenv("FC_CYCLE_YEAR")
+    forced_quarter = os.getenv("FC_CYCLE_QUARTER")
+    q = forced_quarter or infer_quarter(now.month)
+    y = int(forced_year) if forced_year else now.year
+
+    exercicio = os.getenv("FC_EXERCICIO", "31/12/2025")
+    auditoria = os.getenv("FC_AUDITORIA", "MPH")
+    due_date = os.getenv("FC_DUE_DATE", "31/01/2026")
+    audit_start_date = os.getenv("FC_AUDIT_START_DATE", "01/03/2026")
+    auditor_email = os.getenv("FC_AUDITOR_EMAIL", "@mullerprei.com.br")
+    auditor_emails = os.getenv("FC_AUDITOR_EMAILS", "@br.ey.com")
+    cc_email = os.getenv("FC_CC_EMAIL", "gustavo.righi@vipal.com.br")
+
+    cycle_id = new_id("cycle")
+    opened_at = now_iso()
+
+    recipients_path = Path(s.recipients_csv)
+    if not recipients_path.exists():
+        raise FileNotFoundError(f"recipients.csv nao encontrado: {recipients_path}")
+
+    rows = list(csv.DictReader(recipients_path.open("r", encoding="utf-8-sig")))
+    if not rows:
+        raise RuntimeError("recipients.csv vazio")
+
+    outbox_dir = "./outputs/outbox_eml"
+
+    with db_session(s.db_path) as conn:
+        conn.execute(
+            "INSERT INTO circularization_cycle (cycle_id, year, quarter, opened_at, status) VALUES (?,?,?,?, 'OPEN')",
+            (cycle_id, y, q, opened_at)
+        )
+
+        for r in rows:
+            recipient_id = new_id("rcp")
+            conn.execute(
+                """INSERT INTO circularization_recipient
+                   (recipient_id, cycle_id, recipient_key, cliente, escritorio, email, owner, escopo, status, last_event_at)
+                   VALUES (?,?,?,?,?,?,?,?, 'PREPARADO', ?)""",
+                (recipient_id, cycle_id, r["recipient_key"], r["cliente"], r["escritorio"], r["email"], r["owner"], r["escopo"], opened_at)
+            )
+
+            sigla_cliente, escritorio_sigla = parse_recipient_key(r["recipient_key"])
+            fcid = uuid.uuid4().hex[:10].upper()
+            subject = SUBJECT_TEMPLATE.format(
+                fcid=fcid,
+                sigla_cliente=sigla_cliente,
+                escritorio_sigla=escritorio_sigla,
+                auditoria=auditoria,
+                exercicio=exercicio,
+            )
+
+            if is_ey_recipient(r):
+                body = BODY_TEMPLATE_EY.format(
+                    cliente=r["cliente"],
+                    exercicio=exercicio,
+                    due_date=due_date,
+                    auditor_emails=auditor_emails,
+                    cc_email=cc_email,
+                )
+            else:
+                body = BODY_TEMPLATE_MP.format(
+                    exercicio=exercicio,
+                    due_date=due_date,
+                    auditor_email=auditor_email,
+                    cc_email=cc_email,
+                    audit_start_date=audit_start_date,
+                )
+
+            msg = build_message(
+                s.sender_name,
+                s.sender_email,
+                r["email"],
+                s.audit_bcc,
+                subject,
+                body,
+                reply_to=s.reply_to,
+                cc_emails=s.cc_emails,
+            )
+
+            provider_id = None
+            raw_ref = None
+
+            if s.send_mode == "SMTP":
+                if not (s.smtp_host and s.smtp_port and s.smtp_user and s.smtp_pass):
+                    raise RuntimeError("SMTP selecionado, mas variaveis SMTP_* incompletas no .env")
+                eml_path = save_eml_before_smtp(msg, Path("./outputs") / "sent_eml" / cycle_id)
+                provider_id = send_email_smtp(msg, s.smtp_host, s.smtp_port, s.smtp_user, s.smtp_pass, tls=s.smtp_tls)
+                raw_ref = str(eml_path)
+            else:
+                raw_ref = save_eml_outbox(msg, outbox_dir)
+                provider_id = None
+
+            msg_id = new_id("msg")
+            conn.execute(
+                """INSERT INTO circularization_message
+                   (msg_id, cycle_id, recipient_id, direction, provider_message_id, subject, sent_at, hash_body, raw_storage_ref, confidence)
+                   VALUES (?,?,?,?,?,?,?,?,?,1.0)""",
+                (msg_id, cycle_id, recipient_id, "OUT", provider_id, subject, opened_at, body_hash(body), raw_ref)
+            )
+
+            # Auditoria: marcamos metodo como BCC (ou MANUAL no dry-run)
+            audit_id = new_id("aud")
+            method = "BCC" if s.audit_bcc else "MANUAL"
+            conn.execute(
+                """INSERT INTO circularization_audit_dispatch
+                   (audit_id, msg_id, audit_copy_method, audit_delivered_at, audit_delivery_ok)
+                   VALUES (?,?,?,?,?)""",
+                (audit_id, msg_id, method, opened_at, 1 if method != "MANUAL" else 0)
+            )
+
+            conn.execute(
+                "UPDATE circularization_recipient SET status='ENVIADO', last_event_at=? WHERE recipient_id=?",
+                (opened_at, recipient_id)
+            )
+
+    print(f"OK: ciclo criado {cycle_id} ({q}/{y}). Modo envio: {s.send_mode}")
+    if s.send_mode != "SMTP":
+        print(f"OUTBOX .eml gerados em: {outbox_dir}")
+        print("Envie manualmente pelo Outlook (abrir .eml e reenviar) para manter auditoria/BCC se aplicavel.")
+
+if __name__ == "__main__":
+    main()
