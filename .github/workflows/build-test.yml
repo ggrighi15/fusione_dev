@@ -9,9 +9,14 @@ on:
 env:
   DOTNET_VERSION: '9.0.x'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     
     steps:
     - uses: actions/checkout@v4
@@ -20,6 +25,13 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
+        cache: true
+        cache-dependency-path: |
+          **/*.sln
+          **/*.csproj
+          **/*.fsproj
+          **/*.props
+          **/packages.lock.json
     
     - name: Restore dependencies
       run: dotnet restore
@@ -54,6 +66,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
+    timeout-minutes: 20
     
     steps:
     - uses: actions/checkout@v4

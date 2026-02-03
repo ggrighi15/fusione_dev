@@ -7,8 +7,37 @@ on:
     branches: [ main, develop ]
 
 jobs:
+  guardrails:
+    name: Guardrails (no self-hosted / no large)
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Fail on forbidden runners
+      shell: bash
+      run: |
+        set -euo pipefail
+        echo "Scanning workflows for forbidden runners..."
+        if grep -RIn --line-number "runs-on:.*self-hosted" .github/workflows; then
+          echo "ERROR: self-hosted runner requested in workflow."
+          exit 1
+        fi
+        if grep -RIn --line-number "runs-on:.*\\[.*self-hosted" .github/workflows; then
+          echo "ERROR: self-hosted runner requested in workflow (array)."
+          exit 1
+        fi
+        if grep -RIn --line-number "runs-on:.*-large" .github/workflows; then
+          echo "ERROR: large runner requested in workflow."
+          exit 1
+        fi
+        if grep -RIn --line-number "runs-on:.*-xlarge" .github/workflows; then
+          echo "ERROR: xlarge runner requested in workflow."
+          exit 1
+        fi
+        echo "OK: no forbidden runners found."
+
   test:
     runs-on: ubuntu-latest
+    needs: guardrails
     
     services:
       # Serviço Redis para testes que dependem dele (Celery)
@@ -44,6 +73,10 @@ jobs:
         SECRET_KEY: test_secret_key
       run: |
         pytest tests/ --cov=fc_core --cov-report=xml
+
+    - name: Repo Guard
+      run: |
+        python scripts/repo_guard.py --fail-on-new
         
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
