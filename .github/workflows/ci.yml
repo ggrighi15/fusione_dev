@@ -29,11 +29,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if grep -RInE "runs-on:.*self-hosted" .github/workflows; then
+          if grep -RInE "^[[:space:]]*runs-on:[[:space:]]*.*self-hosted" .github/workflows; then
             echo "ERROR: self-hosted runner is forbidden."
             exit 1
           fi
-          if grep -RInE "runs-on:.*-large|runs-on:.*-xlarge" .github/workflows; then
+          if grep -RInE "^[[:space:]]*runs-on:[[:space:]]*.*(-large|-xlarge)" .github/workflows; then
             echo "ERROR: large/xlarge runner is forbidden."
             exit 1
           fi
@@ -42,7 +42,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if grep -RInE "echo .*secrets\\." .github/workflows; then
+          if grep -RInE "echo[[:space:]]+.*\\$\\{\\{[[:space:]]*secrets\\." .github/workflows; then
             echo "ERROR: potential secret echo found in workflow."
             exit 1
           fi
