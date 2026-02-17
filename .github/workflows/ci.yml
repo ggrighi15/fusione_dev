@@ -68,7 +68,7 @@ jobs:
             pip install -e ".[dev]"
           elif [ -f "requirements.txt" ]; then
             pip install -r requirements.txt
-            pip install pytest
+            pip install pytest selenium
           else
             echo "ERROR: no Python dependency manifest found (pyproject.toml/setup.py/requirements.txt)."
             exit 1
