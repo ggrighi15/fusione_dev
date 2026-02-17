@@ -1,5 +1,5 @@
 # DEPRECATED: use .github/workflows/ci.yml
-name: deprecated-build-test
+name: deprecated-build
 
 on:
   workflow_dispatch:

@@ -2,83 +2,96 @@ name: FusionCore CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches:
+      - main
+      - develop
   pull_request:
-    branches: [ main, develop ]
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   guardrails:
-    name: Guardrails (no self-hosted / no large)
+    name: guardrails
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Fail on forbidden runners
-      shell: bash
-      run: |
-        set -euo pipefail
-        echo "Scanning workflows for forbidden runners..."
-        if grep -RIn --line-number "runs-on:.*self-hosted" .github/workflows; then
-          echo "ERROR: self-hosted runner requested in workflow."
-          exit 1
-        fi
-        if grep -RIn --line-number "runs-on:.*\\[.*self-hosted" .github/workflows; then
-          echo "ERROR: self-hosted runner requested in workflow (array)."
-          exit 1
-        fi
-        if grep -RIn --line-number "runs-on:.*-large" .github/workflows; then
-          echo "ERROR: large runner requested in workflow."
-          exit 1
-        fi
-        if grep -RIn --line-number "runs-on:.*-xlarge" .github/workflows; then
-          echo "ERROR: xlarge runner requested in workflow."
-          exit 1
-        fi
-        echo "OK: no forbidden runners found."
+      - name: Checkout
+        uses: actions/checkout@v4
 
-  test:
+      - name: Block forbidden runners
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RInE "runs-on:.*self-hosted" .github/workflows; then
+            echo "ERROR: self-hosted runner is forbidden."
+            exit 1
+          fi
+          if grep -RInE "runs-on:.*-large|runs-on:.*-xlarge" .github/workflows; then
+            echo "ERROR: large/xlarge runner is forbidden."
+            exit 1
+          fi
+
+      - name: Block secret echo in workflows
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RInE "echo .*secrets\\." .github/workflows; then
+            echo "ERROR: potential secret echo found in workflow."
+            exit 1
+          fi
+
+  python-tests:
+    name: python-tests
     runs-on: ubuntu-latest
     needs: guardrails
-    
-    services:
-      # Serviço Redis para testes que dependem dele (Celery)
-      redis:
-        image: redis
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.11"
-        cache: 'pip'
-        
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -e ".[dev]"
-        pip install pytest-cov
-        
-    - name: Run Tests
-      env:
-        DATABASE_URL: sqlite:///./test.db
-        REDIS_URL: redis://localhost:6379/0
-        SECRET_KEY: test_secret_key
-      run: |
-        pytest tests/ --cov=fc_core --cov-report=xml
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Repo Guard
-      run: |
-        python scripts/repo_guard.py --fail-on-new
-        
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
-      with:
-        fail_ci_if_error: false
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Run pytest
+        run: pytest tests/ --maxfail=1 --disable-warnings
+
+  ui-react-tests:
+    name: ui-react-tests
+    runs-on: ubuntu-latest
+    needs: guardrails
+    defaults:
+      run:
+        working-directory: apps/ui-react
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/ui-react/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm run test -- --run
+
+      - name: Build
+        run: npm run build

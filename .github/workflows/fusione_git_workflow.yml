@@ -1,0 +1,110 @@
+name: fusione_git_workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      tipo:
+        description: "Tipo de branch"
+        required: true
+        type: choice
+        options:
+          - feature
+          - hotfix
+          - release
+      nome:
+        description: "Nome sem prefixo (ex.: bug-auth-login ou v1.2.3)"
+        required: true
+        type: string
+      descricao:
+        description: "Descricao resumida do escopo"
+        required: false
+        default: ""
+        type: string
+      apply:
+        description: "Executa mutacoes reais (default false = dry-run)"
+        required: true
+        default: false
+        type: boolean
+      create_pr:
+        description: "Criar pull request automaticamente"
+        required: true
+        default: true
+        type: boolean
+      draft_pr:
+        description: "Criar pull request como draft"
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  git-workflow:
+    runs-on: ubuntu-latest
+    outputs:
+      branch_name: ${{ steps.collect.outputs.branch_name }}
+      pr_url: ${{ steps.collect.outputs.pr_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git user
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Route branch workflow
+        shell: pwsh
+        run: |
+          $common = @{
+            Remote = "origin"
+          }
+          if ("${{ inputs.descricao }}".Trim()) { $common.Description = "${{ inputs.descricao }}" }
+          if ("${{ inputs.apply }}" -eq "true") { $common.Apply = $true }
+          if ("${{ inputs.create_pr }}" -eq "true") { $common.CreatePr = $true }
+          if ("${{ inputs.draft_pr }}" -eq "true") { $common.DraftPr = $true }
+
+          switch ("${{ inputs.tipo }}") {
+            "feature" {
+              & ./scripts/new-feature.ps1 -FeatureName "${{ inputs.nome }}" -Type feature -BaseBranch develop @common
+            }
+            "hotfix" {
+              & ./scripts/new-hotfix.ps1 -HotfixName "${{ inputs.nome }}" -BaseBranch main @common
+            }
+            "release" {
+              & ./scripts/new-release.ps1 -Version "${{ inputs.nome }}" -BaseBranch develop @common
+            }
+            default {
+              throw "Tipo invalido: ${{ inputs.tipo }}"
+            }
+          }
+
+      - name: Collect outputs
+        id: collect
+        shell: pwsh
+        run: |
+          $branch = (git branch --show-current).Trim()
+          $prUrl = ""
+
+          if ("${{ inputs.apply }}" -eq "true" -and "${{ inputs.create_pr }}" -eq "true") {
+            try {
+              $maybe = (& gh pr list --head $branch --json url --jq '.[0].url').Trim()
+              if ($maybe) { $prUrl = $maybe }
+            } catch {
+              $prUrl = ""
+            }
+          }
+
+          "branch_name=$branch" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "pr_url=$prUrl" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
+      - name: Summary
+        shell: bash
+        run: |
+          echo "branch_name=${{ steps.collect.outputs.branch_name }}"
+          echo "pr_url=${{ steps.collect.outputs.pr_url }}"
