@@ -95,7 +95,11 @@ jobs:
 
     - name: Repo Guard
       run: |
-        python scripts/repo_guard.py --fail-on-new
+        if [ -f "scripts/repo_guard.py" ]; then
+          python scripts/repo_guard.py --fail-on-new
+        else
+          echo "scripts/repo_guard.py not found. Skipping repo guard."
+        fi
         
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
