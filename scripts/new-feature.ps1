@@ -1,4 +1,4 @@
-param(
+﻿param(
   [Parameter(Mandatory = $true)]
   [string]$FeatureName,
 
@@ -7,7 +7,7 @@ param(
   [ValidateSet("feature", "fix", "hotfix", "release", "chore")]
   [string]$Type = "feature",
 
-  [string]$BaseBranch = "develop",
+  [string]$BaseBranch = "main",
   [string]$Remote = "origin",
 
   [switch]$CreatePr,
