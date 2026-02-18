@@ -70,7 +70,7 @@ class ScraperFactory:
         
         # Administrativos
         "comprot": ("comprot", "https://comprot.fazenda.gov.br/comprotegov/site/index.html"),
-        "antt": ("antt", "https://sei.antt.gov.br/sei/controlador_externo.php?acao=usuario_externo_logar&id_orgao_acesso_externo=0"),
+        "antt": ("antt", "https://appweb1.antt.gov.br/spmi/Site/Login.aspx"),
         "ridigital": ("ridigital", "https://ridigital.org.br/"),
         
         # Procons
