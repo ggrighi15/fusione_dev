@@ -78,6 +78,7 @@ jobs:
         REDIS_URL: redis://localhost:6379/0
         SECRET_KEY: test_secret_key
       run: |
+        export PYTHONPATH="$PWD:${PYTHONPATH:-}"
         if [ -d "tests" ]; then
           pytest tests/ --cov=fc_core --cov-report=xml
         else
