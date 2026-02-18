@@ -1,0 +1,11 @@
+{
+  "user_id": "gustavo",
+  "team_id": "juridico",
+  "case_id": "CASE-2026-001",
+  "process_id": "5001234-12.2025.8.21.0001",
+  "prompt": "Resuma os principais riscos do processo e sugestao de proximo passo.",
+  "confidentiality": "high",
+  "urgency": "normal",
+  "prefer_low_cost": false
+}
+
