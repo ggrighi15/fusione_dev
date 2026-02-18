@@ -1,2 +1,3 @@
 ﻿pywin32>=306
 python-decouple>=3.8
+
