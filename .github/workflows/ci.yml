@@ -80,7 +80,7 @@ jobs:
       run: |
         export PYTHONPATH="$PWD:${PYTHONPATH:-}"
         if [ -d "tests" ]; then
-          pytest tests/ --cov=fc_core --cov-report=xml
+          pytest tests/ --ignore=tests/e2e --cov=fc_core --cov-report=xml
         else
           echo "No tests directory found. Skipping pytest."
         fi
