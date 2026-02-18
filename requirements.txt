@@ -1,10 +1,4 @@
-streamlit==1.36.0
-pandas>=2.2.2
-numpy>=1.26.0
-SQLAlchemy>=2.0.30
-PyMySQL>=1.1.1
-python-dotenv>=1.0.1
-openpyxl>=3.1.2
-xlsxwriter>=3.2.0
-scipy>=1.13.0
-plotly>=5.22.0
+﻿-r requirements/base.txt
+-r requirements/automation.txt
+-r requirements/circularizacao.txt
+-r requirements/dev.txt

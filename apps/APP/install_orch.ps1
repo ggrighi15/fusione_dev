@@ -1,42 +1,23 @@
-# Script para instalar Orquestrador
-$ErrorActionPreference = "Stop"
-
-# 1. Mover Orchestrator
-$DestDir = "C:\fusionecore-suite\fc_core\automation"
-if (-not (Test-Path $DestDir)) {
-    New-Item -ItemType Directory -Path $DestDir -Force | Out-Null
-}
-
-Copy-Item -Path "orchestrator.py" -Destination (Join-Path $DestDir "orchestrator.py") -Force
-Write-Host "Orchestrator instalado em $DestDir" -ForegroundColor Green
-
-# 2. Criar teste rápido
-$TestContent = @"
+﻿. "$PSScriptRoot\_install_common.ps1"
+$core = Get-CoreRoot
+Copy-Checked "$PSScriptRoot\orchestrator.py" "$core\fc_core\automation\orchestrator.py"
+$testPath = "$PSScriptRoot\test_orchestrator.py"
+@"
 import asyncio
-import sys
-import os
-sys.path.append('C:/fusionecore-suite')
-
 from fc_core.automation.orchestrator import Orchestrator, ScrapingRequest, DataSource
 
-async def main():
+async def run_test():
     orch = Orchestrator()
     req = ScrapingRequest(
-        target_id="1234567-89.2024.8.13.0000",
-        sources=[DataSource.PJE, DataSource.ESPAIDER],
-        credentials={}
+        target_id='5001234-56.2025.8.13.0000',
+        sources=[DataSource.PJE, DataSource.INSTAGRAM],
+        fetch_related=True,
     )
-    
-    print(">>> Iniciando Pipeline...")
-    results = await orch.run_pipeline(req)
-    
-    print("\n>>> Resultados:")
-    for res in results:
-        print(f"[{res.source.upper()}] Sucesso: {res.success} | Dados: {res.data}")
+    result = await orch.run_pipeline(req)
+    print(result)
 
-if __name__ == "__main__":
-    asyncio.run(main())
-"@
+if __name__ == '__main__':
+    asyncio.run(run_test())
+"@ | Set-Content -Path $testPath -Encoding utf8
+Write-Host "Orchestrator installed and test created at $testPath" -ForegroundColor Green
 
-Set-Content -Path "test_orchestrator.py" -Value $TestContent
-Write-Host "Teste criado: test_orchestrator.py" -ForegroundColor Green

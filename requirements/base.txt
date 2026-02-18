@@ -1,0 +1,11 @@
+﻿streamlit>=1.36,<2.0
+SQLAlchemy>=2.0.30,<2.1
+PyMySQL>=1.1.1,<2.0
+python-dotenv>=1.0.1,<2.0
+pandas>=2.2,<4.0
+numpy>=1.26,<3.0
+openpyxl>=3.1,<4.0
+xlsxwriter>=3.2,<4.0
+scipy>=1.13,<2.0
+plotly>=5.22,<6.0
+pydantic>=2.8,<3.0

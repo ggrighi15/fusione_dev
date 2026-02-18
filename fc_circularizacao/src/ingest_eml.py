@@ -1,41 +1,54 @@
 ﻿from __future__ import annotations
+
 from email import policy
 from email.parser import BytesParser
 from email.utils import getaddresses
 from pathlib import Path
+from typing import List, Tuple
+import os
+
 from fc_circularize.settings import load_settings
 from fc_circularize.db import db_session
 from fc_circularize.util import new_id, now_iso, sha256_bytes, sha256_text
-from typing import List, Tuple, Iterable
-import os
 
 try:
     import extract_msg
 except Exception:
     extract_msg = None
 
+ZERO_DOC_PATTERNS = (
+    "0 doc",
+    "0 docs",
+    "0 processos",
+    "0 processos estao listados",
+    "0 documentos",
+)
+
+
 def parse_eml(path: Path):
     msg = BytesParser(policy=policy.default).parsebytes(path.read_bytes())
-    subject = str(msg.get("subject",""))
-    from_ = str(msg.get("from",""))
-    to_ = str(msg.get("to",""))
-    cc_ = str(msg.get("cc",""))
+    subject = str(msg.get("subject", ""))
+    from_ = str(msg.get("from", ""))
+    to_ = str(msg.get("to", ""))
+    cc_ = str(msg.get("cc", ""))
     body = ""
     if msg.is_multipart():
         for part in msg.walk():
             ctype = part.get_content_type()
-            disp = str(part.get("content-disposition",""))
+            disp = str(part.get("content-disposition", ""))
             if ctype == "text/plain" and "attachment" not in disp.lower():
                 body = part.get_content()
                 break
     else:
         body = msg.get_content()
+
     attachments = []
     for part in msg.iter_attachments():
         filename = part.get_filename() or "attachment.bin"
         data = part.get_payload(decode=True) or b""
         attachments.append((filename, data, part.get_content_type()))
     return subject, from_, to_, cc_, body, attachments
+
 
 def parse_msg(path: Path):
     if extract_msg is None:
@@ -46,6 +59,7 @@ def parse_msg(path: Path):
     to_ = msg.to or ""
     cc_ = msg.cc or ""
     body = msg.body or ""
+
     attachments = []
     for att in msg.attachments:
         try:
@@ -57,8 +71,9 @@ def parse_msg(path: Path):
         attachments.append((filename, data, mime))
     return subject, from_, to_, cc_, body, attachments
 
+
 def normalize_subject(subject: str) -> str:
-    s = subject.strip()
+    s = (subject or "").strip()
     while True:
         upper = s.upper()
         if upper.startswith("RE:"):
@@ -89,7 +104,8 @@ def normalize_subject(subject: str) -> str:
             s = s[4:].strip()
             continue
         break
-    return s
+    return " ".join(s.split())
+
 
 def extract_emails(value: str) -> List[str]:
     if not value:
@@ -100,10 +116,46 @@ def extract_emails(value: str) -> List[str]:
             emails.append(addr.strip().lower())
     return emails
 
+
 def recipient_key_from_email(email: str) -> str:
     local = email.split("@")[0] if "@" in email else email
     key = "".join(ch for ch in local if ch.isalnum() or ch in ("_", "-"))
     return key.upper() if key else "UNKNOWN"
+
+
+def attachment_set_hash(attachments: List[Tuple[str, bytes, str]]) -> str:
+    digests = sorted(sha256_bytes(data or b"") for _, data, _ in attachments)
+    return sha256_text("|".join(digests))
+
+
+def message_fingerprint(subject: str, body_hash: str, att_hash: str) -> str:
+    normalized_subject = normalize_subject(subject)
+    return sha256_text(f"{normalized_subject}|{body_hash}|{att_hash}")
+
+
+def has_zero_docs(subject: str, body: str) -> bool:
+    text = f"{subject or ''}\n{body or ''}".lower()
+    return any(p in text for p in ZERO_DOC_PATTERNS)
+
+
+def create_issue(conn, cycle_id: str, recipient_id: str, severity: str, code: str, description: str) -> None:
+    conn.execute(
+        """INSERT INTO reconciliation_issue
+           (issue_id, cycle_id, recipient_id, severity, code, description, created_at)
+           VALUES (?,?,?,?,?,?,?)""",
+        (new_id("iss"), cycle_id, recipient_id, severity, code, description, now_iso()),
+    )
+
+
+def ensure_fingerprint_column(conn) -> None:
+    cols = conn.execute("PRAGMA table_info(circularization_message)").fetchall()
+    names = {c[1] for c in cols}
+    if "fingerprint" not in names:
+        conn.execute("ALTER TABLE circularization_message ADD COLUMN fingerprint TEXT")
+    conn.execute(
+        "CREATE UNIQUE INDEX IF NOT EXISTS idx_msg_cycle_fingerprint ON circularization_message(cycle_id, fingerprint)"
+    )
+
 
 def main():
     s = load_settings()
@@ -116,8 +168,13 @@ def main():
         print(f"Nenhum .eml/.msg encontrado em {inbox}")
         return
 
+    ingested = 0
+    duplicates = 0
+    zero_docs = 0
+
     with db_session(s.db_path) as conn:
-        # pega o ciclo aberto mais recente
+        ensure_fingerprint_column(conn)
+
         row = conn.execute(
             "SELECT cycle_id FROM circularization_cycle WHERE status='OPEN' ORDER BY opened_at DESC LIMIT 1"
         ).fetchone()
@@ -125,16 +182,16 @@ def main():
             raise RuntimeError("Nao existe ciclo OPEN. Rode run_cycle.py primeiro.")
         cycle_id = row["cycle_id"]
 
-        # index simples: emails de destinatarios cadastrados no ciclo
         recipients = conn.execute(
             "SELECT recipient_id, email, recipient_key, cliente, escritorio, owner, escopo FROM circularization_recipient WHERE cycle_id=?",
-            (cycle_id,)
+            (cycle_id,),
         ).fetchall()
         email_to_recipient = {r["email"].strip().lower(): r["recipient_id"] for r in recipients}
+
         subject_to_recipient = {}
         out_rows = conn.execute(
             "SELECT recipient_id, subject FROM circularization_message WHERE cycle_id=? AND direction='OUT'",
-            (cycle_id,)
+            (cycle_id,),
         ).fetchall()
         for r in out_rows:
             key = normalize_subject(r["subject"] or "")
@@ -143,7 +200,11 @@ def main():
 
         known_senders = set(
             e.strip().lower()
-            for e in [s.sender_email, os.getenv("FC_SENDER_PRIMARY_EMAIL"), os.getenv("FC_SENDER_SECONDARY_EMAIL")]
+            for e in [
+                s.sender_email,
+                os.getenv("FC_SENDER_PRIMARY_EMAIL"),
+                os.getenv("FC_SENDER_SECONDARY_EMAIL"),
+            ]
             if e
         )
         extra_known = os.getenv("FC_KNOWN_SENDERS", "")
@@ -155,21 +216,23 @@ def main():
         for p in emls + msgs:
             existing = conn.execute(
                 "SELECT 1 FROM circularization_message WHERE cycle_id=? AND raw_storage_ref=? LIMIT 1",
-                (cycle_id, str(p))
+                (cycle_id, str(p)),
             ).fetchone()
             if existing:
                 continue
+
             if p.suffix.lower() == ".eml":
                 subject, from_, to_, cc_, body, attachments = parse_eml(p)
             else:
                 subject, from_, to_, cc_, body, attachments = parse_msg(p)
 
-            from_email = extract_emails(from_)[0] if extract_emails(from_) else ""
+            from_list = extract_emails(from_)
+            from_email = from_list[0] if from_list else ""
             to_emails = extract_emails(to_)
             cc_emails = extract_emails(cc_)
 
-            normalized_subject = normalize_subject(subject)
             direction = "OUT" if from_email in known_senders else "IN"
+            normalized_subject = normalize_subject(subject)
 
             recipient_id = None
             if direction == "OUT":
@@ -185,7 +248,6 @@ def main():
                 recipient_id = subject_to_recipient.get(normalized_subject)
 
             if not recipient_id:
-                # cria destinatario automaticamente usando email disponível
                 auto_email = from_email if direction == "IN" else (to_emails[0] if to_emails else "")
                 if auto_email:
                     recipient_id = new_id("rcp")
@@ -208,7 +270,6 @@ def main():
                             f"auto-created from {direction} message ({p.name})",
                         ),
                     )
-                    # if insert was ignored, fetch existing recipient_id
                     row = conn.execute(
                         "SELECT recipient_id FROM circularization_recipient WHERE cycle_id=? AND recipient_key=? LIMIT 1",
                         (cycle_id, auto_key),
@@ -217,57 +278,87 @@ def main():
                         recipient_id = row["recipient_id"]
                     email_to_recipient[auto_email] = recipient_id
                 else:
-                    # sem email para vincular, registra issue e segue
-                    issue_id = new_id("iss")
-                    fallback_recipient = recipients[0]["recipient_id"] if recipients else new_id("rcp")
-                    conn.execute(
-                        """INSERT INTO reconciliation_issue
-                           (issue_id, cycle_id, recipient_id, severity, code, description, created_at)
-                           VALUES (?,?,?,?,?,?,?)""",
-                        (issue_id, cycle_id, fallback_recipient, "MED", "UNMATCHED",
-                         f"Mensagem sem destinatario identificavel: {p.name}", now_iso())
+                    fallback = recipients[0]["recipient_id"] if recipients else new_id("rcp")
+                    create_issue(
+                        conn,
+                        cycle_id,
+                        fallback,
+                        "MED",
+                        "UNMATCHED",
+                        f"Mensagem sem destinatario identificavel: {p.name}",
                     )
                     continue
+
+            body_hash = sha256_text(body or "")
+            att_hash = attachment_set_hash(attachments)
+            fingerprint = message_fingerprint(subject, body_hash, att_hash)
+
+            dup = conn.execute(
+                "SELECT msg_id FROM circularization_message WHERE cycle_id=? AND fingerprint=? LIMIT 1",
+                (cycle_id, fingerprint),
+            ).fetchone()
+            if dup:
+                duplicates += 1
+                create_issue(
+                    conn,
+                    cycle_id,
+                    recipient_id,
+                    "LOW",
+                    "DUPLICATE_MESSAGE",
+                    f"Duplicata detectada ({p.name}) similar a {dup['msg_id']}",
+                )
+                continue
 
             msg_id = new_id("msg")
             event_at = now_iso()
             if direction == "OUT":
                 conn.execute(
                     """INSERT INTO circularization_message
-                       (msg_id, cycle_id, recipient_id, direction, provider_message_id, subject, sent_at, hash_body, raw_storage_ref, confidence)
-                       VALUES (?,?,?,?,?,?,?,?,?,?)""",
-                    (msg_id, cycle_id, recipient_id, "OUT", None, subject, event_at, sha256_text(body), str(p), 0.98)
+                       (msg_id, cycle_id, recipient_id, direction, provider_message_id, subject, sent_at, hash_body, fingerprint, raw_storage_ref, confidence)
+                       VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+                    (msg_id, cycle_id, recipient_id, "OUT", None, subject, event_at, body_hash, fingerprint, str(p), 0.98),
                 )
             else:
                 conn.execute(
                     """INSERT INTO circularization_message
-                       (msg_id, cycle_id, recipient_id, direction, provider_message_id, subject, received_at, hash_body, raw_storage_ref, confidence)
-                       VALUES (?,?,?,?,?,?,?,?,?,?)""",
-                    (msg_id, cycle_id, recipient_id, "IN", None, subject, event_at, sha256_text(body), str(p), 0.98)
+                       (msg_id, cycle_id, recipient_id, direction, provider_message_id, subject, received_at, hash_body, fingerprint, raw_storage_ref, confidence)
+                       VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+                    (msg_id, cycle_id, recipient_id, "IN", None, subject, event_at, body_hash, fingerprint, str(p), 0.98),
                 )
 
-            # anexos: salvar em data/attachments/<msg_id>/
             att_dir = Path("./data/attachments") / msg_id
             att_dir.mkdir(parents=True, exist_ok=True)
-
             for filename, data, mime in attachments:
                 out_path = att_dir / filename
                 out_path.write_bytes(data or b"")
-                att_id = new_id("att")
                 conn.execute(
                     """INSERT INTO circularization_attachment
                        (att_id, msg_id, filename, sha256, storage_path, mime, pages, text_extracted)
                        VALUES (?,?,?,?,?,?,NULL,0)""",
-                    (att_id, msg_id, filename, sha256_bytes(data or b""), str(out_path), mime)
+                    (new_id("att"), msg_id, filename, sha256_bytes(data or b""), str(out_path), mime),
+                )
+
+            if has_zero_docs(subject, body):
+                zero_docs += 1
+                create_issue(
+                    conn,
+                    cycle_id,
+                    recipient_id,
+                    "MED",
+                    "ZERO_DOCS_ALERT",
+                    f"Mensagem com indicio de 0 docs/processos: {p.name}",
                 )
 
             new_status = "ENVIADO" if direction == "OUT" else "RESPONDIDO"
             conn.execute(
                 "UPDATE circularization_recipient SET status=?, last_event_at=? WHERE recipient_id=?",
-                (new_status, event_at, recipient_id)
+                (new_status, event_at, recipient_id),
             )
+            ingested += 1
 
-    print(f"OK: ingeridos {len(emls) + len(msgs)} arquivos em ciclo OPEN")
+    total = len(emls) + len(msgs)
+    print(f"OK: analisados={total} ingeridos={ingested} duplicatas={duplicates} zero_docs={zero_docs}")
+
 
 if __name__ == "__main__":
     main()

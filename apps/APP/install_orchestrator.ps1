@@ -1,7 +1,3 @@
-$Source = "c:\fusionecore-suite\apps\APP\orchestrator_v2.py"
-$Dest = "c:\fusionecore-suite\fc_core\automation\orchestrator.py"
+﻿. "$PSScriptRoot\_install_common.ps1"
+Write-DeprecatedInstaller -Name 'install_orchestrator.ps1' -UseInstead '.\install_orch_v2.ps1'
 
-Write-Host "Installing Updated Orchestrator (Week 3 - Real Integrations)..."
-Copy-Item -Path $Source -Destination $Dest -Force
-
-Write-Host "Orchestrator Installed."
