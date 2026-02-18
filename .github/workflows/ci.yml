@@ -80,7 +80,15 @@ jobs:
       run: |
         export PYTHONPATH="$PWD:${PYTHONPATH:-}"
         if [ -d "tests" ]; then
+          set +e
           pytest tests/ --ignore=tests/e2e --cov=fc_core --cov-report=xml
+          rc=$?
+          set -e
+          if [ "$rc" -eq 5 ]; then
+            echo "No tests collected after filters. Continuing."
+            exit 0
+          fi
+          exit "$rc"
         else
           echo "No tests directory found. Skipping pytest."
         fi
