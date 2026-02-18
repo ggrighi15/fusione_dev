@@ -168,6 +168,8 @@ __azurite_db*__.json
 **/.env.*
 **/*secrets*
 **/*token*
+!.env.exemplo
+!apps/APP/.env.exemplo
 
 # Node / frontend
 **/node_modules/

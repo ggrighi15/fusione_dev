@@ -1,46 +1,51 @@
-# Configuração do Supabase
+﻿# Supabase Setup (Optional)
 
-Este projeto contém scripts auxiliares para inicializar um novo projeto no Supabase e configurar autenticação.
+This folder contains helper scripts to initialize and configure Supabase.
+Supabase is optional in this repository and is not required by `fc_core` runtime.
 
-## Status do Projeto: FusioneCore
+## Security Rules
 
-- **Project Ref**: `qlhshypgcbgggvvnwojb`
-- **API URL**: `https://qlhshypgcbgggvvnwojb.supabase.co`
-- **Anon Key**: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaHNoeXBnY2JnZ2d2dm53b2piIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5OTI0OTYsImV4cCI6MjA3ODU2ODQ5Nn0.LvA4qzjZGtKVHVRihzInVP3hWNrIrFdzy6NUctRUJiM`
+- Never commit real credentials in README/docs/scripts/json/md files.
+- Keep real values only in secret stores or local `.env` files ignored by Git.
+- Do not document `service_role` keys in repository files.
 
-## Como Usar
+## Environment Placeholders
 
-### 1. Inicializar Projeto (Setup)
-*Já concluído. Projeto "FusioneCore" encontrado.*
+Use placeholders only:
 
-### 2. Configurar Autenticação (Auth)
+```env
+SUPABASE_URL=https://<project-ref>.supabase.co
+SUPABASE_ANON_KEY=REPLACE_ME
+SUPABASE_ACCESS_TOKEN=REPLACE_ME
+PROJECT_REF=<project-ref>
+```
 
-Execute o comando abaixo para configurar seus provedores (GitHub, Apple, Azure). Você precisará dos **Client IDs** e **Secrets** de cada provedor.
+## Auth Config Script
 
-```bash
-# PowerShell
-$env:SUPABASE_ACCESS_TOKEN="sbp_155ab7e8fb236c0848769c4d9f1fcc11982ad946"
-$env:PROJECT_REF="qlhshypgcbgggvvnwojb"
+Run with secure local environment values:
 
+```powershell
+$env:SUPABASE_ACCESS_TOKEN="REPLACE_ME"
+$env:PROJECT_REF="<project-ref>"
 node scripts/config-auth.js
 ```
 
-### 3. Configurar Frontend (Web)
+## Frontend Example
 
-Crie ou atualize o arquivo `.env` na pasta `apps/web`:
+Set local env values in `apps/web/.env` (not committed):
 
 ```env
-VITE_SUPABASE_URL=https://qlhshypgcbgggvvnwojb.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaHNoeXBnY2JnZ2d2dm53b2piIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5OTI0OTYsImV4cCI6MjA3ODU2ODQ5Nn0.LvA4qzjZGtKVHVRihzInVP3hWNrIrFdzy6NUctRUJiM
+VITE_SUPABASE_URL=https://<project-ref>.supabase.co
+VITE_SUPABASE_ANON_KEY=REPLACE_ME
 ```
 
-Certifique-se de que o arquivo `apps/web/src/lib/supabase.ts` use essas variáveis:
+Reference usage:
 
 ```typescript
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '');
+export const supabase = createClient(supabaseUrl || "", supabaseAnonKey || "");
 ```
