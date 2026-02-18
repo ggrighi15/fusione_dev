@@ -17,11 +17,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    outputs:
+      has_dotnet: ${{ steps.detect_dotnet.outputs.has_dotnet }}
     
     steps:
     - uses: actions/checkout@v4
+
+    - name: Detect .NET projects
+      id: detect_dotnet
+      shell: bash
+      run: |
+        set -euo pipefail
+        shopt -s nullglob globstar
+        files=(**/*.sln **/*.csproj **/*.fsproj)
+        if [ ${#files[@]} -gt 0 ]; then
+          echo "has_dotnet=true" >> "$GITHUB_OUTPUT"
+          echo "Detected .NET project files: ${#files[@]}"
+        else
+          echo "has_dotnet=false" >> "$GITHUB_OUTPUT"
+          echo "No .NET project files detected. Build/Test steps will be skipped."
+        fi
     
     - name: Setup .NET
+      if: steps.detect_dotnet.outputs.has_dotnet == 'true'
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
@@ -34,29 +52,37 @@ jobs:
           **/packages.lock.json
     
     - name: Restore dependencies
+      if: steps.detect_dotnet.outputs.has_dotnet == 'true'
       run: dotnet restore
     
     - name: Build
+      if: steps.detect_dotnet.outputs.has_dotnet == 'true'
       run: dotnet build --no-restore --configuration Release
     
     - name: Test
+      if: steps.detect_dotnet.outputs.has_dotnet == 'true'
       run: dotnet test --no-build --configuration Release --verbosity normal --collect:"XPlat Code Coverage"
     
     - name: Security Scan
+      if: steps.detect_dotnet.outputs.has_dotnet == 'true'
       run: |
         dotnet list package --vulnerable --include-transitive
         dotnet list package --outdated
+
+    - name: Skip .NET pipeline when no project exists
+      if: steps.detect_dotnet.outputs.has_dotnet != 'true'
+      run: echo "Skipping .NET pipeline for this repository."
     
     - name: Upload test results
+      if: always() && steps.detect_dotnet.outputs.has_dotnet == 'true'
       uses: actions/upload-artifact@v4
-      if: always()
       with:
         name: test-results
         path: '**/TestResults/**'
     
     - name: Upload coverage reports
+      if: always() && steps.detect_dotnet.outputs.has_dotnet == 'true'
       uses: codecov/codecov-action@v3
-      if: always()
       with:
         file: '**/coverage.cobertura.xml'
         flags: unittests
@@ -65,7 +91,7 @@ jobs:
   publish:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && needs.build.outputs.has_dotnet == 'true'
     timeout-minutes: 20
     
     steps:

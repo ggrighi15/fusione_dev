@@ -17,20 +17,16 @@ jobs:
       run: |
         set -euo pipefail
         echo "Scanning workflows for forbidden runners..."
-        if grep -RIn --line-number "runs-on:.*self-hosted" .github/workflows; then
+        if grep -REn --line-number "^[[:space:]]*runs-on:[[:space:]]*.*self-hosted" .github/workflows; then
           echo "ERROR: self-hosted runner requested in workflow."
           exit 1
         fi
-        if grep -RIn --line-number "runs-on:.*\\[.*self-hosted" .github/workflows; then
-          echo "ERROR: self-hosted runner requested in workflow (array)."
-          exit 1
-        fi
-        if grep -RIn --line-number "runs-on:.*-large" .github/workflows; then
-          echo "ERROR: large runner requested in workflow."
-          exit 1
-        fi
-        if grep -RIn --line-number "runs-on:.*-xlarge" .github/workflows; then
+        if grep -REn --line-number "^[[:space:]]*runs-on:[[:space:]]*.*-xlarge" .github/workflows; then
           echo "ERROR: xlarge runner requested in workflow."
+          exit 1
+        fi
+        if grep -REn --line-number "^[[:space:]]*runs-on:[[:space:]]*.*-large" .github/workflows; then
+          echo "ERROR: large runner requested in workflow."
           exit 1
         fi
         echo "OK: no forbidden runners found."
