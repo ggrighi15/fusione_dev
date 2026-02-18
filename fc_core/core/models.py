@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Boolean, DateTime, Text, DECIMAL, JSON, ForeignKey
+from sqlalchemy import Column, String, Boolean, DateTime, Text, DECIMAL, JSON, ForeignKey, Integer
 from sqlalchemy.types import Uuid
 from sqlalchemy.sql import func
 from fc_core.core.database import Base
@@ -48,3 +48,31 @@ class Documento(Base):
     tamanho_bytes = Column(DECIMAL)
     texto_extraido = Column(Text)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class LLMGatewayLog(Base):
+    __tablename__ = "llm_gateway_logs"
+
+    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(String(120), nullable=False, index=True)
+    team_id = Column(String(120), index=True)
+    case_id = Column(String(120), index=True)
+    process_id = Column(String(120), index=True)
+
+    provider = Column(String(32), nullable=False)
+    model = Column(String(120), nullable=False)
+    route_reason = Column(String(255), nullable=False)
+
+    prompt_masked = Column(Text, nullable=False)
+    response_text = Column(Text)
+    request_hash = Column(String(64), nullable=False, index=True)
+
+    estimated_input_tokens = Column(Integer, nullable=False, default=0)
+    estimated_output_tokens = Column(Integer, nullable=False, default=0)
+    estimated_cost_usd = Column(DECIMAL(12, 6), nullable=False, default=0)
+    latency_ms = Column(Integer, nullable=False, default=0)
+
+    status = Column(String(20), nullable=False, default="ok")
+    error_message = Column(Text)
+    request_metadata = Column(JSON)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), index=True)

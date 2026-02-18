@@ -1,42 +1,52 @@
-from fastapi import APIRouter, BackgroundTasks, HTTPException
-from fc_core.automation.orchestrator import Orchestrator, ScrapingRequest
+from typing import Dict, List, Optional
 import logging
+
+from fastapi import APIRouter, BackgroundTasks, HTTPException
+from pydantic import BaseModel
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-async def run_orchestrator_task(request: ScrapingRequest):
+
+class PipelineRequest(BaseModel):
+    target_id: str
+    sources: List[str]
+    fetch_related: bool = False
+    credentials: Optional[Dict[str, Dict[str, str]]] = None
+    client_code: Optional[str] = None
+    module_code: Optional[str] = None
+
+
+async def run_orchestrator_task(request: PipelineRequest):
     """
-    Função auxiliar para executar o orquestrador em background.
+    Executa o orquestrador em background com import tardio para evitar
+    quebrar bootstrap da API quando dependencias de scraper nao estao presentes.
     """
     try:
+        from fc_core.automation.orchestrator import Orchestrator, ScrapingRequest
+
         orchestrator = Orchestrator()
-        logger.info(f"Iniciando task background para {request.target_id}")
-        await orchestrator.run_pipeline(request)
-        logger.info(f"Task background finalizada para {request.target_id}")
-    except Exception as e:
-        logger.error(f"Erro na execução da task background: {e}")
+        internal_request = ScrapingRequest(**request.model_dump())
+        logger.info("Iniciando task background para %s", request.target_id)
+        await orchestrator.run_pipeline(internal_request)
+        logger.info("Task background finalizada para %s", request.target_id)
+    except Exception as exc:
+        logger.error("Erro na execucao da task background: %s", exc)
+
 
 @router.post("/run", status_code=202)
-async def trigger_pipeline(request: ScrapingRequest, background_tasks: BackgroundTasks):
+async def trigger_pipeline(request: PipelineRequest, background_tasks: BackgroundTasks):
     """
-    Endpoint para iniciar o pipeline de orquestração.
-    
-    - **target_id**: CNJ ou identificador do alvo.
-    - **sources**: Lista de fontes (pje, espaider, instagram, etc).
-    - **fetch_related**: Se deve buscar processos relacionados.
-    - **client_code**: (Opcional) Código do cliente para forçar associação.
-    - **module_code**: (Opcional) Código do módulo.
+    Endpoint para iniciar o pipeline de orquestracao.
     """
     try:
-        # Adiciona a execução à fila de background tasks
         background_tasks.add_task(run_orchestrator_task, request)
-        
         return {
-            "message": "Pipeline iniciado com sucesso. O processamento ocorrerá em segundo plano.",
+            "message": "Pipeline iniciado com sucesso. O processamento ocorrera em segundo plano.",
             "target": request.target_id,
-            "status": "queued"
+            "status": "queued",
         }
-    except Exception as e:
-        logger.error(f"Erro ao agendar pipeline: {e}")
-        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
+    except Exception as exc:
+        logger.error("Erro ao agendar pipeline: %s", exc)
+        raise HTTPException(status_code=500, detail=f"Erro interno: {str(exc)}") from exc
+

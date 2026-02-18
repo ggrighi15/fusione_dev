@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fc_core.core.config import get_settings
+from fc_core.core.database import Base, engine
+from fc_core.core import models as _models  # noqa: F401
 from fc_core.api.routes import auth, processos, documentos
 
 settings = get_settings()
@@ -41,3 +43,13 @@ app.include_router(ocr_ia.router, prefix="/api/ocr-ia", tags=["ocr-ia"])
 # Pipeline / Orchestrator Router
 from fc_core.api.routes import pipeline
 app.include_router(pipeline.router, prefix="/api/pipeline", tags=["pipeline"])
+
+from fc_core.api.routes import llm_gateway
+app.include_router(llm_gateway.router, tags=["llm-gateway"])
+
+
+@app.on_event("startup")
+def ensure_schema():
+    # Keep disabled by default; production should rely on explicit migrations.
+    if settings.auto_create_schema_on_startup:
+        Base.metadata.create_all(bind=engine)
