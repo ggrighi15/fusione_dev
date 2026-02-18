@@ -185,3 +185,12 @@ __azurite_db*__.json
 *.swo
 .cursorignore
 .cursorindexingignore
+
+# Aggregatto - dados/saidas
+espaider_anexos/
+downloads/
+outputs/
+logs/
+*.xlsx
+*.csv
+
