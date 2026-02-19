@@ -1,0 +1,108 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  DOTNET_VERSION: '9.0.x'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      has_dotnet: ${{ steps.detect.outputs.has_dotnet }}
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Detect .NET projects
+      id: detect
+      shell: bash
+      run: |
+        set -euo pipefail
+        if git ls-files '*.sln' '*.csproj' '*.fsproj' | grep -q .; then
+          echo "has_dotnet=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "has_dotnet=false" >> "$GITHUB_OUTPUT"
+        fi
+    
+    - name: Setup .NET
+      if: steps.detect.outputs.has_dotnet == 'true'
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        cache: true
+
+    - name: Skip build/test when no .NET project is present
+      if: steps.detect.outputs.has_dotnet != 'true'
+      run: echo "No .NET project files found. Skipping .NET build/test workflow."
+    
+    - name: Restore dependencies
+      if: steps.detect.outputs.has_dotnet == 'true'
+      run: dotnet restore
+    
+    - name: Build
+      if: steps.detect.outputs.has_dotnet == 'true'
+      run: dotnet build --no-restore --configuration Release
+    
+    - name: Test
+      if: steps.detect.outputs.has_dotnet == 'true'
+      run: dotnet test --no-build --configuration Release --verbosity normal --collect:"XPlat Code Coverage"
+    
+    - name: Security Scan
+      if: steps.detect.outputs.has_dotnet == 'true'
+      run: |
+        dotnet list package --vulnerable --include-transitive
+        dotnet list package --outdated
+    
+    - name: Upload test results
+      if: always() && steps.detect.outputs.has_dotnet == 'true'
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: '**/TestResults/**'
+    
+    - name: Upload coverage reports
+      if: always() && steps.detect.outputs.has_dotnet == 'true'
+      uses: codecov/codecov-action@v3
+      with:
+        file: '**/coverage.cobertura.xml'
+        flags: unittests
+        name: codecov-umbrella
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && needs.build.outputs.has_dotnet == 'true'
+    timeout-minutes: 20
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+    
+    - name: Restore dependencies
+      run: dotnet restore
+    
+    - name: Publish DataMap API
+      run: dotnet publish Fusione.DataMap.Api/Fusione.DataMap.Api.csproj --configuration Release --output ./publish/datamap
+    
+    - name: Publish Core
+      run: dotnet publish FusioneCore/FusioneCore.csproj --configuration Release --output ./publish/core
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: ./publish/

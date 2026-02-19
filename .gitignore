@@ -9,6 +9,8 @@ ENV/
 .env
 .env.local
 .env.*
+!.env.exemplo
+!apps/APP/.env.exemplo
 
 # Node
 node_modules/
