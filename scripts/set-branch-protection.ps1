@@ -1,15 +1,16 @@
-﻿param(
+param(
     [Parameter(Mandatory = $true)]
     [string]$Repo,
 
     [string[]]$Branches = @('main', 'develop'),
 
     [string[]]$Checks = @(
-        'FusionCore CI / guardrails',
-        'FusionCore CI / python-tests',
-        'FusionCore CI / api-bootstrap-smoke-linux',
-        'FusionCore CI / dependency-install-smoke-windows',
-        'FusionCore CI / ui-react-tests'
+        'Guardrails (no self-hosted / no large)',
+        'test',
+        'build',
+        'Secret Scan (gitleaks)',
+        'api-bootstrap-smoke-linux',
+        'dependency-install-smoke-windows'
     )
 )
 
@@ -33,19 +34,20 @@ foreach ($branch in $Branches) {
             require_code_owner_reviews = $false
         }
         restrictions = $null
-        required_linear_history = $false
-        allow_force_pushes = $false
-        allow_deletions = $false
-        block_creations = $false
-        required_conversation_resolution = $true
-        lock_branch = $false
-        allow_fork_syncing = $true
     } | ConvertTo-Json -Depth 20
 
     $tmp = Join-Path $env:TEMP ("branch-protection-{0}-{1}.json" -f $branch, [guid]::NewGuid().ToString('N'))
-    Set-Content -Path $tmp -Value $body -Encoding utf8
+    [System.IO.File]::WriteAllText($tmp, $body, [System.Text.UTF8Encoding]::new($false))
+
     try {
-        gh api --method PUT "repos/$Repo/branches/$branch/protection" --input $tmp | Out-Null
+        gh api --method PUT "repos/$Repo/branches/$branch/protection" `
+            -H "Accept: application/vnd.github+json" `
+            --input $tmp | Out-Null
+
+        if ($LASTEXITCODE -ne 0) {
+            throw "gh api failed for branch '$branch' with exit code $LASTEXITCODE"
+        }
+
         Write-Host "Branch protection updated: $Repo/$branch" -ForegroundColor Green
     }
     finally {
