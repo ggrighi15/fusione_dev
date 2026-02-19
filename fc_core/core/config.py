@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     api_host: str = "0.0.0.0"
     api_port: int = 8000
     auto_create_schema_on_startup: bool = False
+    enable_ocr_ia: bool = False
 
     # LLM Gateway
     llm_gateway_enabled: bool = True

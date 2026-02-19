@@ -1,3 +1,2 @@
-﻿extract-msg>=0.54
-reportlab>=4.2
+extract-msg>=0.54
 PyPDF2>=3.0
