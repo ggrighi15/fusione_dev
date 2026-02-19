@@ -1,0 +1,90 @@
+{
+  "name": "fc-gateway-client",
+  "displayName": "FusioneCore Gateway Client",
+  "description": "VS Code client for FusioneCore internal LLM Gateway (/llm/chat).",
+  "version": "0.0.1",
+  "publisher": "fusionecore",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:fcGateway.askGateway"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "fcGateway.askGateway",
+        "title": "FusioneCore: Ask LLM Gateway"
+      }
+    ],
+    "configuration": {
+      "title": "FusioneCore LLM Gateway",
+      "properties": {
+        "fcGateway.url": {
+          "type": "string",
+          "default": "http://127.0.0.1:8000",
+          "description": "Base URL do gateway interno."
+        },
+        "fcGateway.userId": {
+          "type": "string",
+          "default": "vscode-user",
+          "description": "Identificador de usuario para auditoria."
+        },
+        "fcGateway.bearerToken": {
+          "type": "string",
+          "default": "",
+          "description": "JWT Bearer para autenticacao no gateway."
+        },
+        "fcGateway.teamId": {
+          "type": "string",
+          "default": "engineering",
+          "description": "Identificador de time para auditoria."
+        },
+        "fcGateway.caseId": {
+          "type": "string",
+          "default": "",
+          "description": "Case padrao (opcional)."
+        },
+        "fcGateway.processId": {
+          "type": "string",
+          "default": "",
+          "description": "Processo padrao (opcional)."
+        },
+        "fcGateway.confidentiality": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "default": "medium",
+          "description": "Nivel de confidencialidade."
+        },
+        "fcGateway.urgency": {
+          "type": "string",
+          "enum": [
+            "low",
+            "normal",
+            "high"
+          ],
+          "default": "normal",
+          "description": "Urgencia da chamada."
+        },
+        "fcGateway.preferLowCost": {
+          "type": "boolean",
+          "default": false,
+          "description": "Priorizar menor custo."
+        },
+        "fcGateway.sendUserInBody": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enviar user_id/team_id no body (apenas ambientes permissivos)."
+        }
+      }
+    }
+  }
+}

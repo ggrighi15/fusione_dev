@@ -1,10 +1,6 @@
-$Source = "c:\fusionecore-suite\apps\APP\route_pipeline.py"
-$Dest = "c:\fusionecore-suite\fc_core\api\routes\pipeline.py"
+﻿. "$PSScriptRoot\_install_common.ps1"
+$core = Get-CoreRoot
+Copy-Checked "$PSScriptRoot\route_pipeline.py" "$core\fc_core\api\routes\pipeline.py"
+Invoke-Python "$PSScriptRoot\patch_main_api.py"
+Write-Host 'API pipeline installed and patched.' -ForegroundColor Green
 
-Write-Host "Installing Pipeline Router..."
-Copy-Item -Path $Source -Destination $Dest -Force
-
-Write-Host "Patching main.py..."
-python c:\fusionecore-suite\apps\APP\patch_main_api.py
-
-Write-Host "Installation Complete."

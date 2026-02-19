@@ -557,7 +557,8 @@ def write_status_reports(out_dir: Path, cycle: dict, recipients: list[dict]) -> 
                 r.get("next_action_at", "") or "",
                 (r.get("notes", "") or "").replace("\n", " ").replace("\r", " "),
             ]
-            f.write(",".join(f"\"{v.replace('\"','\"\"')}\"" for v in values) + "\n")
+            escaped = [str(v).replace('"', '""') for v in values]
+            f.write(",".join(f'"{v}"' for v in escaped) + "\n")
 
     html = []
     html.append(f"<h2>Status Circularizacao {cycle['quarter']}/{cycle['year']}</h2>")

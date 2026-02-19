@@ -1,7 +1,10 @@
 ﻿from __future__ import annotations
-from pydantic import BaseModel
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
+from pydantic import BaseModel
+
+AG_ROOT = r"C:\Aggregatto"
+
 
 class Settings(BaseModel):
     db_path: str
@@ -22,6 +25,16 @@ class Settings(BaseModel):
     recipients_csv: str
     retention_days: int = 365
 
+
+def _default_path(env_key: str, agg_relative: str, fallback_relative: str) -> str:
+    explicit = os.getenv(env_key)
+    if explicit:
+        return explicit
+    if os.path.exists(AG_ROOT):
+        return os.path.join(AG_ROOT, agg_relative)
+    return fallback_relative
+
+
 def load_settings() -> Settings:
     load_dotenv()
     primary_name = os.getenv("FC_SENDER_PRIMARY_NAME") or os.getenv("FC_SENDER_NAME", "FusioneCore Circularizacao")
@@ -37,7 +50,7 @@ def load_settings() -> Settings:
         sender_email = secondary_email
 
     return Settings(
-        db_path=os.getenv("FC_DB_PATH", "./data/fc_circularizacao.db"),
+        db_path=_default_path("FC_DB_PATH", r"outputs\fc_circularizacao.db", "./data/fc_circularizacao.db"),
         sender_name=sender_name,
         sender_email=sender_email,
         reply_to=os.getenv("FC_REPLY_TO") or None,
@@ -49,7 +62,7 @@ def load_settings() -> Settings:
         smtp_user=os.getenv("SMTP_USER"),
         smtp_pass=os.getenv("SMTP_PASS"),
         smtp_tls=(os.getenv("SMTP_TLS", "true").lower() == "true"),
-        inbox_eml_dir=os.getenv("FC_INBOX_EML_DIR", "./data/inbox_eml"),
-        recipients_csv=os.getenv("FC_RECIPIENTS_CSV", "./data/recipients.csv"),
+        inbox_eml_dir=_default_path("FC_INBOX_EML_DIR", r"data\emails", "./data/inbox_eml"),
+        recipients_csv=_default_path("FC_RECIPIENTS_CSV", r"data\recipients.csv", "./data/recipients.csv"),
         retention_days=int(os.getenv("FC_RETENTION_DAYS", "365")),
     )

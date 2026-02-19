@@ -1,3 +1,6 @@
-Copy-Item -Path "c:\fusionecore-suite\apps\APP\filiais.py" -Destination "c:\fusionecore-suite\fc_core\core\filiais.py" -Force
-Copy-Item -Path "c:\fusionecore-suite\apps\APP\orchestrator_v2.py" -Destination "c:\fusionecore-suite\fc_core\automation\orchestrator.py" -Force
-Write-Host "Files updated successfully."
+﻿. "$PSScriptRoot\_install_common.ps1"
+$core = Get-CoreRoot
+Copy-Checked "$PSScriptRoot\filiais.py" "$core\fc_core\core\filiais.py"
+Copy-Checked "$PSScriptRoot\orchestrator_v2.py" "$core\fc_core\automation\orchestrator.py"
+Write-Host 'Filiais and orchestrator installed.' -ForegroundColor Green
+

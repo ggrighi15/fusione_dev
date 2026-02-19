@@ -1,2 +1,5 @@
-Copy-Item -Path "c:\fusionecore-suite\apps\APP\models.py" -Destination "c:\fusionecore-suite\fc_core\core\models.py" -Force
-Write-Host "Models updated successfully."
+﻿. "$PSScriptRoot\_install_common.ps1"
+$core = Get-CoreRoot
+Copy-Checked "$PSScriptRoot\models.py" "$core\fc_core\core\models.py"
+Write-Host 'Models installed.' -ForegroundColor Green
+
