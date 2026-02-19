@@ -113,9 +113,66 @@ def _upsert_normalized_person(conn: sqlite3.Connection, row: sqlite3.Row) -> Non
     uf_norm = normalize_text(row["uf_raw"] or "")[:2]
     cep_norm = normalize_cep(row["cep_raw"] or "")
 
-    dedupe_parts = [doc_norm or "", email_norm or "", nome_norm or ""]
+    dedupe_parts = [doc_norm or "", email_norm or "", nome_norm or "", telefone_norm or "", cep_norm or ""]
     dedupe_key = "|".join(dedupe_parts)
+    if not dedupe_key.replace("|", ""):
+        dedupe_key = "|".join(
+            [
+                normalize_text(row["source_system"] or ""),
+                normalize_text(row["external_id"] or ""),
+                "FALLBACK",
+            ]
+        )
     ts = now_iso()
+
+    existing = conn.execute(
+        """
+        SELECT person_id
+        FROM cadastro_normalizado_pessoas
+        WHERE dedupe_key=?
+        ORDER BY updated_at DESC, person_id DESC
+        LIMIT 1
+        """,
+        (dedupe_key,),
+    ).fetchone()
+
+    if existing:
+        conn.execute(
+            """
+            UPDATE cadastro_normalizado_pessoas
+            SET source_system=?,
+                external_id=?,
+                nome_norm=?,
+                documento_norm=?,
+                documento_tipo=?,
+                documento_valido=?,
+                email_norm=?,
+                telefone_norm=?,
+                endereco_norm=?,
+                cidade_norm=?,
+                uf_norm=?,
+                cep_norm=?,
+                updated_at=?
+            WHERE person_id=?
+            """,
+            (
+                row["source_system"],
+                row["external_id"],
+                nome_norm,
+                doc_norm,
+                doc_type,
+                doc_valid,
+                email_norm,
+                telefone_norm,
+                endereco_norm,
+                cidade_norm,
+                uf_norm,
+                cep_norm,
+                ts,
+                existing["person_id"],
+            ),
+        )
+        return
 
     conn.execute(
         """

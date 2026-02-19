@@ -128,9 +128,10 @@ def attachment_set_hash(attachments: List[Tuple[str, bytes, str]]) -> str:
     return sha256_text("|".join(digests))
 
 
-def message_fingerprint(subject: str, body_hash: str, att_hash: str) -> str:
+def message_fingerprint(subject: str, body_hash: str, att_hash: str, recipient_scope: str) -> str:
     normalized_subject = normalize_subject(subject)
-    return sha256_text(f"{normalized_subject}|{body_hash}|{att_hash}")
+    recipient_scope = (recipient_scope or "").strip().lower()
+    return sha256_text(f"{normalized_subject}|{body_hash}|{att_hash}|{recipient_scope}")
 
 
 def has_zero_docs(subject: str, body: str) -> bool:
@@ -291,7 +292,9 @@ def main():
 
             body_hash = sha256_text(body or "")
             att_hash = attachment_set_hash(attachments)
-            fingerprint = message_fingerprint(subject, body_hash, att_hash)
+            # Dedupe must be scoped per recipient to avoid dropping valid replies
+            # from different recipients that share very similar content.
+            fingerprint = message_fingerprint(subject, body_hash, att_hash, recipient_id)
 
             dup = conn.execute(
                 "SELECT msg_id FROM circularization_message WHERE cycle_id=? AND fingerprint=? LIMIT 1",

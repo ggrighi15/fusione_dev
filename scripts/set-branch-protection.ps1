@@ -5,10 +5,11 @@ param(
     [string[]]$Branches = @('main', 'develop'),
 
     [string[]]$Checks = @(
-        'Guardrails (no self-hosted / no large)',
-        'test',
+        'guardrails',
         'build',
         'Secret Scan (gitleaks)',
+        'python-tests',
+        'ui-react-tests',
         'api-bootstrap-smoke-linux',
         'dependency-install-smoke-windows'
     )

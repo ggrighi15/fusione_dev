@@ -6,7 +6,7 @@
   - DRY_RUN: gera .eml para envio manual pelo Outlook
   - SMTP: envia via SMTP (se autorizado)
 - Ingestao de respostas via .eml/.msg (inclusive lotes exportados)
-- Dedupe por fingerprint (subject normalizado + hash body + hash anexos)
+- Dedupe por fingerprint (subject normalizado + hash body + hash anexos + escopo de recipient)
 - Alertas de qualidade em `reconciliation_issue`:
   - `ZERO_DOCS_ALERT`
   - `DUPLICATE_MESSAGE`
