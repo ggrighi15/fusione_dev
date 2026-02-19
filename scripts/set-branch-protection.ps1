@@ -7,6 +7,8 @@
     [string[]]$Checks = @(
         'FusionCore CI / guardrails',
         'FusionCore CI / python-tests',
+        'FusionCore CI / api-bootstrap-smoke-linux',
+        'FusionCore CI / dependency-install-smoke-windows',
         'FusionCore CI / ui-react-tests'
     )
 )
