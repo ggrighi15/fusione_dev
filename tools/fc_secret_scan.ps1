@@ -18,5 +18,8 @@ if (-not $gitleaks) {
 
 Info "Running gitleaks on working tree..."
 gitleaks detect --redact --no-git -v
+if ($LASTEXITCODE -ne 0) {
+  throw "gitleaks detected potential secrets in working tree."
+}
 
 Info "No secret exposure detected in working tree."
